@@ -1,5 +1,15 @@
 <!doctype html>
 <!--
+  自學點讀筆 v3（1150911）
+  1. 底部播放器高度減半（桌機 160×90 → 80×45、手機 120×68 → 60×34）。
+  2. 收合改成「整條收乾淨」，右下角留一個小把手可以叫回來（原本會留半截）。
+  3. 句子前的鈕在唸到該句時變成 ⏸：再點一次暫停，暫停中再點接著播，
+     點別句則從那一句開頭播。
+  4. 播放列新增可拖拉的時間軸（自己做的，不用 YouTube 內建控制列——播放器縮小
+     後那個按不到）。拖拉＝自由播放，會解除「播到本句結尾自動停」，一路往下播；
+     標示仍會跟著秒數走到對應的句子。
+  ※ 句子標示改由 UI 迴圈依秒數統一處理（原本整頁播放才有的 track 機制已移除）。
+
   自學點讀筆 v2i（1150910i）
   基準：採用 e 版（1150910e）。g 的自動開 YouTube 分頁、
         h 的背景分頁都未採用。
@@ -87,7 +97,7 @@
       color: var(--ink);
       min-height: 100%;
       padding: 20px;
-      padding-bottom: 150px;
+      padding-bottom: 112px;
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -415,13 +425,56 @@
       transition: transform 0.3s ease;
     }
 
+    /* 收合＝整條收乾淨，只留右下角一個小把手可以叫回來 */
     .player-bar.collapsed {
-      transform: translateY(calc(100% - 52px));
+      transform: translateY(110%);
+    }
+
+    .bar-handle {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 901;
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.9em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .bar-handle.hidden {
+      display: none;
+    }
+
+    .player-seek {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .player-seek .time {
+      font-size: 0.78em;
+      font-variant-numeric: tabular-nums;
+      opacity: 0.9;
+      flex: 0 0 auto;
+    }
+
+    #seekbar {
+      flex: 1 1 auto;
+      min-width: 80px;
+      height: 4px;
+      accent-color: var(--yellow);
+      cursor: pointer;
     }
 
     #yt-player-box {
-      width: 160px;
-      height: 90px;
+      width: 80px;
+      height: 45px;
       flex: 0 0 auto;
       border-radius: 10px;
       overflow: hidden;
@@ -547,12 +600,12 @@
        盡量把高度讓給課文。但嵌入框仍建議拉到 600px 以上才好用。 */
     @media (max-height: 520px) {
       body {
-        padding-bottom: 100px;
+        padding-bottom: 120px;
       }
 
       #yt-player-box {
-        width: 110px;
-        height: 62px;
+        width: 56px;
+        height: 32px;
       }
 
       .player-bar {
@@ -754,8 +807,8 @@
       }
 
       #yt-player-box {
-        width: 120px;
-        height: 68px;
+        width: 60px;
+        height: 34px;
       }
 
       .player-credit {
@@ -817,7 +870,7 @@
 
       /* 窄螢幕：播放列改成兩列（上：播放器＋目前句子／下：控制鈕） */
       body {
-        padding-bottom: 165px;
+        padding-bottom: 180px;
       }
 
       .player-bar {
@@ -830,7 +883,7 @@
       }
 
       .player-bar.collapsed {
-        transform: translateY(calc(100% - 46px));
+        transform: translateY(110%);
       }
 
       .toast {
@@ -857,6 +910,11 @@
    <div id="yt-player-box"><div id="yt-player"></div></div>
    <div class="player-info">
     <div class="player-now" id="player-now">點課文句子前的 ▶ 就會唸這一句</div>
+    <div class="player-seek">
+     <span class="time" id="time-now">0:00</span>
+     <input type="range" id="seekbar" min="0" max="261" step="0.1" value="0" aria-label="時間軸（可拖拉）">
+     <span class="time" id="time-dur">4:21</span>
+    </div>
     <div class="player-credit">音檔來源：育達文化《育達高中台語 第1單元 美食外送 全篇課文》 ·
      <a href="https://www.youtube.com/watch?v=fPD6_5iQZZw" target="_blank" rel="noopener">YouTube 原片</a></div>
    </div>
@@ -866,9 +924,11 @@
     <button class="pbtn" id="btn-auto" title="播完自動接下一句">⏭<span class="lbl"> 連播</span></button>
     <button class="pbtn" id="btn-rate" title="放慢速度">1x</button>
     <button class="pbtn" id="btn-stop" title="停止">■</button>
-    <button class="pbtn" id="btn-fold" title="收合播放列">⌄</button>
+    <button class="pbtn" id="btn-fold" title="完全收起播放列">⌄</button>
    </div>
   </div>
+
+  <button class="bar-handle hidden" id="bar-handle" title="展開播放列">⌃ 播放器</button>
 
   <div class="cal-panel hidden" id="cal-panel">
    <div class="cal-head">
@@ -1254,15 +1314,57 @@
       setTimeout(() => el.remove(), 2200);
     }
 
-    let trackedEl = null;   // 整頁播放時，目前標示中的句子
+    let trackedEl = null;   // 目前標示中的句子
+    let timedList = [];     // 全篇已校時的句子 [{el, start, end, label}]，供標示追蹤用
+
+    function buildTimedList() {
+      timedList = allSentences
+        .map(s => {
+          const t = getTime(s.page, s.idx);
+          return t ? {
+            el: s.el,
+            start: t.start,
+            end: t.end,
+            label: `第 ${s.page} 頁：${s.text.slice(0, 18)}…`
+          } : null;
+        })
+        .filter(Boolean);
+    }
+
+    /* 句子前的鈕：正在唸這一句時顯示暫停，其餘時候顯示播放 */
+    function setBtnGlyph(el, playing) {
+      if (!el) return;
+      const b = el.querySelector('.play-btn');
+      if (b) b.textContent = playing ? '⏸' : '▶';
+    }
+
+    function setPlayingEl(el) {
+      if (trackedEl === el) return;
+      if (trackedEl) {
+        trackedEl.classList.remove('playing');
+        setBtnGlyph(trackedEl, false);
+      }
+      trackedEl = el;
+      if (el) {
+        el.classList.add('playing');
+        setBtnGlyph(el, true);
+      }
+    }
+
+    function highlightAtTime(now) {
+      const cur = timedList.find(s => now >= s.start - 0.05 && now < s.end);
+      if (cur && cur.el !== trackedEl) {
+        setPlayingEl(cur.el);
+        document.getElementById('player-now').textContent = cur.label;
+      }
+    }
 
     function clearWatch() {
       if (watchTimer) {
         clearInterval(watchTimer);
         watchTimer = null;
       }
-      trackedEl = null;
-      document.querySelectorAll('.sentence.playing').forEach(el => el.classList.remove('playing'));
+      setPlayingEl(null);
     }
 
     function stopPlayback() {
@@ -1278,9 +1380,7 @@
 
     let pendingSegment = null;
 
-    /* track：整頁播放時傳入該頁每一句的 [{el, start, end, label}]，
-       監看迴圈會依目前秒數把標示移到正在唸的那一句。 */
-    function playSegment(start, end, el, seqIndex, label, track) {
+    function playSegment(start, end, el, seqIndex, label) {
       if (!canEmbed) {
         showFallbackLink(start, label);
         toast('請改用網址開啟；或按紅色鈕到 YouTube 聽這一句');
@@ -1292,15 +1392,15 @@
         return;
       }
       if (!ytReady) {
-        pendingSegment = { start, end, el, seqIndex, label, track };
+        pendingSegment = { start, end, el, seqIndex, label };
         toast('播放器準備中，馬上就好…');
         return;
       }
 
       clearWatch();
-      currentSeg = { start, end, el, seqIndex, label, track };
+      currentSeg = { start, end, el, seqIndex, label };
 
-      if (el) el.classList.add('playing');
+      setPlayingEl(el || null);
       document.getElementById('player-now').textContent = label || '播放中…';
 
       try {
@@ -1320,7 +1420,7 @@
           let st;
           try { st = ytPlayer.getPlayerState(); } catch (e) { return; }
           if (st !== 1 && st !== 3) {   // 1=播放中 3=緩衝中
-            markBlocked({ start, end, el, seqIndex, label, track });
+            markBlocked({ start, end, el, seqIndex, label });
           }
         }, 1200);
       }
@@ -1331,18 +1431,6 @@
           now = ytPlayer.getCurrentTime();
           state = ytPlayer.getPlayerState();
         } catch (e) { return; }
-
-        // 整頁播放：標示跟著音檔移到正在唸的那一句
-        if (track) {
-          const cur = track.find(s => now >= s.start - 0.05 && now < s.end);
-          if (cur && cur.el !== trackedEl) {
-            if (trackedEl) trackedEl.classList.remove('playing');
-            cur.el.classList.add('playing');
-            trackedEl = cur.el;
-            document.getElementById('player-now').textContent = cur.label;
-          }
-        }
-
         // YT.PlayerState.ENDED = 0：影片自己播完（最後一句）也要收尾
         if (now >= end - 0.05 || state === 0) {
           clearWatch();
@@ -1354,6 +1442,91 @@
           }
         }
       }, 80);
+    }
+
+    /* ---- 時間軸（自己做，不用 YouTube 內建控制列：播放器縮小後那個按不到） ---- */
+    let uiTimer = null;
+    let seeking = false;   // 使用者正在拖拉時，不要被自動更新蓋掉
+
+    function fmtTime(sec) {
+      sec = Math.max(0, Math.floor(sec || 0));
+      return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+    }
+
+    function startUiLoop() {
+      if (uiTimer) return;
+      uiTimer = setInterval(() => {
+        if (!ytReady || seeking) return;
+        let now, dur, st;
+        try {
+          now = ytPlayer.getCurrentTime();
+          dur = ytPlayer.getDuration() || LESSON_VIDEO.duration;
+          st = ytPlayer.getPlayerState();
+        } catch (e) { return; }
+
+        const bar = document.getElementById('seekbar');
+        if (Math.abs(+bar.max - Math.floor(dur)) > 1) bar.max = Math.floor(dur);
+        bar.value = now;
+        document.getElementById('time-now').textContent = fmtTime(now);
+        document.getElementById('time-dur').textContent = fmtTime(dur);
+
+        if (st === 1) highlightAtTime(now);          // 播放中才跟著換句
+        if (trackedEl) setBtnGlyph(trackedEl, st === 1);   // 暫停時鈕變回 ▶
+      }, 200);
+    }
+
+    /* 拖拉時間軸＝自由播放：解除本句的句尾停止，讓它一路往下播 */
+    function seekToFree(seconds) {
+      clearWatch();
+      clearTimeout(blockedCheckTimer);
+      currentSeg = null;
+      if (!ytReady) return;
+      try {
+        ytPlayer.seekTo(seconds, true);
+        ytPlayer.setPlaybackRate(playRate);
+        ytPlayer.playVideo();
+      } catch (e) {}
+      highlightAtTime(seconds);
+    }
+
+    function bindSeekbar() {
+      const bar = document.getElementById('seekbar');
+      const onStart = () => { seeking = true; };
+      bar.addEventListener('pointerdown', onStart);
+      bar.addEventListener('keydown', onStart);
+      bar.addEventListener('input', () => {
+        seeking = true;
+        document.getElementById('time-now').textContent = fmtTime(+bar.value);
+      });
+      bar.addEventListener('change', () => {
+        seeking = false;
+        seekToFree(+bar.value);
+      });
+    }
+
+    /* 點句子：正在唸這一句就暫停，暫停中就接著播，其餘從這句開頭播 */
+    function onSentenceClick(seqIndex) {
+      const s = allSentences[seqIndex];
+      if (!s) return;
+      const t = getTime(s.page, s.idx);
+      let st = -1;
+      try { st = ytReady ? ytPlayer.getPlayerState() : -1; } catch (e) {}
+
+      if (t && ytReady && trackedEl === s.el) {
+        if (st === 1) {                       // 正在唸 → 暫停
+          try { ytPlayer.pauseVideo(); } catch (e) {}
+          setBtnGlyph(s.el, false);
+          return;
+        }
+        let now = 0;
+        try { now = ytPlayer.getCurrentTime(); } catch (e) {}
+        if (st === 2 && now > t.start && now < t.end) {   // 暫停在這句中間 → 接著播
+          try { ytPlayer.playVideo(); } catch (e) {}
+          setBtnGlyph(s.el, true);
+          return;
+        }
+      }
+      playSentenceBySeq(seqIndex);
     }
 
     function playSentenceBySeq(seqIndex) {
@@ -1388,18 +1561,10 @@
         return;
       }
       // 整頁一次連續播（不逐句重新 seek，句與句之間才不會頓一下），
-      // 標示則由監看迴圈依秒數移動
-      const track = list.map(o => {
-        const t = getTime(o.s.page, o.s.idx);
-        return {
-          el: o.s.el,
-          start: t.start,
-          end: t.end,
-          label: `第 ${o.s.page} 頁：${o.s.text.slice(0, 18)}…`
-        };
-      });
-      playSegment(track[0].start, track[track.length - 1].end, null, null,
-                  `第 ${pageNum} 頁（整頁）`, track);
+      // 標示由 UI 迴圈依秒數自動移到正在唸的那一句
+      const first = getTime(list[0].s.page, list[0].s.idx);
+      const last = getTime(list[list.length - 1].s.page, list[list.length - 1].s.idx);
+      playSegment(first.start, last.end, null, null, `第 ${pageNum} 頁（整頁）`);
     }
 
     function showNoEmbedNotice(msg) {
@@ -1444,10 +1609,11 @@
         events: {
           onReady: function() {
             ytReady = true;
+            startUiLoop();
             if (pendingSegment) {
               const p = pendingSegment;
               pendingSegment = null;
-              playSegment(p.start, p.end, p.el, p.seqIndex, p.label, p.track);
+              playSegment(p.start, p.end, p.el, p.seqIndex, p.label);
             }
           },
           onStateChange: function(e) {
@@ -1459,7 +1625,7 @@
                 const p = pendingAfterUnlock;
                 pendingAfterUnlock = null;
                 document.getElementById('yt-link').classList.add('hidden');
-                playSegment(p.start, p.end, p.el, p.seqIndex, p.label, p.track);
+                playSegment(p.start, p.end, p.el, p.seqIndex, p.label);
               }
             }
           },
@@ -1524,7 +1690,7 @@
           allSentences.push({ page: pageNum, idx: idx, text: sentence.text, el: span });
 
           span.addEventListener('click', function() {
-            playSentenceBySeq(seqIndex);
+            onSentenceClick(seqIndex);
           });
         });
 
@@ -1569,6 +1735,7 @@
     }
 
     function refreshSentenceButtons() {
+      buildTimedList();
       allSentences.forEach(s => {
         const btn = s.el.querySelector('.play-btn');
         if (!btn) return;
@@ -1583,7 +1750,7 @@
     function bindPlayerBar() {
       document.getElementById('btn-replay').addEventListener('click', () => {
         if (!currentSeg) { toast('還沒播過任何句子'); return; }
-        playSegment(currentSeg.start, currentSeg.end, currentSeg.el, currentSeg.seqIndex, currentSeg.label, currentSeg.track);
+        playSegment(currentSeg.start, currentSeg.end, currentSeg.el, currentSeg.seqIndex, currentSeg.label);
       });
 
       const btnAuto = document.getElementById('btn-auto');
@@ -1605,10 +1772,17 @@
 
       const bar = document.getElementById('player-bar');
       const btnFold = document.getElementById('btn-fold');
+      const handle = document.getElementById('bar-handle');
       btnFold.addEventListener('click', () => {
-        bar.classList.toggle('collapsed');
-        btnFold.textContent = bar.classList.contains('collapsed') ? '⌃' : '⌄';
+        bar.classList.add('collapsed');
+        handle.classList.remove('hidden');
       });
+      handle.addEventListener('click', () => {
+        bar.classList.remove('collapsed');
+        handle.classList.add('hidden');
+      });
+
+      bindSeekbar();
     }
 
     /* ===================== 校時模式（?edit=1） ===================== */
@@ -1838,6 +2012,7 @@
     }
 
     renderContent();
+    buildTimedList();
     bindPlayerBar();
     loadYouTubeApi();
 
