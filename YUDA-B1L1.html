@@ -1,0 +1,1849 @@
+<!doctype html>
+<!--
+  自學點讀筆 v2i（1150910i）
+  基準：採用 e 版（1150910e）。g 的自動開 YouTube 分頁、
+        h 的背景分頁都未採用。
+  採用 f 的詞彙畫法：不再是整塊實心黃方框，改成只在字下半部畫黃帶的「螢光筆」
+        效果（滑過／點到時才整個塗滿），編號改成課本註標式小上標。
+  新增：「播整頁」時，標示會跟著音檔逐句移動（整頁一次連續播、不逐句重新 seek，
+        所以句與句之間不會頓；播放列文字也同步換成正在唸的那一句）。
+
+  ---- 以下沿用 e 版說明 ----
+  自學點讀筆 v2e（1150910e）
+  版面調整：相鄰的詞彙標記原本會擠成一整塊、編號小圓也會壓到隔壁詞。
+            改為詞彙左右留白（margin 0.5em/0.15em）、行高加大、編號改膠囊形
+            並加白色描邊（兩位數也放得下、疊到黃底上仍分得開）。
+
+
+
+  ⚠ 放在 Google Sites「嵌入 › 內嵌程式碼」裡的注意事項：
+     Sites 產生的嵌入 iframe 沒有 allow="autoplay" 授權，頁面內的 YouTube 播放器
+     會擋掉「由程式觸發」的播放 —— 症狀是句子有反白、播放列文字有變，但沒有聲音。
+     解法：使用者只要在播放器本身按一下 ▶（這是 YouTube 框內的真實點擊），
+     權限就解鎖，之後逐句點讀都正常。本版會自動偵測這個狀況並跳出引導；
+     解鎖後還會自動接著播剛才點的那一句。
+     想完全免去這一步，就別用 iframe 嵌入，改成「整頁開啟」（把檔案放自己的空間，
+     Sites 上放連結），頁面成為最上層文件就有 autoplay 權限。
+     另外嵌入框請拉大（建議高度 600px 以上），280×179 會被底部播放列吃光版面。
+
+
+  升級重點：1. 新增「句子級」課文音檔播放，音源為育達文化官方 YouTube《全篇課文》
+               影片 fPD6_5iQZZw（4:21），以嵌入播放器 seek 片段方式播放，不下載音檔。
+            2. 主視覺改為黑／黃／白：底色以白為主，黑色作結構（頁首、播放列、按鈕、
+               詞彙標號），黃色作強調（重點詞底色、播放中句子、標題字）。
+               ※ 黃色只用在底色或深色底上的文字，不在白底上直接當文字色（對比度不足）。
+               色票集中在 CSS 最上方的 :root 變數，要換色改那裡即可。
+
+  ⚠ 非常重要：本檔必須用「網址」開啟（上架到教學平台，或本機跑 http 伺服器），
+     不能用滑鼠雙擊以 file:// 直接開。file:// 沒有網域來源，YouTube 會擋掉嵌入
+     播放器並顯示「錯誤 153」。以 file:// 開啟時，本頁會自動改為
+     「▶ 到 YouTube 聽這一句」的外連模式（會另開分頁跳到該句時間點）。
+     本機測試指令：
+       python -m http.server 8000
+     然後開 http://localhost:8000/檔名.html
+
+  ★ 校時（產生每句起訖秒數）步驟：
+    1. 用本機伺服器開啟本檔並在網址後加 ?edit=1，例如
+       http://localhost:8000/01成果-點讀筆-第1課_美食外送1150910b.html?edit=1
+    2. 右側會出現「校時模式」面板，按「▶ 開始校時」，影片從頭播放。
+    3. 每聽到一句課文開頭，就按一次「空白鍵」（會記為該句的開始時間，
+       並自動把上一句的結束時間補上）。最後一句唸完按 Enter 收尾。
+    4. 可用每列的 −0.2 / +0.2 或直接輸入數字微調，🔊 可單句試聽。
+    5. 按「📋 匯出 JSON」，把複製到的內容整段貼回本檔下方的
+       `const sentenceTimes = { ... };` 區塊，存檔即完成定版。
+    ※ 校時途中會自動存進瀏覽器 localStorage，關掉頁面不會遺失。
+    ※ 學生看到的網址不加 ?edit=1，完全不會出現校時面板。
+-->
+<html lang="zh-TW">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>自學點讀筆</title>
+  <link href="https://tauhu.tw/tauhu-oo.css" rel="stylesheet">
+  <script src="https://oikasu1.github.io/snd/snd.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    /* 主視覺：黑／黃／白（底色以白為主）
+       黃色只當底色或強調塊，不當白底上的文字色，確保對比度足夠 */
+    :root {
+      --black: #111111;
+      --ink: #222222;
+      --yellow: #ffd400;
+      --yellow-deep: #e6b800;
+      --yellow-soft: #fff3b8;
+      --line: #e0e0e0;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      box-sizing: border-box;
+      font-family: tauhu-oo, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: var(--ink);
+      min-height: 100%;
+      padding: 20px;
+      padding-bottom: 150px;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 30px;
+      padding: 22px 20px;
+      background: var(--black);
+      border-radius: 20px;
+      border-bottom: 8px solid var(--yellow);
+    }
+
+    .header h1 {
+      font-size: 2.8em;
+      margin: 0 0 10px 0;
+      color: var(--yellow);
+      font-family: tauhu-oo, sans-serif;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .header h2 {
+      font-size: 1.5em;
+      margin: 0;
+      font-weight: normal;
+      opacity: 0.95;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+    }
+
+    .page-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: relative;
+      transition: all 0.3s ease;
+      border: 2px solid var(--line);
+    }
+
+    .page-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border-color: var(--yellow);
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .page-number {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.3em;
+      border: 2px solid var(--black);
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .page-play {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      transition: all 0.2s;
+    }
+
+    .page-play:hover {
+      background: var(--yellow);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .page-play:disabled {
+      background: #c9c9c9;
+      color: #ffffff;
+      border-color: #c9c9c9;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .content {
+      line-height: 2.7;
+      font-size: 1.4em;
+      color: var(--ink);
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .sentence {
+      border-radius: 8px;
+      padding: 2px 4px;
+      transition: background 0.25s ease;
+      cursor: pointer;
+    }
+
+    .sentence:hover {
+      background: #f4f4f4;
+    }
+
+    .sentence.playing {
+      background: var(--yellow-soft);
+      box-shadow: inset 4px 0 0 var(--black);
+    }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.55em;
+      height: 1.55em;
+      margin: 0 8px 0 2px;
+      vertical-align: middle;
+      border: none;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 0.62em;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .play-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .play-btn:active {
+      transform: scale(0.92);
+    }
+
+    .play-btn.untimed {
+      background: #cfcfcf;
+      color: #ffffff;
+    }
+
+    .vocabulary {
+      font-weight: bold;
+      color: var(--black);
+      cursor: pointer;
+      position: relative;
+      /* 整個詞不可被斷到兩行（會讓底色裂開、編號跑位） */
+      display: inline-block;
+      white-space: nowrap;
+      padding: 0 2px;
+      margin: 0 0.2em;
+      /* 自身行高收緊，黃帶才會壓在字上，而不是浮在下方（外層行高不受影響） */
+      line-height: 1.15;
+      /* 螢光筆效果：只在字的下半部畫一條黃帶，不做整塊實心方框 */
+      background: linear-gradient(to top, var(--yellow) 0.42em, transparent 0.42em);
+      transition: background 0.2s ease;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .vocabulary:hover {
+      /* 滑過／點到時才整個塗滿，作為可點擊的回饋 */
+      background: var(--yellow);
+    }
+
+    .vocabulary:active {
+      transform: scale(0.95);
+    }
+
+    /* 編號改成課本註標式的小上標：不占方塊、不會壓到隔壁字，
+       因為是正常流排版，也不可能再發生重疊 */
+    .vocab-number {
+      display: inline;
+      vertical-align: super;
+      font-size: 0.58em;
+      line-height: 1;
+      font-weight: bold;
+      font-family: tauhu-oo, sans-serif;
+      color: var(--black);
+      margin-left: 1px;
+      letter-spacing: 0;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 4px solid var(--black);
+      border-radius: 20px;
+      padding: 1mm;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      z-index: 1000;
+      min-width: 320px;
+      animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    .tooltip-header {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: var(--black);
+      background: var(--yellow);
+      border-radius: 14px;
+      margin-bottom: 1mm;
+      border-bottom: 3px solid var(--black);
+      padding: 1mm 2mm;
+      font-family: tauhu-oo, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 1;
+    }
+
+    .tooltip-content {
+      font-size: 1.2em;
+      color: var(--ink);
+      line-height: 1;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .tooltip-content div {
+      margin: 1mm 0;
+      padding: 1mm 0;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1;
+    }
+
+    .tooltip-content div:last-child {
+      border-bottom: none;
+    }
+
+    .tooltip-label {
+      color: var(--black);
+      font-weight: bold;
+      margin-right: 8px;
+      border-bottom: 3px solid var(--yellow);
+    }
+
+    .tooltip-close {
+      background: var(--black);
+      color: var(--yellow);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      font-weight: bold;
+    }
+
+    .tooltip-close:hover {
+      background: var(--yellow);
+      color: var(--black);
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .speaker-icon {
+      display: inline-block;
+      font-size: 0.9em;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    /* ===== 底部浮動迷你播放列 ===== */
+    .player-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 18px;
+      background: var(--black);
+      border-top: 5px solid var(--yellow);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+      color: #ffffff;
+      font-family: tauhu-oo, sans-serif;
+      transition: transform 0.3s ease;
+    }
+
+    .player-bar.collapsed {
+      transform: translateY(calc(100% - 52px));
+    }
+
+    #yt-player-box {
+      width: 160px;
+      height: 90px;
+      flex: 0 0 auto;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #yt-player-box iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    /* 被瀏覽器擋住程式播放時，引導使用者按一下播放器本身 */
+    #yt-player-box.need-tap {
+      outline: 4px solid var(--yellow);
+      animation: tapPulse 1.1s ease-in-out infinite;
+    }
+
+    @keyframes tapPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 212, 0, 0.9); }
+      50% { box-shadow: 0 0 0 10px rgba(255, 212, 0, 0); }
+    }
+
+    .player-now.warn {
+      color: var(--yellow);
+      font-weight: bold;
+      white-space: normal;
+    }
+
+    .player-info {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .player-now {
+      font-size: 1.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .player-credit {
+      font-size: 0.78em;
+      opacity: 0.7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-credit a {
+      color: var(--yellow);
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .pbtn {
+      background: #ffffff;
+      border: 2px solid #ffffff;
+      color: var(--black);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .pbtn:hover {
+      background: var(--yellow);
+      border-color: var(--yellow);
+    }
+
+    .pbtn.on {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      color: var(--black);
+    }
+
+    .pbtn.fallback {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      color: var(--black);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .pbtn.hidden {
+      display: none;
+    }
+
+    .pbtn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 130px;
+      transform: translateX(-50%);
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-family: tauhu-oo, sans-serif;
+      font-size: 1.05em;
+      z-index: 1200;
+      animation: popIn 0.25s ease;
+    }
+
+    /* 嵌在很矮的框裡（例如 Google Sites 的小嵌入區）時，播放列改精簡版，
+       盡量把高度讓給課文。但嵌入框仍建議拉到 600px 以上才好用。 */
+    @media (max-height: 520px) {
+      body {
+        padding-bottom: 100px;
+      }
+
+      #yt-player-box {
+        width: 110px;
+        height: 62px;
+      }
+
+      .player-bar {
+        padding: 6px 10px;
+        gap: 8px;
+      }
+
+      .player-credit {
+        display: none;
+      }
+
+      .pbtn {
+        padding: 6px 10px;
+        font-size: 0.85em;
+      }
+    }
+
+    /* ===== 校時模式面板（?edit=1 才出現） ===== */
+    .cal-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 130px;
+      width: 380px;
+      max-width: 92vw;
+      background: white;
+      z-index: 1100;
+      box-shadow: -6px 0 24px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .cal-panel.hidden {
+      display: none;
+    }
+
+    .cal-head {
+      background: var(--black);
+      color: var(--yellow);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cal-head h3 {
+      margin: 0;
+      font-size: 1.15em;
+    }
+
+    .cal-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .cal-actions button {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 16px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      font-size: 0.9em;
+    }
+
+    .cal-actions button:hover {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .cal-actions button.danger {
+      background: #ffffff;
+      color: var(--black);
+    }
+
+    .cal-hint {
+      padding: 8px 12px;
+      font-size: 0.85em;
+      color: var(--ink);
+      background: var(--yellow-soft);
+      line-height: 1.6;
+    }
+
+    .cal-out {
+      margin: 8px 12px;
+      font-family: monospace;
+      font-size: 0.8em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px;
+      resize: vertical;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .cal-out.hidden {
+      display: none;
+    }
+
+    .cal-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      font-size: 0.85em;
+    }
+
+    .cal-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 8px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cal-row.active {
+      background: var(--yellow-soft);
+      box-shadow: inset 4px 0 0 var(--black);
+    }
+
+    .cal-row .cal-text {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cal-row input {
+      width: 58px;
+      font-size: 0.95em;
+      padding: 2px 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .cal-row button {
+      border: none;
+      background: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 3px 5px;
+      font-size: 0.9em;
+    }
+
+    .cal-badge {
+      background: var(--black);
+      color: var(--yellow);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 0.85em;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+        padding-bottom: 130px;
+      }
+
+      .header h1 {
+        font-size: 2em;
+      }
+
+      .header h2 {
+        font-size: 1.2em;
+      }
+
+      .page-section {
+        padding: 20px;
+      }
+
+      .content {
+        font-size: 1.2em;
+        line-height: 2.5;
+      }
+
+      .tooltip {
+        min-width: auto;
+        width: 90%;
+        max-width: 90%;
+        left: 5% !important;
+        padding: 1mm;
+      }
+
+      .page-number {
+        font-size: 1.1em;
+        padding: 10px 24px;
+      }
+
+      .player-bar {
+        gap: 10px;
+        padding: 8px 10px;
+      }
+
+      #yt-player-box {
+        width: 120px;
+        height: 68px;
+      }
+
+      .player-credit {
+        display: none;
+      }
+
+      .pbtn {
+        padding: 7px 10px;
+        font-size: 0.85em;
+      }
+
+      .pbtn .lbl {
+        display: none;
+      }
+
+      .player-now {
+        font-size: 0.95em;
+        margin-bottom: 0;
+      }
+
+      .toast {
+        bottom: 110px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 {
+        font-size: 1.6em;
+      }
+
+      .header h2 {
+        font-size: 1em;
+      }
+
+      .content {
+        font-size: 1.1em;
+      }
+
+      .page-number {
+        font-size: 1em;
+        padding: 8px 20px;
+      }
+
+      .tooltip {
+        min-width: auto;
+        width: 90%;
+        max-width: 90%;
+        left: 5% !important;
+        padding: 1mm;
+      }
+
+      .tooltip-header {
+        font-size: 1.5em;
+      }
+
+      .tooltip-content {
+        font-size: 1.1em;
+      }
+
+      /* 窄螢幕：播放列改成兩列（上：播放器＋目前句子／下：控制鈕） */
+      body {
+        padding-bottom: 165px;
+      }
+
+      .player-bar {
+        flex-wrap: wrap;
+      }
+
+      .player-controls {
+        flex: 1 1 100%;
+        justify-content: center;
+      }
+
+      .player-bar.collapsed {
+        transform: translateY(calc(100% - 46px));
+      }
+
+      .toast {
+        bottom: 145px;
+      }
+    }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <main>
+   <div class="container">
+    <header class="header">
+     <h1 id="page-title">📖自學點讀筆 📖</h1>
+     <h2 id="page-subtitle">育達版高中全1冊 第1課 美食外送</h2>
+    </header>
+    <div id="content-area"></div>
+   </div>
+  </main>
+
+  <div class="player-bar" id="player-bar">
+   <div id="yt-player-box"><div id="yt-player"></div></div>
+   <div class="player-info">
+    <div class="player-now" id="player-now">點課文句子前的 ▶ 就會唸這一句</div>
+    <div class="player-credit">音檔來源：育達文化《育達高中台語 第1單元 美食外送 全篇課文》 ·
+     <a href="https://www.youtube.com/watch?v=fPD6_5iQZZw" target="_blank" rel="noopener">YouTube 原片</a></div>
+   </div>
+   <div class="player-controls">
+    <a class="pbtn fallback hidden" id="yt-link" target="_blank" rel="noopener" title="到 YouTube 聽這一句">▶ 到 YouTube 聽這一句</a>
+    <button class="pbtn" id="btn-replay" title="重播這一句">⟲<span class="lbl"> 重播</span></button>
+    <button class="pbtn" id="btn-auto" title="播完自動接下一句">⏭<span class="lbl"> 連播</span></button>
+    <button class="pbtn" id="btn-rate" title="放慢速度">1x</button>
+    <button class="pbtn" id="btn-stop" title="停止">■</button>
+    <button class="pbtn" id="btn-fold" title="收合播放列">⌄</button>
+   </div>
+  </div>
+
+  <div class="cal-panel hidden" id="cal-panel">
+   <div class="cal-head">
+    <h3>⏱ 校時模式</h3>
+    <span class="cal-badge" id="cal-clock">0.00s</span>
+   </div>
+   <div class="cal-actions">
+    <button id="cal-start">▶ 開始校時</button>
+    <button id="cal-mark">⏱ 標記此句（空白鍵）</button>
+    <button id="cal-end">⏹ 收尾（Enter）</button>
+    <button id="cal-export">📋 匯出 JSON</button>
+    <button id="cal-clear" class="danger">🗑 清空</button>
+   </div>
+   <div class="cal-hint">
+    按「開始校時」後影片從頭播，<b>每聽到一句課文開頭就按一次空白鍵</b>，
+    最後一句唸完按 Enter。之後可用 −/＋ 或直接輸入微調，🔊 單句試聽。
+    完成後按「匯出 JSON」，把內容貼回檔案裡的 <code>sentenceTimes</code>。
+   </div>
+   <textarea class="cal-out hidden" id="cal-out" readonly rows="6" placeholder="匯出的內容會顯示在這裡，可自行全選複製"></textarea>
+   <div class="cal-list" id="cal-list"></div>
+  </div>
+
+  <script>
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    const defaultConfig = {
+      page_title: "📖自學點讀筆 📖",
+      page_subtitle: "育達版高中全1冊 第1課 美食外送"
+    };
+
+    let currentAudioObj = null;
+
+    /* ===================== 課文音檔設定 ===================== */
+    const LESSON_VIDEO = {
+      id: "fPD6_5iQZZw",
+      title: "育達高中台語 第1單元 美食外送【全篇課文】",
+      duration: 261,
+      source: "https://sites.google.com/ms.mingdao.edu.tw/tsiam/1/한계課本音檔/3-1"
+    };
+
+    /* 句子時間戳（秒）。每頁一個陣列，索引 = 該頁斷句後的順序。
+       null 代表尚未校時 → 該句按鈕會呈灰色。
+       ★ 用 ?edit=1 校時後，把匯出的內容整段換掉下面這個物件。 */
+    const sentenceTimes = {
+      "6": [
+        { "start": 0.08, "end": 11.50 },  // 因為新冠肺炎 (sin
+        { "start": 11.55, "end": 30.49 },  // 有一個真明顯的趨勢，就是
+        { "start": 30.54, "end": 63.43 },  // 我見擺去市區買物件抑是辦
+        { "start": 63.48, "end": 76.84 }  // 我嘛不時看著有外送員共o
+      ],
+      "7": [
+        { "start": 76.89, "end": 107.31 },  // 外送餐點的工課看起來誠簡
+        { "start": 107.36, "end": 112.11 },  // 有一工早起，我去市內揣朋
+        { "start": 112.16, "end": 130.53 },  // 當咧停紅燈的時，我看著兩
+        { "start": 130.58, "end": 142.52 }  // 我心內咧想，𪜶按呢規身
+      ],
+      "8": [
+        { "start": 142.57, "end": 170.36 },  // 到朋友𪜶兜以後，阮幾个
+        { "start": 170.41, "end": 177.10 },  // 我就佇遐唸講：「會使莫叫
+        { "start": 177.15, "end": 187.53 },  // 你看外送人員遮爾拚命，煞
+        { "start": 187.58, "end": 197.85 },  // 當我繼續欲講落去的時，彼
+        { "start": 197.90, "end": 204.45 },  // 毋免出門就送到位，三不五
+        { "start": 204.50, "end": 217.52 },  // 閣再講， 交通事件嘛袂因
+        { "start": 217.57, "end": 236.47 },  // 「美食外送」是一項新興商
+        { "start": 236.52, "end": 260.90 }  // 希望佇產業良性發展的考量（收在影片長度 261s 之內）
+      ]
+    };
+    /* ======================================================= */
+
+    const database = {
+      "6": [
+        { word: "誠濟", roman: "tsiânn-tsē", order: 1, chinese: "很多", page: "6" },
+        { word: "佮", roman: "kah", order: 2, chinese: "和", page: "6" },
+        { word: "攏", roman: "lóng", order: 3, chinese: "都", page: "6" },
+        { word: "衝擊", roman: "tshiong-kik", order: 4, chinese: "衝擊", page: "6" },
+        { word: "趨勢", roman: "tshu-sè", order: 5, chinese: "趨勢", page: "6" },
+        { word: "慢慢仔", roman: "bān-bān-á", order: 6, chinese: "慢慢的", page: "6" },
+        { word: "真濟", roman: "tsin-tsē", order: 7, chinese: "很多", page: "6" },
+        { word: "逐家", roman: "ta̍k-ke", order: 8, chinese: "大家", page: "6" },
+        { word: "閣", roman: "koh", order: 9, chinese: "又", page: "6" },
+        { word: "不止仔", roman: "put-tsí-á", order: 10, chinese: "非常", page: "6" },
+        { word: "懸", roman: "kuân", order: 11, chinese: "高", page: "6" },
+        { word: "見擺", roman: "kiàn-pái", order: 12, chinese: "每次", page: "6" },
+        { word: "oo-tóo-bái", roman: "oo-tóo-bái", order: 13, chinese: "機車", page: "6" },
+        { word: "較濟", roman: "khah-tsē", order: 14, chinese: "比較多", page: "6" },
+        { word: "定定", roman: "tiānn-tiānn", order: 15, chinese: "常常", page: "6" },
+        { word: "拄著", roman: "tú-tio̍h", order: 16, chinese: "遇到", page: "6" },
+        { word: "个", roman: "ê", order: 17, chinese: "個", page: "6" },
+        { word: "𪜶", roman: "in", order: 18, chinese: "他們", page: "6" },
+        { word: "嘛是", roman: "mā-sī", order: 19, chinese: "也是", page: "6" },
+        { word: "仝款", roman: "kāng-khuán", order: 20, chinese: "相同", page: "6" },
+        { word: "按呢", roman: "án-ne", order: 21, chinese: "這樣", page: "6" },
+        { word: "bùn", roman: "bùn", order: 22, chinese: "竄", page: "6" },
+        { word: "四常", roman: "sù-siông", order: 23, chinese: "經常", page: "6" },
+        { word: "啥物", roman: "siánn-mi̍h", order: 24, chinese: "什麼", page: "6" },
+        { word: "通", roman: "thang", order: 25, chinese: "可以", page: "6" },
+        { word: "共", roman: "kā", order: 26, chinese: "把", page: "6" },
+        { word: "踮", roman: "tiàm", order: 27, chinese: "在", page: "6" },
+        { word: "斟酌", roman: "tsim-tsiok", order: 28, chinese: "仔細", page: "6" },
+        { word: "抑是", roman: "ia̍h-sī", order: 29, chinese: "還是", page: "6" },
+        { word: "敲", roman: "khà", order: 30, chinese: "打", page: "6" }
+      ],
+      "7": [
+        { word: "工課", roman: "khang-khuè", order: 31, chinese: "工作", page: "7" },
+        { word: "毋過", roman: "m̄-koh", order: 32, chinese: "不過", page: "7" },
+        { word: "著", roman: "tio̍h", order: 33, chinese: "就", page: "7" },
+        { word: "愛", roman: "ài", order: 34, chinese: "要", page: "7" },
+        { word: "熱人", roman: "jua̍h--lâng", order: 35, chinese: "夏天", page: "7" },
+        { word: "燒唿唿", roman: "sio-hut-hut", order: 36, chinese: "酷熱", page: "7" },
+        { word: "佮", roman: "kah", order: 37, chinese: "和", page: "7" },
+        { word: "寒人", roman: "kuânn--lâng", order: 38, chinese: "冬天", page: "7" },
+        { word: "冷sih-sih", roman: "冷sih-sih", order: 39, chinese: "寒冷", page: "7" },
+        { word: "有當時仔", roman: "ū-tang-sî-á", order: 40, chinese: "有時候", page: "7" },
+        { word: "物件", roman: "mi̍h-kiānn", order: 41, chinese: "東西", page: "7" },
+        { word: "延延", roman: "iân-tshiân", order: 42, chinese: "延宕", page: "7" },
+        { word: "閣會", roman: "koh-ē", order: 43, chinese: "還會", page: "7" },
+        { word: "工", roman: "kang", order: 44, chinese: "天", page: "7" },
+        { word: "揣", roman: "tshuē", order: 45, chinese: "找", page: "7" },
+        { word: "當咧", roman: "tng-leh", order: 46, chinese: "正在", page: "7" },
+        { word: "掛", roman: "kuà", order: 47, chinese: "戴", page: "7" },
+        { word: "喙罨", roman: "tshuì-am", order: 48, chinese: "口罩", page: "7" },
+        { word: "手囊", roman: "tshiú-lông", order: 49, chinese: "袖套", page: "7" },
+        { word: "目鏡", roman: "ba̍k-kiànn", order: 50, chinese: "眼鏡", page: "7" },
+        { word: "貯", roman: "té", order: 51, chinese: "裝", page: "7" },
+        { word: "滇", roman: "tīnn", order: 52, chinese: "滿", page: "7" },
+        { word: "按呢", roman: "án-ne", order: 53, chinese: "這樣", page: "7" },
+        { word: "規身軀", roman: "kui-sing-khu", order: 54, chinese: "全身", page: "7" },
+        { word: "密喌喌", roman: "ba̍t-tsiuh-tsiuh", order: 55, chinese: "緊密", page: "7" },
+        { word: "傱", roman: "tsông", order: 56, chinese: "衝", page: "7" },
+        { word: "規工", roman: "kui-kang", order: 57, chinese: "整天", page: "7" },
+        { word: "呔", roman: "thài", order: 58, chinese: "怎麼", page: "7" },
+        { word: "袂", roman: "bē", order: 59, chinese: "不", page: "7" },
+        { word: "忝頭", roman: "thiám-thâu", order: 60, chinese: "累", page: "7" }
+      ],
+      "8": [
+        { word: "兜", roman: "tau", order: 61, chinese: "家", page: "8" },
+        { word: "阮", roman: "gún", order: 62, chinese: "我們", page: "8" },
+        { word: "佇", roman: "tī", order: 63, chinese: "在", page: "8" },
+        { word: "開講", roman: "khai-káng", order: 64, chinese: "聊天", page: "8" },
+        { word: "雄雄", roman: "hiông-hiông", order: 65, chinese: "突然", page: "8" },
+        { word: "放送", roman: "hòng-sàng", order: 66, chinese: "播放", page: "8" },
+        { word: "䆀", roman: "bái", order: 67, chinese: "不好", page: "8" },
+        { word: "透早", roman: "thàu-tsá", order: 68, chinese: "早上", page: "8" },
+        { word: "予", roman: "hōo", order: 69, chinese: "給", page: "8" },
+        { word: "毋甘", roman: "m̄-kam", order: 70, chinese: "心疼", page: "8" },
+        { word: "遐", roman: "hia", order: 71, chinese: "那裡", page: "8" },
+        { word: "會使", roman: "ē-sái", order: 72, chinese: "可以", page: "8" },
+        { word: "莫", roman: "mài", order: 73, chinese: "不要", page: "8" },
+        { word: "遮爾", roman: "tsiah-nī", order: 74, chinese: "這麼", page: "8" },
+        { word: "煞", roman: "suah", order: 75, chinese: "卻", page: "8" },
+        { word: "落去", roman: "lo̍h-khì", order: 76, chinese: "下去", page: "8" },
+        { word: "彼", roman: "hit", order: 77, chinese: "那", page: "8" },
+        { word: "翁仔某", roman: "ang-á-bóo", order: 78, chinese: "夫妻", page: "8" },
+        { word: "三不五時", roman: "sam-put-gōo-sî", order: 79, chinese: "不時", page: "8" },
+        { word: "窒", roman: "that", order: 80, chinese: "塞", page: "8" },
+        { word: "莫怪", roman: "bo̍k-kuài", order: 81, chinese: "難怪", page: "8" },
+        { word: "開拓", roman: "khai-thok", order: 82, chinese: "開拓", page: "8" },
+        { word: "利純", roman: "lī-sûn", order: 83, chinese: "利益", page: "8" },
+        { word: "好好仔", roman: "hó-hó-á", order: 84, chinese: "好好地", page: "8" },
+        { word: "較", roman: "khah", order: 85, chinese: "比較", page: "8" }
+      ]
+    };
+
+    const pages = {
+      "6": `因為新冠肺炎 (sin kuan hì-iām) 的關係，誠濟人的生活型態佮經濟活動攏受著真大的衝擊。有一個真明顯的趨勢，就是「美食外送」已經慢慢仔行入真濟小型家庭，而且逐家的接受度閣不止仔懸，是一項熱門的新行業。\n我見擺去市區買物件抑是辦代誌，大部份攏是騎oo-tóo-bái較濟，定定會去拄著五、六个「美食外送」的送餐員，𪜶嘛是仝款騎oo-tóo-bái，大街小巷按呢bùn來bùn去，這差不多已經是現代人四常會看著的情景，無啥物通感覺奇怪。我嘛不時看著有外送員共oo-tóo-bái 停踮路邊，斟酌咧研究地圖抑是敲電話參訂餐客戶聯絡。`,
+      "7": `外送餐點的工課看起來誠簡單，毋過著愛忍受熱人燒唿唿的天氣佮寒人冷sih-sih的霜風，有當時仔若是領物件延延著，閣會受著顧客的指責，其中的心酸佮委屈，真正是無講無人知！\n有一工早起，我去市內揣朋友。當咧停紅燈的時，我看著兩个送餐員除了戴安全帽仔、掛喙罨閣掛手囊和變色目鏡，車後的保溫袋仔嘛貯甲滇滿滿的餐點。我心內咧想，𪜶按呢規身軀封甲密喌喌走傱規工，呔有可能袂忝頭？`,
+      "8": `到朋友𪜶兜以後，阮幾个佇客廳開講、泡茶，雄雄新聞放送一件「外送人員車禍」的消息，看著這个事件我的心情有夠䆀，想起透早外送人員辛苦付出的畫面，予人誠毋甘。我就佇遐唸講：「會使莫叫外送就莫叫啦！你看外送人員遮爾拚命，煞因為交通事故破壞一个完整的家庭，而且……」\n當我繼續欲講落去的時，彼對少年翁仔某隨就講：「毋過𪜶的服務真好呢！毋免出門就送到位，三不五時攏有優待喔！閣再講， 交通事件嘛袂因為阮無叫就袂發生啊……」聽𪜶按呢回應，我喙去予窒起來矣。\n「美食外送」是一項新興商業，也是一个新時代的產物，美食外送解決真濟現代人的需求，莫怪佇競爭激烈的市場會當開拓新的局面。希望佇產業良性發展的考量之下，外送平台的業者除了追求商業利純以外，嘛會當好好仔照顧外送員的權益佮福利，積極改善經營過程的缺點，未來提供予消費者閣較滿意的服務。`
+    };
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    /**
+     * 把一頁課文切成句子。先以換行切段落，段落內以「。！？」為界斷句。
+     * 回傳 [{para, text}]，順序即 sentenceTimes[頁碼] 的索引。
+     */
+    function splitSentences(text) {
+      const result = [];
+      text.split('\n').forEach((paragraph, paraIndex) => {
+        paragraph
+          .split(/(?<=[。！？])/)
+          .map(s => s.trim())
+          .filter(s => s.length > 0)
+          .forEach(s => result.push({ para: paraIndex, text: s }));
+      });
+      return result;
+    }
+
+    function highlightVocabulary(text, pageNum) {
+      const vocabList = database[pageNum] || [];
+      let result = escapeHtml(text);
+
+      vocabList.sort((a, b) => b.word.length - a.word.length);
+
+      const placeholder = '###VOCAB###';
+      const replacements = [];
+
+      vocabList.forEach(vocab => {
+        const escapedWord = escapeHtml(vocab.word);
+        const escapedRoman = escapeHtml(vocab.roman);
+        const escapedChinese = escapeHtml(vocab.chinese);
+
+        const regex = new RegExp(escapedWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+
+        let match;
+        let lastIndex = 0;
+        let newResult = '';
+
+        while ((match = regex.exec(result)) !== null) {
+          const beforeMatch = result.substring(0, match.index);
+          const openPlaceholders = (beforeMatch.match(new RegExp(placeholder, 'g')) || []).length;
+          const closePlaceholders = (beforeMatch.match(/###\/VOCAB###/g) || []).length;
+
+          if (openPlaceholders > closePlaceholders) {
+            continue;
+          }
+
+          newResult += result.substring(lastIndex, match.index);
+          const replacementIndex = replacements.length;
+          replacements.push(`<span class="vocabulary" data-word="${escapedWord}" data-roman="${escapedRoman}" data-chinese="${escapedChinese}" data-page="${pageNum}" data-order="${vocab.order}">${escapedWord}<span class="vocab-number">${vocab.order}</span></span>`);
+          newResult += `${placeholder}${replacementIndex}###/VOCAB###`;
+          lastIndex = match.index + match[0].length;
+        }
+
+        if (lastIndex > 0) {
+          newResult += result.substring(lastIndex);
+          result = newResult;
+        }
+      });
+
+      replacements.forEach((replacement, index) => {
+        result = result.replace(`${placeholder}${index}###/VOCAB###`, replacement);
+      });
+
+      return result;
+    }
+
+    function showTooltip(event, word, roman, chinese, page, order) {
+      const existingTooltip = document.querySelector('.tooltip');
+      if (existingTooltip) {
+        existingTooltip.remove();
+      }
+
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <span>${word}</span>
+          <button class="tooltip-close">✕</button>
+        </div>
+        <div class="tooltip-content">
+          <div><span class="tooltip-label">項次：</span>${order}</div>
+          <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
+          <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
+          <div><span class="tooltip-label">華語：</span>${chinese}</div>
+        </div>
+      `;
+
+      document.body.appendChild(tooltip);
+
+      const closeBtn = tooltip.querySelector('.tooltip-close');
+      closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tooltip.remove();
+      });
+
+      tooltip.addEventListener('click', function() {
+        tooltip.remove();
+      });
+
+      const rect = event.target.getBoundingClientRect();
+
+      setTimeout(() => {
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const isMobile = window.innerWidth <= 768;
+
+        let left, top;
+
+        if (isMobile) {
+          left = (window.innerWidth - tooltipRect.width) / 2;
+          top = rect.bottom + window.scrollY + 10;
+
+          if (top + tooltipRect.height > document.documentElement.scrollHeight - 10) {
+            top = rect.top + window.scrollY - tooltipRect.height - 10;
+          }
+        } else {
+          left = rect.right + 15;
+          top = rect.top + window.scrollY;
+
+          if (left + tooltipRect.width > window.innerWidth - 20) {
+            left = rect.left - tooltipRect.width - 15;
+            if (left < 20) {
+              left = 20;
+            }
+          }
+
+          if (top + tooltipRect.height > document.documentElement.scrollHeight - 10) {
+            top = document.documentElement.scrollHeight - tooltipRect.height - 10;
+          }
+
+          if (top < window.scrollY + 10) {
+            top = window.scrollY + 10;
+          }
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
+      }, 0);
+    }
+
+    /* ===================== 句子播放（YouTube） ===================== */
+
+    const allSentences = [];   // [{page, idx, text, el}]，全篇連續順序
+    let ytPlayer = null;
+    let ytReady = false;
+    let ytFailed = false;
+    let watchTimer = null;
+    let currentSeg = null;     // {start, end, el, seqIndex}
+    let autoNext = false;
+    let playRate = 1;
+
+    /* YouTube 只允許有網域來源的頁面嵌入播放器。
+       用 file:// 直接開啟時沒有來源，播放器會出現「錯誤 153」，
+       此時改用「外連到 YouTube 指定秒數」的備援模式。 */
+    const canEmbed = location.protocol === 'http:' || location.protocol === 'https:';
+
+    function youtubeLinkAt(seconds) {
+      return `https://www.youtube.com/watch?v=${LESSON_VIDEO.id}&t=${Math.max(0, Math.floor(seconds))}s`;
+    }
+
+    /* 程式觸發的播放被瀏覽器擋住時（最常見：本頁被嵌在沒有 allow="autoplay"
+       的 iframe 裡，例如 Google Sites 的內嵌程式碼），引導使用者在播放器本身
+       按一下解鎖；解鎖後自動接著播剛才點的那一句。 */
+    let playbackUnlocked = false;
+    let blockedCheckTimer = null;
+    let pendingAfterUnlock = null;
+
+    function markBlocked(seg) {
+      clearWatch();
+      pendingAfterUnlock = seg;
+      document.getElementById('yt-player-box').classList.add('need-tap');
+      const now = document.getElementById('player-now');
+      now.classList.add('warn');
+      now.textContent = '👈 請先在左邊播放器上按一下 ▶（瀏覽器規定要先在播放器上點過才有聲音），之後點句子就會逐句唸';
+      showFallbackLink(seg.start, null);
+    }
+
+    function clearBlocked() {
+      clearTimeout(blockedCheckTimer);
+      document.getElementById('yt-player-box').classList.remove('need-tap');
+      document.getElementById('player-now').classList.remove('warn');
+    }
+
+    function showFallbackLink(start, label) {
+      const link = document.getElementById('yt-link');
+      link.href = youtubeLinkAt(start);
+      link.classList.remove('hidden');
+      if (label) document.getElementById('player-now').textContent = label;
+    }
+
+    function getTime(page, idx) {
+      const arr = sentenceTimes[page];
+      if (!arr) return null;
+      const t = arr[idx];
+      if (!t || typeof t.start !== 'number' || typeof t.end !== 'number') return null;
+      if (t.end <= t.start) return null;
+      return t;
+    }
+
+    function toast(msg) {
+      const old = document.querySelector('.toast');
+      if (old) old.remove();
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2200);
+    }
+
+    let trackedEl = null;   // 整頁播放時，目前標示中的句子
+
+    function clearWatch() {
+      if (watchTimer) {
+        clearInterval(watchTimer);
+        watchTimer = null;
+      }
+      trackedEl = null;
+      document.querySelectorAll('.sentence.playing').forEach(el => el.classList.remove('playing'));
+    }
+
+    function stopPlayback() {
+      clearWatch();
+      clearTimeout(blockedCheckTimer);
+      pendingAfterUnlock = null;
+      currentSeg = null;
+      if (ytReady && ytPlayer) {
+        try { ytPlayer.pauseVideo(); } catch (e) {}
+      }
+      document.getElementById('player-now').textContent = '點課文句子前的 ▶ 就會唸這一句';
+    }
+
+    let pendingSegment = null;
+
+    /* track：整頁播放時傳入該頁每一句的 [{el, start, end, label}]，
+       監看迴圈會依目前秒數把標示移到正在唸的那一句。 */
+    function playSegment(start, end, el, seqIndex, label, track) {
+      if (!canEmbed) {
+        showFallbackLink(start, label);
+        toast('請改用網址開啟；或按紅色鈕到 YouTube 聽這一句');
+        return;
+      }
+      if (ytFailed) {
+        showFallbackLink(start, label);
+        toast('連不到 YouTube 播放器，可按紅色鈕到 YouTube 聽');
+        return;
+      }
+      if (!ytReady) {
+        pendingSegment = { start, end, el, seqIndex, label, track };
+        toast('播放器準備中，馬上就好…');
+        return;
+      }
+
+      clearWatch();
+      currentSeg = { start, end, el, seqIndex, label, track };
+
+      if (el) el.classList.add('playing');
+      document.getElementById('player-now').textContent = label || '播放中…';
+
+      try {
+        ytPlayer.seekTo(start, true);
+        ytPlayer.setPlaybackRate(playRate);
+        ytPlayer.playVideo();
+      } catch (e) {
+        toast('播放失敗，請確認網路或改用瀏覽器直接開啟');
+        return;
+      }
+
+      // 1.2 秒後仍沒真的開始播 → 判定被瀏覽器擋住，引導在播放器上點一下解鎖
+      // （解鎖過就不用再檢查；注意這裡不能 return，後面還要掛句尾監看）
+      clearTimeout(blockedCheckTimer);
+      if (!playbackUnlocked) {
+        blockedCheckTimer = setTimeout(() => {
+          let st;
+          try { st = ytPlayer.getPlayerState(); } catch (e) { return; }
+          if (st !== 1 && st !== 3) {   // 1=播放中 3=緩衝中
+            markBlocked({ start, end, el, seqIndex, label, track });
+          }
+        }, 1200);
+      }
+
+      watchTimer = setInterval(() => {
+        let now, state;
+        try {
+          now = ytPlayer.getCurrentTime();
+          state = ytPlayer.getPlayerState();
+        } catch (e) { return; }
+
+        // 整頁播放：標示跟著音檔移到正在唸的那一句
+        if (track) {
+          const cur = track.find(s => now >= s.start - 0.05 && now < s.end);
+          if (cur && cur.el !== trackedEl) {
+            if (trackedEl) trackedEl.classList.remove('playing');
+            cur.el.classList.add('playing');
+            trackedEl = cur.el;
+            document.getElementById('player-now').textContent = cur.label;
+          }
+        }
+
+        // YT.PlayerState.ENDED = 0：影片自己播完（最後一句）也要收尾
+        if (now >= end - 0.05 || state === 0) {
+          clearWatch();
+          try { ytPlayer.pauseVideo(); } catch (e) {}
+          if (autoNext && typeof seqIndex === 'number') {
+            playNextSentence(seqIndex);
+          } else {
+            currentSeg = null;
+          }
+        }
+      }, 80);
+    }
+
+    function playSentenceBySeq(seqIndex) {
+      const s = allSentences[seqIndex];
+      if (!s) return;
+      const t = getTime(s.page, s.idx);
+      if (!t) {
+        toast('本句尚未校時（老師可用 ?edit=1 校時）');
+        return;
+      }
+      playSegment(t.start, t.end, s.el, seqIndex, `第 ${s.page} 頁：${s.text.slice(0, 18)}…`);
+    }
+
+    function playNextSentence(seqIndex) {
+      for (let i = seqIndex + 1; i < allSentences.length; i++) {
+        const s = allSentences[i];
+        if (getTime(s.page, s.idx)) {
+          playSentenceBySeq(i);
+          return;
+        }
+      }
+      currentSeg = null;
+      document.getElementById('player-now').textContent = '已播到最後一句';
+    }
+
+    function playPage(pageNum) {
+      const list = allSentences
+        .map((s, i) => ({ s, i }))
+        .filter(o => o.s.page === pageNum && getTime(o.s.page, o.s.idx));
+      if (list.length === 0) {
+        toast('本頁尚未校時（老師可用 ?edit=1 校時）');
+        return;
+      }
+      // 整頁一次連續播（不逐句重新 seek，句與句之間才不會頓一下），
+      // 標示則由監看迴圈依秒數移動
+      const track = list.map(o => {
+        const t = getTime(o.s.page, o.s.idx);
+        return {
+          el: o.s.el,
+          start: t.start,
+          end: t.end,
+          label: `第 ${o.s.page} 頁：${o.s.text.slice(0, 18)}…`
+        };
+      });
+      playSegment(track[0].start, track[track.length - 1].end, null, null,
+                  `第 ${pageNum} 頁（整頁）`, track);
+    }
+
+    function showNoEmbedNotice(msg) {
+      const box = document.getElementById('yt-player-box');
+      box.innerHTML =
+        `<a href="${youtubeLinkAt(0)}" target="_blank" rel="noopener" style="display:block;width:100%;height:100%">` +
+        `<img src="https://i.ytimg.com/vi/${LESSON_VIDEO.id}/mqdefault.jpg" alt="${LESSON_VIDEO.title}" ` +
+        `style="width:100%;height:100%;object-fit:cover"></a>`;
+      document.getElementById('player-now').textContent = msg;
+    }
+
+    function loadYouTubeApi() {
+      if (!canEmbed) {
+        // file:// 開啟：YouTube 一定會擋（錯誤 153），直接切到外連模式
+        showNoEmbedNotice('⚠ 這份檔案是用 file:// 直接開啟的，YouTube 無法內嵌。請改用網址（上架平台或本機伺服器）開啟；或點句子後按「▶ 到 YouTube 聽這一句」。');
+        return;
+      }
+      const tag = document.createElement('script');
+      tag.src = 'https://www.youtube.com/iframe_api';
+      tag.onerror = onYtFailed;
+      document.head.appendChild(tag);
+      // 8 秒內沒就緒視為載入失敗（離線／校園網路封鎖 YouTube）
+      setTimeout(() => { if (!ytReady) onYtFailed(); }, 8000);
+    }
+
+    function onYtFailed() {
+      if (ytReady || ytFailed) return;
+      ytFailed = true;
+      // 不停用句子按鈕：改成點了就給「到 YouTube 聽這一句」的外連
+      showNoEmbedNotice('⚠ 播放器載入失敗（網路或網域限制）。點句子後可按「▶ 到 YouTube 聽這一句」，詞彙發音仍可正常使用。');
+    }
+
+    window.onYouTubeIframeAPIReady = function() {
+      ytPlayer = new YT.Player('yt-player', {
+        videoId: LESSON_VIDEO.id,
+        playerVars: {
+          playsinline: 1,
+          rel: 0,
+          modestbranding: 1,
+          origin: location.origin
+        },
+        events: {
+          onReady: function() {
+            ytReady = true;
+            if (pendingSegment) {
+              const p = pendingSegment;
+              pendingSegment = null;
+              playSegment(p.start, p.end, p.el, p.seqIndex, p.label, p.track);
+            }
+          },
+          onStateChange: function(e) {
+            // 只要真的播出來過一次，就代表播放權限已解鎖
+            if (e.data === 1) {
+              playbackUnlocked = true;
+              clearBlocked();
+              if (pendingAfterUnlock) {
+                const p = pendingAfterUnlock;
+                pendingAfterUnlock = null;
+                document.getElementById('yt-link').classList.add('hidden');
+                playSegment(p.start, p.end, p.el, p.seqIndex, p.label, p.track);
+              }
+            }
+          },
+          onError: function() {
+            onYtFailed();
+          }
+        }
+      });
+    };
+
+    /* ===================== 渲染 ===================== */
+
+    function renderContent() {
+      const contentArea = document.getElementById('content-area');
+      contentArea.innerHTML = '';
+      allSentences.length = 0;
+
+      Object.keys(pages).forEach(pageNum => {
+        const section = document.createElement('div');
+        section.className = 'page-section';
+
+        const head = document.createElement('div');
+        head.className = 'page-head';
+
+        const pageNumber = document.createElement('div');
+        pageNumber.className = 'page-number';
+        pageNumber.textContent = `第 ${pageNum} 頁`;
+
+        const pagePlay = document.createElement('button');
+        pagePlay.className = 'page-play';
+        pagePlay.textContent = '▶ 播整頁';
+        pagePlay.addEventListener('click', () => playPage(pageNum));
+
+        head.appendChild(pageNumber);
+        head.appendChild(pagePlay);
+
+        const content = document.createElement('div');
+        content.className = 'content';
+
+        const sentences = splitSentences(pages[pageNum]);
+        let lastPara = 0;
+
+        sentences.forEach((sentence, idx) => {
+          if (idx > 0 && sentence.para !== lastPara) {
+            content.appendChild(document.createElement('br'));
+          }
+          lastPara = sentence.para;
+
+          const span = document.createElement('span');
+          span.className = 'sentence';
+          span.dataset.page = pageNum;
+          span.dataset.idx = idx;
+
+          const timed = !!getTime(pageNum, idx);
+          span.innerHTML =
+            `<button class="play-btn${timed ? '' : ' untimed'}" title="${timed ? '播放這一句' : '本句尚未校時'}">▶</button>` +
+            highlightVocabulary(sentence.text, pageNum);
+
+          content.appendChild(span);
+
+          const seqIndex = allSentences.length;
+          allSentences.push({ page: pageNum, idx: idx, text: sentence.text, el: span });
+
+          span.addEventListener('click', function() {
+            playSentenceBySeq(seqIndex);
+          });
+        });
+
+        section.appendChild(head);
+        section.appendChild(content);
+        contentArea.appendChild(section);
+      });
+
+      // 保險：若課文改動使句數與時間戳陣列長度不符，補 null 對齊，避免陣列越界
+      Object.keys(pages).forEach(p => {
+        const need = allSentences.filter(s => s.page === p).length;
+        if (!Array.isArray(sentenceTimes[p])) sentenceTimes[p] = [];
+        while (sentenceTimes[p].length < need) sentenceTimes[p].push(null);
+        sentenceTimes[p].length = need;
+      });
+
+      const vocabElements = document.querySelectorAll('.vocabulary');
+      vocabElements.forEach(elem => {
+        elem.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const word = this.getAttribute('data-word');
+          const roman = this.getAttribute('data-roman');
+          const chinese = this.getAttribute('data-chinese');
+          const page = this.getAttribute('data-page');
+          const order = this.getAttribute('data-order');
+
+          const audioRoman = roman.split('/')[0].trim();
+          if (audioRoman === "oo-tóo-bái") {
+            if (currentAudioObj) {
+              currentAudioObj.pause();
+              currentAudioObj.currentTime = 0;
+            }
+            currentAudioObj = new Audio("https://sutian.moe.edu.tw/media/senn/mp3/imtong/KZ/SG/204771.mp3");
+            currentAudioObj.play().catch(err => console.error("Audio play error:", err));
+          } else if (typeof holo === 'function') {
+            holo(this, roman);
+          }
+
+          showTooltip(e, word, roman, chinese, page, order);
+        });
+      });
+    }
+
+    function refreshSentenceButtons() {
+      allSentences.forEach(s => {
+        const btn = s.el.querySelector('.play-btn');
+        if (!btn) return;
+        const timed = !!getTime(s.page, s.idx);
+        btn.classList.toggle('untimed', !timed);
+        btn.title = timed ? '播放這一句' : '本句尚未校時';
+      });
+    }
+
+    /* ===================== 播放列控制 ===================== */
+
+    function bindPlayerBar() {
+      document.getElementById('btn-replay').addEventListener('click', () => {
+        if (!currentSeg) { toast('還沒播過任何句子'); return; }
+        playSegment(currentSeg.start, currentSeg.end, currentSeg.el, currentSeg.seqIndex, currentSeg.label, currentSeg.track);
+      });
+
+      const btnAuto = document.getElementById('btn-auto');
+      btnAuto.addEventListener('click', () => {
+        autoNext = !autoNext;
+        btnAuto.classList.toggle('on', autoNext);
+        toast(autoNext ? '逐句連播：開' : '逐句連播：關');
+      });
+
+      const btnRate = document.getElementById('btn-rate');
+      btnRate.addEventListener('click', () => {
+        playRate = playRate === 1 ? 0.75 : 1;
+        btnRate.textContent = playRate + 'x';
+        btnRate.classList.toggle('on', playRate !== 1);
+        if (ytReady) { try { ytPlayer.setPlaybackRate(playRate); } catch (e) {} }
+      });
+
+      document.getElementById('btn-stop').addEventListener('click', stopPlayback);
+
+      const bar = document.getElementById('player-bar');
+      const btnFold = document.getElementById('btn-fold');
+      btnFold.addEventListener('click', () => {
+        bar.classList.toggle('collapsed');
+        btnFold.textContent = bar.classList.contains('collapsed') ? '⌃' : '⌄';
+      });
+    }
+
+    /* ===================== 校時模式（?edit=1） ===================== */
+
+    const CAL_KEY = 'taigi-diamtho-times-L1';
+    let calMode = false;
+    let calCursor = 0;      // 下一個要標記的句子（全篇連續索引）
+    let calClockTimer = null;
+
+    function calSave() {
+      try { localStorage.setItem(CAL_KEY, JSON.stringify(sentenceTimes)); } catch (e) {}
+    }
+
+    function calLoadDraft() {
+      let raw = null;
+      try { raw = localStorage.getItem(CAL_KEY); } catch (e) {}
+      if (!raw) return;
+      if (!confirm('偵測到上次未完成的校時草稿，要載入嗎？')) return;
+      try {
+        const draft = JSON.parse(raw);
+        Object.keys(draft).forEach(p => { sentenceTimes[p] = draft[p]; });
+        refreshSentenceButtons();
+      } catch (e) {}
+    }
+
+    function calRender() {
+      const list = document.getElementById('cal-list');
+      list.innerHTML = '';
+      allSentences.forEach((s, seq) => {
+        const t = (sentenceTimes[s.page] && sentenceTimes[s.page][s.idx]) || null;
+        const row = document.createElement('div');
+        row.className = 'cal-row' + (seq === calCursor ? ' active' : '');
+        row.innerHTML = `
+          <span class="cal-badge">${s.page}-${s.idx + 1}</span>
+          <span class="cal-text" title="${escapeHtml(s.text)}">${escapeHtml(s.text.slice(0, 12))}</span>
+          <button data-act="minus">−</button>
+          <input data-act="start" value="${t ? t.start.toFixed(2) : ''}" placeholder="start">
+          <button data-act="plus">＋</button>
+          <input data-act="end" value="${t ? t.end.toFixed(2) : ''}" placeholder="end">
+          <button data-act="try">🔊</button>
+        `;
+
+        row.addEventListener('click', function(e) {
+          const act = e.target.getAttribute('data-act');
+          if (!act) return;
+          const entry = sentenceTimes[s.page][s.idx] || { start: 0, end: 0 };
+          if (act === 'minus' || act === 'plus') {
+            const delta = act === 'plus' ? 0.2 : -0.2;
+            entry.start = Math.max(0, entry.start + delta);
+            sentenceTimes[s.page][s.idx] = entry;
+            calSave();
+            calRender();
+            refreshSentenceButtons();
+          } else if (act === 'try') {
+            playSentenceBySeq(seq);
+          }
+        });
+
+        row.querySelectorAll('input').forEach(inp => {
+          inp.addEventListener('change', function() {
+            const entry = sentenceTimes[s.page][s.idx] || { start: 0, end: 0 };
+            const v = parseFloat(this.value);
+            if (!isNaN(v)) {
+              entry[this.getAttribute('data-act')] = v;
+              sentenceTimes[s.page][s.idx] = entry;
+              calSave();
+              refreshSentenceButtons();
+            }
+          });
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    function calMark() {
+      if (!ytReady) { toast('播放器尚未就緒'); return; }
+      const now = ytPlayer.getCurrentTime();
+      if (calCursor > 0) {
+        const prev = allSentences[calCursor - 1];
+        const prevEntry = sentenceTimes[prev.page][prev.idx];
+        if (prevEntry) prevEntry.end = Math.max(prevEntry.start + 0.3, now - 0.15);
+      }
+      const s = allSentences[calCursor];
+      if (!s) { toast('已經標到最後一句了，請按 Enter 收尾'); return; }
+      sentenceTimes[s.page][s.idx] = { start: Math.max(0, now - 0.1), end: LESSON_VIDEO.duration };
+      calCursor++;
+      calSave();
+      calRender();
+      refreshSentenceButtons();
+      const active = document.querySelector('.cal-row.active');
+      if (active) active.scrollIntoView({ block: 'center' });
+    }
+
+    function calFinish() {
+      if (!ytReady) return;
+      const now = ytPlayer.getCurrentTime();
+      if (calCursor > 0) {
+        const prev = allSentences[calCursor - 1];
+        const prevEntry = sentenceTimes[prev.page][prev.idx];
+        if (prevEntry) prevEntry.end = Math.max(prevEntry.start + 0.3, now);
+      }
+      try { ytPlayer.pauseVideo(); } catch (e) {}
+      calSave();
+      calRender();
+      refreshSentenceButtons();
+      toast('校時收尾完成，記得匯出 JSON');
+    }
+
+    function calExport() {
+      let out = 'const sentenceTimes = {\n';
+      const pageKeys = Object.keys(pages);
+      pageKeys.forEach((p, pi) => {
+        out += `  "${p}": [\n`;
+        const arr = sentenceTimes[p] || [];
+        arr.forEach((t, i) => {
+          const s = allSentences.find(x => x.page === p && x.idx === i);
+          const note = s ? s.text.slice(0, 12) : '';
+          const val = t ? `{ "start": ${t.start.toFixed(2)}, "end": ${t.end.toFixed(2)} }` : 'null';
+          out += `    ${val}${i < arr.length - 1 ? ',' : ''}  // ${note}\n`;
+        });
+        out += `  ]${pi < pageKeys.length - 1 ? ',' : ''}\n`;
+      });
+      out += '};\n';
+
+      const outBox = document.getElementById('cal-out');
+      outBox.classList.remove('hidden');
+      outBox.value = out;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(out).then(
+          () => toast('已複製到剪貼簿，貼回檔案即可'),
+          () => toast('複製失敗，請直接從下方文字框全選複製')
+        );
+      }
+      const blob = new Blob([out], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sentenceTimes-第1課美食外送.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function initCalibration() {
+      if (!canEmbed) {
+        alert('校時模式需要播放器，請改用網址開啟（例如 python -m http.server 8000 後開 http://localhost:8000/… ），不能用 file:// 直接開。');
+        return;
+      }
+      calMode = true;
+      document.getElementById('cal-panel').classList.remove('hidden');
+      calLoadDraft();
+      calRender();
+
+      calClockTimer = setInterval(() => {
+        if (!ytReady) return;
+        try {
+          document.getElementById('cal-clock').textContent = ytPlayer.getCurrentTime().toFixed(2) + 's';
+        } catch (e) {}
+      }, 100);
+
+      document.getElementById('cal-start').addEventListener('click', () => {
+        if (!ytReady) { toast('播放器尚未就緒'); return; }
+        clearWatch();
+        currentSeg = null;
+        calCursor = 0;
+        ytPlayer.seekTo(0, true);
+        ytPlayer.setPlaybackRate(playRate);
+        ytPlayer.playVideo();
+        calRender();
+        toast('開始校時：每句開頭按一次空白鍵');
+      });
+
+      document.getElementById('cal-mark').addEventListener('click', calMark);
+      document.getElementById('cal-end').addEventListener('click', calFinish);
+      document.getElementById('cal-export').addEventListener('click', calExport);
+      document.getElementById('cal-clear').addEventListener('click', () => {
+        if (!confirm('確定清空所有時間戳？')) return;
+        Object.keys(sentenceTimes).forEach(p => {
+          sentenceTimes[p] = sentenceTimes[p].map(() => null);
+        });
+        calCursor = 0;
+        calSave();
+        calRender();
+        refreshSentenceButtons();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          calMark();
+        } else if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+          e.preventDefault();
+          calFinish();
+        }
+      });
+    }
+
+    /* ===================== 啟動 ===================== */
+
+    async function onConfigChange(config) {
+      const titleElement = document.getElementById('page-title');
+      if (titleElement) {
+        titleElement.textContent = config.page_title || defaultConfig.page_title;
+      }
+      const subtitleElement = document.getElementById('page-subtitle');
+      if (subtitleElement) {
+        subtitleElement.textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      }
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["page_title", config.page_title || defaultConfig.page_title],
+          ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle]
+        ])
+      });
+    }
+
+    renderContent();
+    bindPlayerBar();
+    loadYouTubeApi();
+
+    if (new URLSearchParams(location.search).has('edit')) {
+      initCalibration();
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99d31a222534a9bf',t:'MTc2MjkxOTgxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
