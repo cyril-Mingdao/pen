@@ -925,7 +925,7 @@
    <div class="container">
     <header class="header">
      <h1 id="page-title">📖自學點讀筆 📖</h1>
-     <h2 id="page-subtitle">育達版高中全1冊 第1課 美食外送</h2>
+     <h2 id="page-subtitle">育達版高中全1冊 第4課 馬偕之路</h2>
     </header>
     <div id="content-area"></div>
    </div>
@@ -937,11 +937,11 @@
     <div class="player-now" id="player-now">點課文句子前的 ▶ 就會唸這一句</div>
     <div class="player-seek">
      <span class="time" id="time-now">0:00</span>
-     <input type="range" id="seekbar" min="0" max="261" step="0.1" value="0" aria-label="時間軸（可拖拉）">
-     <span class="time" id="time-dur">4:21</span>
+     <input type="range" id="seekbar" min="0" max="288" step="0.1" value="0" aria-label="時間軸（可拖拉）">
+     <span class="time" id="time-dur">4:48</span>
     </div>
-    <div class="player-credit">音檔來源：育達文化《育達高中台語 第1單元 美食外送 全篇課文》 ·
-     <a href="https://www.youtube.com/watch?v=fPD6_5iQZZw" target="_blank" rel="noopener">YouTube 原片</a></div>
+    <div class="player-credit">音檔來源：育達文化《育達高中台語 第4單元 馬偕之路 全篇課文》 ·
+     <a href="https://www.youtube.com/watch?v=buIhG-pjwA8" target="_blank" rel="noopener">YouTube 原片</a></div>
    </div>
    <div class="player-controls">
     <a class="pbtn fallback hidden" id="yt-link" target="_blank" rel="noopener" title="到 YouTube 聽這一句">▶ 到 YouTube 聽這一句</a>
@@ -987,7 +987,7 @@
 
     const defaultConfig = {
       page_title: "📖自學點讀筆 📖",
-      page_subtitle: "育達版高中全1冊 第1課 美食外送"
+      page_subtitle: "育達版高中全1冊 第4課 馬偕之路"
     };
 
     let currentAudioObj = null;
@@ -1000,146 +1000,139 @@
 
     /* ===================== 課文音檔設定 ===================== */
     const LESSON_VIDEO = {
-      id: "fPD6_5iQZZw",
-      title: "育達高中台語 第1單元 美食外送【全篇課文】",
-      duration: 261,
-      source: "https://sites.google.com/ms.mingdao.edu.tw/tsiam/1/한계課本音檔/3-1"
+      id: "buIhG-pjwA8",
+      title: "育達高中台語 第4單元 馬偕之路 全篇課文",
+      duration: 288,
+      source: "https://sites.google.com/ms.mingdao.edu.tw/tsiam/1/한계課本音檔/3-4"
     };
 
     /* 句子時間戳（秒）。每頁一個陣列，索引 = 該頁斷句後的順序。
        null 代表尚未校時 → 該句按鈕會呈灰色。
        ★ 用 ?edit=1 校時後，把匯出的內容整段換掉下面這個物件。 */
     const sentenceTimes = {
-      "6": [
-        { "start": 0.08, "end": 11.50 },
-        { "start": 11.55, "end": 30.49 },
-        { "start": 30.54, "end": 63.43 },
-        { "start": 63.48, "end": 76.84 }
+      "48": [
+        { "start": 0.00, "end": 2.88 },
+        { "start": 2.93, "end": 8.05 },
+        { "start": 8.10, "end": 17.05 },
+        { "start": 17.10, "end": 39.26 },
+        { "start": 39.31, "end": 53.93 },
+        { "start": 53.98, "end": 67.75 },
+        { "start": 67.80, "end": 82.51 },
+        { "start": 82.56, "end": 95.72 }
       ],
-      "7": [
-        { "start": 76.89, "end": 107.31 },
-        { "start": 107.36, "end": 112.11 },
-        { "start": 112.16, "end": 130.53 },
-        { "start": 130.58, "end": 142.52 }
+      "49": [
+        { "start": 95.77, "end": 103.39 },
+        { "start": 103.44, "end": 111.87 },
+        { "start": 111.92, "end": 119.52 },
+        { "start": 119.57, "end": 120.97 },
+        { "start": 121.02, "end": 132.60 },
+        { "start": 132.65, "end": 143.02 },
+        { "start": 143.07, "end": 147.76 },
+        { "start": 147.81, "end": 158.83 }
       ],
-      "8": [
-        { "start": 142.57, "end": 170.36 },
-        { "start": 170.41, "end": 177.10 },
-        { "start": 177.15, "end": 187.53 },
-        { "start": 187.58, "end": 197.85 },
-        { "start": 197.90, "end": 204.45 },
-        { "start": 204.50, "end": 217.52 },
-        { "start": 217.57, "end": 236.47 },
-        { "start": 236.52, "end": 260.90 }
+      "50": [
+        { "start": 158.88, "end": 180.75 },
+        { "start": 180.80, "end": 200.24 },
+        { "start": 200.29, "end": 216.80 },
+        { "start": 216.85, "end": 224.04 },
+        { "start": 224.09, "end": 230.79 },
+        { "start": 230.84, "end": 236.95 }
+      ],
+      "51": [
+        { "start": 237.00, "end": 243.40 },
+        { "start": 243.45, "end": 248.05 },
+        { "start": 248.10, "end": 255.29 },
+        { "start": 255.34, "end": 266.90 },
+        { "start": 266.95, "end": 276.44 },
+        { "start": 276.49, "end": 287.17 }
       ]
     };
     /* ======================================================= */
 
     /* 逐詞臺羅（依課本臺羅版課文）：[漢字, 臺羅, [音節…]]，順序＝該頁課文的漢字順序 */
     const tailo = {
-      "6": [["因為", "In-uī", ["In", "uī"]], ["新", "sin", ["sin"]], ["冠", "kuan", ["kuan"]], ["肺炎", "hì-iām", ["hì", "iām"]], ["的", "ê", ["ê"]], ["關係", "kuan-hē", ["kuan", "hē"]], ["誠", "tsiânn", ["tsiânn"]], ["濟", "tsē", ["tsē"]], ["人", "lâng", ["lâng"]], ["的", "ê", ["ê"]], ["生活", "sing-ua̍h", ["sing", "ua̍h"]], ["型態", "hîng-thài", ["hîng", "thài"]], ["佮", "kah", ["kah"]], ["經濟", "king-tsè", ["king", "tsè"]], ["活動", "ua̍h-tāng", ["ua̍h", "tāng"]], ["攏", "lóng", ["lóng"]], ["受著", "siū-tio̍h", ["siū", "tio̍h"]], ["真", "tsin", ["tsin"]], ["大", "tuā", ["tuā"]], ["的", "ê", ["ê"]], ["衝擊", "tshiong-kik", ["tshiong", "kik"]], ["有", "Ū", ["Ū"]], ["一", "tsi̍t", ["tsi̍t"]], ["個", "ê", ["ê"]], ["真", "tsin", ["tsin"]], ["明顯", "bîng-hián", ["bîng", "hián"]], ["的", "ê", ["ê"]], ["趨勢", "tshu-sè", ["tshu", "sè"]], ["就", "tō", ["tō"]], ["是", "sī", ["sī"]], ["美食", "bí-si̍t", ["bí", "si̍t"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["已經", "í-king", ["í", "king"]], ["慢慢仔", "bān-bān-á", ["bān", "bān", "á"]], ["行入", "kiânn-ji̍p", ["kiânn", "ji̍p"]], ["真", "tsin", ["tsin"]], ["濟", "tsē", ["tsē"]], ["小型", "sió-hîng", ["sió", "hîng"]], ["家庭", "ka-tîng", ["ka", "tîng"]], ["而且", "jî-tshiánn", ["jî", "tshiánn"]], ["逐家", "ta̍k-ke", ["ta̍k", "ke"]], ["的", "ê", ["ê"]], ["接受度", "tsiap-siū-tōo", ["tsiap", "siū", "tōo"]], ["閣", "koh", ["koh"]], ["不止仔", "put-tsí-á", ["put", "tsí", "á"]], ["懸", "kuân", ["kuân"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["項", "hāng", ["hāng"]], ["熱門", "jia̍t-mn̂g", ["jia̍t", "mn̂g"]], ["的", "ê", ["ê"]], ["新", "sin", ["sin"]], ["行業", "hâng-gia̍p", ["hâng", "gia̍p"]], ["我", "Guá", ["Guá"]], ["見擺", "kiàn-pái", ["kiàn", "pái"]], ["去", "khì", ["khì"]], ["市區", "tshī-khu", ["tshī", "khu"]], ["買", "bé", ["bé"]], ["物件", "mi̍h-kiānn", ["mi̍h", "kiānn"]], ["抑是", "ia̍h-sī", ["ia̍h", "sī"]], ["辦", "pān", ["pān"]], ["代誌", "tuā-tsì", ["tuā", "tsì"]], ["大部份", "tāi-pōo-hūn", ["tāi", "pōo", "hūn"]], ["攏", "lóng", ["lóng"]], ["是", "sī", ["sī"]], ["騎", "khiâ", ["khiâ"]], ["較", "khah", ["khah"]], ["濟", "tsē", ["tsē"]], ["定定", "tiānn-tiānn", ["tiānn", "tiānn"]], ["會", "ē", ["ē"]], ["去", "khì", ["khì"]], ["拄著", "tú-tio̍h", ["tú", "tio̍h"]], ["五", "gōo", ["gōo"]], ["六", "la̍k", ["la̍k"]], ["个", "ê", ["ê"]], ["美食", "bí-si̍t", ["bí", "si̍t"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["的", "ê", ["ê"]], ["送餐員", "sàng-tshan-uân", ["sàng", "tshan", "uân"]], ["𪜶", "in", ["in"]], ["嘛", "mā", ["mā"]], ["是", "sī", ["sī"]], ["仝款", "kāng-khuán", ["kāng", "khuán"]], ["騎", "khiâ", ["khiâ"]], ["大街小巷", "tuā-ke-sió-hāng", ["tuā", "ke", "sió", "hāng"]], ["按呢", "án-ne", ["án", "ne"]], ["來", "lâi", ["lâi"]], ["去", "khì", ["khì"]], ["這", "tse", ["tse"]], ["差不多", "tsha-put-to", ["tsha", "put", "to"]], ["已經", "í-king", ["í", "king"]], ["是", "sī", ["sī"]], ["現代人", "hiān-tāi-lâng", ["hiān", "tāi", "lâng"]], ["四常", "sù-siông", ["sù", "siông"]], ["會", "ē", ["ē"]], ["看著", "khuànn-tio̍h", ["khuànn", "tio̍h"]], ["的", "ê", ["ê"]], ["情景", "tsîng-kíng", ["tsîng", "kíng"]], ["無", "bô", ["bô"]], ["啥物", "siánn-mih", ["siánn", "mih"]], ["通", "thang", ["thang"]], ["感覺", "kám-kak", ["kám", "kak"]], ["奇怪", "kî-kuài", ["kî", "kuài"]], ["我", "Guá", ["Guá"]], ["嘛", "mā", ["mā"]], ["不時", "put-sî", ["put", "sî"]], ["看著", "khuànn-tio̍h", ["khuànn", "tio̍h"]], ["有", "ū", ["ū"]], ["外送員", "guā-sàng-uân", ["guā", "sàng", "uân"]], ["共", "kā", ["kā"]], ["停", "thîng", ["thîng"]], ["踮", "tiàm", ["tiàm"]], ["路邊", "lōo-pinn", ["lōo", "pinn"]], ["斟酌", "tsim-tsiok", ["tsim", "tsiok"]], ["咧", "leh", ["leh"]], ["研究", "gián-kiù", ["gián", "kiù"]], ["地圖", "tē-tôo", ["tē", "tôo"]], ["抑是", "ia̍h-sī", ["ia̍h", "sī"]], ["敲", "khà", ["khà"]], ["電話", "tiān-uē", ["tiān", "uē"]], ["參", "tsham", ["tsham"]], ["訂餐", "tīng-tshan", ["tīng", "tshan"]], ["客戶", "kheh-hōo", ["kheh", "hōo"]], ["聯絡", "liân-lo̍k", ["liân", "lo̍k"]]],
-      "7": [["外送", "Guā-sàng", ["Guā", "sàng"]], ["餐點", "tshan-tiám", ["tshan", "tiám"]], ["的", "ê", ["ê"]], ["工課", "khang-khuè", ["khang", "khuè"]], ["看起來", "khuànn-khí-lâi", ["khuànn", "khí", "lâi"]], ["誠", "tsiânn", ["tsiânn"]], ["簡單", "kán-tan", ["kán", "tan"]], ["毋過", "m̄-koh", ["m̄", "koh"]], ["著愛", "tio̍h-ài", ["tio̍h", "ài"]], ["忍受", "jím-siū", ["jím", "siū"]], ["熱人", "jua̍h-lâng", ["jua̍h", "lâng"]], ["燒唿唿", "sio-hut-hut", ["sio", "hut", "hut"]], ["的", "ê", ["ê"]], ["天氣", "thinn-khì", ["thinn", "khì"]], ["佮", "kah", ["kah"]], ["寒人", "kuânn-lâng", ["kuânn", "lâng"]], ["冷", "líng", ["líng"]], ["的", "ê", ["ê"]], ["霜風", "sng-hong", ["sng", "hong"]], ["有當時仔", "ū-tang-sî-á", ["ū", "tang", "sî", "á"]], ["若是", "nā-sī", ["nā", "sī"]], ["領", "niá", ["niá"]], ["物件", "mi̍h-kiānn", ["mi̍h", "kiānn"]], ["延延著", "iân-tshiân-tio̍h", ["iân", "tshiân", "tio̍h"]], ["閣", "koh", ["koh"]], ["會", "ē", ["ē"]], ["受著", "siū-tio̍h", ["siū", "tio̍h"]], ["顧客", "kòo-kheh", ["kòo", "kheh"]], ["的", "ê", ["ê"]], ["指責", "tsí-tsik", ["tsí", "tsik"]], ["其中", "kî-tiong", ["kî", "tiong"]], ["的", "ê", ["ê"]], ["心酸", "sim-sng", ["sim", "sng"]], ["佮", "kah", ["kah"]], ["委屈", "uí-khut", ["uí", "khut"]], ["真正", "tsin-tsiànn", ["tsin", "tsiànn"]], ["是", "sī", ["sī"]], ["無", "bô", ["bô"]], ["講", "kóng", ["kóng"]], ["無", "bô", ["bô"]], ["人", "lâng", ["lâng"]], ["知", "tsai", ["tsai"]], ["有", "Ū", ["Ū"]], ["一", "tsi̍t", ["tsi̍t"]], ["工", "kang", ["kang"]], ["早起", "tsái-khí", ["tsái", "khí"]], ["我", "guá", ["guá"]], ["去", "khì", ["khì"]], ["市內", "tshī-lāi", ["tshī", "lāi"]], ["揣", "tshuē", ["tshuē"]], ["朋友", "pîng-iú", ["pîng", "iú"]], ["當", "Tng", ["Tng"]], ["咧", "leh", ["leh"]], ["停", "thîng", ["thîng"]], ["紅燈", "âng-ting", ["âng", "ting"]], ["的", "ê", ["ê"]], ["時", "sî", ["sî"]], ["我", "guá", ["guá"]], ["看著", "khuànn-tio̍h", ["khuànn", "tio̍h"]], ["兩", "nn̄g", ["nn̄g"]], ["个", "ê", ["ê"]], ["送餐員", "sàng-tshan-uân", ["sàng", "tshan", "uân"]], ["除了", "tû-liáu", ["tû", "liáu"]], ["戴", "tì", ["tì"]], ["安全帽仔", "an-tsuân-bō-á", ["an", "tsuân", "bō", "á"]], ["掛", "kuà", ["kuà"]], ["喙罨", "tshuì-am", ["tshuì", "am"]], ["閣", "koh", ["koh"]], ["掛", "kuà", ["kuà"]], ["手囊", "tshiú-lông", ["tshiú", "lông"]], ["和", "hām", ["hām"]], ["變色", "piàn-sik", ["piàn", "sik"]], ["目鏡", "ba̍k-kiànn", ["ba̍k", "kiànn"]], ["車後", "tshia-āu", ["tshia", "āu"]], ["的", "ê", ["ê"]], ["保溫", "pó-un", ["pó", "un"]], ["袋仔", "tē-á", ["tē", "á"]], ["嘛", "mā", ["mā"]], ["貯", "té", ["té"]], ["甲", "kah", ["kah"]], ["滇滿滿", "tīnn-buán-buán", ["tīnn", "buán", "buán"]], ["的", "ê", ["ê"]], ["餐點", "tshan-tiám", ["tshan", "tiám"]], ["我", "Guá", ["Guá"]], ["心內", "sim-lāi", ["sim", "lāi"]], ["咧", "leh", ["leh"]], ["想", "siūnn", ["siūnn"]], ["𪜶", "in", ["in"]], ["按呢", "án-ne", ["án", "ne"]], ["規身軀", "kui-sin-khu", ["kui", "sin", "khu"]], ["封", "hong", ["hong"]], ["甲", "kah", ["kah"]], ["密喌喌", "ba̍t-tsiuh-tsiuh", ["ba̍t", "tsiuh", "tsiuh"]], ["走傱", "tsáu-tsông", ["tsáu", "tsông"]], ["規工", "kui-kang", ["kui", "kang"]], ["呔", "thài", ["thài"]], ["有", "ū", ["ū"]], ["可能", "khó-lîng", ["khó", "lîng"]], ["袂", "bē", ["bē"]], ["忝頭", "thiám-thâu", ["thiám", "thâu"]]],
-      "8": [["到", "Kàu", ["Kàu"]], ["朋友", "pîng-iú", ["pîng", "iú"]], ["𪜶", "in", ["in"]], ["兜", "tau", ["tau"]], ["以後", "í-āu", ["í", "āu"]], ["阮", "guán", ["guán"]], ["幾", "kuí", ["kuí"]], ["个", "ê", ["ê"]], ["佇", "tī", ["tī"]], ["客廳", "kheh-thiann", ["kheh", "thiann"]], ["開講", "khai-káng", ["khai", "káng"]], ["泡", "phàu", ["phàu"]], ["茶", "tê", ["tê"]], ["雄雄", "hiông-hiông", ["hiông", "hiông"]], ["新聞", "sin-bûn", ["sin", "bûn"]], ["放送", "hòng-sàng", ["hòng", "sàng"]], ["一", "tsi̍t", ["tsi̍t"]], ["件", "kiānn", ["kiānn"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["人員", "jîn-uân", ["jîn", "uân"]], ["車禍", "tshia-hō", ["tshia", "hō"]], ["的", "ê", ["ê"]], ["消息", "siau-sit", ["siau", "sit"]], ["看著", "khuànn-tio̍h", ["khuànn", "tio̍h"]], ["這", "tsit", ["tsit"]], ["个", "ê", ["ê"]], ["事件", "sū-kiānn", ["sū", "kiānn"]], ["我", "guá", ["guá"]], ["的", "ê", ["ê"]], ["心情", "sim-tsîng", ["sim", "tsîng"]], ["有夠", "ū-kàu", ["ū", "kàu"]], ["䆀", "bái", ["bái"]], ["想起", "siūnn-khí", ["siūnn", "khí"]], ["透早", "thàu-tsá", ["thàu", "tsá"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["人員", "jîn-uân", ["jîn", "uân"]], ["辛苦", "sin-khóo", ["sin", "khóo"]], ["付出", "hù-tshut", ["hù", "tshut"]], ["的", "ê", ["ê"]], ["畫面", "uē-bīn", ["uē", "bīn"]], ["予", "hōo", ["hōo"]], ["人", "lâng", ["lâng"]], ["誠", "tsiânn", ["tsiânn"]], ["毋甘", "m̄-kam", ["m̄", "kam"]], ["我", "Guá", ["Guá"]], ["就", "tō", ["tō"]], ["佇", "tī", ["tī"]], ["遐", "hia", ["hia"]], ["唸", "liām", ["liām"]], ["講", "kóng", ["kóng"]], ["會使", "Ē-sái", ["Ē", "sái"]], ["莫", "mài", ["mài"]], ["叫", "kiò", ["kiò"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["就", "tō", ["tō"]], ["莫", "mài", ["mài"]], ["叫啦", "kiò-lah", ["kiò", "lah"]], ["你", "Lí", ["Lí"]], ["看", "khuànn", ["khuànn"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["人員", "jîn-uân", ["jîn", "uân"]], ["遮爾", "tsiah-nī", ["tsiah", "nī"]], ["拚命", "piànn-miā", ["piànn", "miā"]], ["煞", "suah", ["suah"]], ["因為", "in-uī", ["in", "uī"]], ["交通", "kau-thong", ["kau", "thong"]], ["事故", "sū-kòo", ["sū", "kòo"]], ["破壞", "phò-huāi", ["phò", "huāi"]], ["一", "tsi̍t", ["tsi̍t"]], ["个", "ê", ["ê"]], ["完整", "uân-tsíng", ["uân", "tsíng"]], ["的", "ê", ["ê"]], ["家庭", "ka-tîng", ["ka", "tîng"]], ["而且", "jî-tshiánn", ["jî", "tshiánn"]], ["當", "Tng", ["Tng"]], ["我", "guá", ["guá"]], ["繼續", "kè-sio̍k", ["kè", "sio̍k"]], ["欲", "beh", ["beh"]], ["講落去", "kóng-lo̍h-khì", ["kóng", "lo̍h", "khì"]], ["的", "ê", ["ê"]], ["時", "sî", ["sî"]], ["彼", "hit", ["hit"]], ["對", "tuì", ["tuì"]], ["少年", "siàu-liân", ["siàu", "liân"]], ["翁仔某", "ang-á-bóo", ["ang", "á", "bóo"]], ["隨", "suî", ["suî"]], ["就", "tō", ["tō"]], ["講", "kóng", ["kóng"]], ["毋過", "M̄-koh", ["M̄", "koh"]], ["𪜶", "in", ["in"]], ["的", "ê", ["ê"]], ["服務", "ho̍k-bū", ["ho̍k", "bū"]], ["真", "tsin", ["tsin"]], ["好呢", "hó-neh", ["hó", "neh"]], ["毋免", "M̄-bián", ["M̄", "bián"]], ["出門", "tshut-mn̂g", ["tshut", "mn̂g"]], ["就", "tō", ["tō"]], ["送", "sàng", ["sàng"]], ["到位", "kàu-uī", ["kàu", "uī"]], ["三不五時", "sam-put-gōo-sî", ["sam", "put", "gōo", "sî"]], ["攏", "lóng", ["lóng"]], ["有", "ū", ["ū"]], ["優待喔", "iu-thāi-ooh", ["iu", "thāi", "ooh"]], ["閣再講", "Koh-tsài-kóng", ["Koh", "tsài", "kóng"]], ["交通", "kau-thong", ["kau", "thong"]], ["事件", "sū-kiānn", ["sū", "kiānn"]], ["嘛", "mā", ["mā"]], ["袂", "bē", ["bē"]], ["因為", "in-uī", ["in", "uī"]], ["阮", "gún", ["gún"]], ["無", "bô", ["bô"]], ["叫", "kiò", ["kiò"]], ["就", "tō", ["tō"]], ["袂", "bē", ["bē"]], ["發生啊", "huat-sing-ah", ["huat", "sing", "ah"]], ["聽", "Thiann", ["Thiann"]], ["𪜶", "in", ["in"]], ["按呢", "án-ne", ["án", "ne"]], ["回應", "huê-ìng", ["huê", "ìng"]], ["我", "guá", ["guá"]], ["喙", "tshuì", ["tshuì"]], ["去", "khì", ["khì"]], ["予", "hōo", ["hōo"]], ["窒起來矣", "that-khí-lâi-ah", ["that", "khí", "lâi", "ah"]], ["美食", "Bí-si̍t", ["Bí", "si̍t"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["項", "hāng", ["hāng"]], ["新興", "sin-hing", ["sin", "hing"]], ["商業", "siong-gia̍p", ["siong", "gia̍p"]], ["也", "iā", ["iā"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["个", "ê", ["ê"]], ["新", "sin", ["sin"]], ["時代", "sî-tāi", ["sî", "tāi"]], ["的", "ê", ["ê"]], ["產物", "sán-bu̍t", ["sán", "bu̍t"]], ["美食", "bí-si̍t", ["bí", "si̍t"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["解決", "kái-kuat", ["kái", "kuat"]], ["真", "tsin", ["tsin"]], ["濟", "tsē", ["tsē"]], ["現代人", "hiān-tāi-lâng", ["hiān", "tāi", "lâng"]], ["的", "ê", ["ê"]], ["需求", "su-kiû", ["su", "kiû"]], ["莫怪", "bo̍k-kuài", ["bo̍k", "kuài"]], ["佇", "tī", ["tī"]], ["競爭", "kīng-tsing", ["kīng", "tsing"]], ["激烈", "kik-lia̍t", ["kik", "lia̍t"]], ["的", "ê", ["ê"]], ["市場", "tshī-tiûnn", ["tshī", "tiûnn"]], ["會當", "ē-tàng", ["ē", "tàng"]], ["開拓", "khai-thok", ["khai", "thok"]], ["新", "sin", ["sin"]], ["的", "ê", ["ê"]], ["局面", "kio̍k-bīn", ["kio̍k", "bīn"]], ["希望", "Hi-bāng", ["Hi", "bāng"]], ["佇", "tī", ["tī"]], ["產業", "sán-gia̍p", ["sán", "gia̍p"]], ["良性", "liông-sìng", ["liông", "sìng"]], ["發展", "huat-tián", ["huat", "tián"]], ["的", "ê", ["ê"]], ["考量", "khó-liông", ["khó", "liông"]], ["之下", "tsi-hā", ["tsi", "hā"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["平台", "pênn-tâi", ["pênn", "tâi"]], ["的", "ê", ["ê"]], ["業者", "gia̍p-tsiá", ["gia̍p", "tsiá"]], ["除了", "tû-liáu", ["tû", "liáu"]], ["追求", "tui-kiû", ["tui", "kiû"]], ["商業", "siong-gia̍p", ["siong", "gia̍p"]], ["利純", "lī-sûn", ["lī", "sûn"]], ["以外", "í-guā", ["í", "guā"]], ["嘛", "mā", ["mā"]], ["會當", "ē-tàng", ["ē", "tàng"]], ["好好仔", "hó-hó-á", ["hó", "hó", "á"]], ["照顧", "tsiàu-kòo", ["tsiàu", "kòo"]], ["外送員", "guā-sàng-uân", ["guā", "sàng", "uân"]], ["的", "ê", ["ê"]], ["權益", "khuân-ik", ["khuân", "ik"]], ["佮", "kah", ["kah"]], ["福利", "hok-lī", ["hok", "lī"]], ["積極", "tsik-ki̍k", ["tsik", "ki̍k"]], ["改善", "kái-siān", ["kái", "siān"]], ["經營", "king-îng", ["king", "îng"]], ["過程", "kuè-tîng", ["kuè", "tîng"]], ["的", "ê", ["ê"]], ["缺點", "khuat-tiám", ["khuat", "tiám"]], ["未來", "bī-lâi", ["bī", "lâi"]], ["提供", "thê-kiong", ["thê", "kiong"]], ["予", "hōo", ["hōo"]], ["消費者", "siau-huì-tsiá", ["siau", "huì", "tsiá"]], ["閣較", "koh-khah", ["koh", "khah"]], ["滿意", "buán-ì", ["buán", "ì"]], ["的", "ê", ["ê"]], ["服務", "ho̍k-bū", ["ho̍k", "bū"]]]
+      "48": [["啥物", "Siánn-mih", ["Siánn", "mih"]], ["是", "sī", ["sī"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]], ["咧", "leh", ["leh"]], ["就", "tiō", ["tiō"]], ["是", "sī", ["sī"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["佇", "tī", ["tī"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["傳教", "thuân-kàu", ["thuân", "kàu"]], ["所", "sóo", ["sóo"]], ["行過", "kiânn-kuè", ["kiânn", "kuè"]], ["的", "ê", ["ê"]], ["路", "lōo", ["lōo"]], ["斯", "Su", ["Su"]], ["當年", "tong-nî", ["tong", "nî"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["四界", "sì-kè", ["sì", "kè"]], ["攏", "lóng", ["lóng"]], ["是", "sī", ["sī"]], ["荒埔", "hng-poo", ["hng", "poo"]], ["伊", "i", ["i"]], ["攏", "lóng", ["lóng"]], ["佮", "kah", ["kah"]], ["伊", "i", ["i"]], ["的", "ê", ["ê"]], ["學生", "ha̍k-sing", ["ha̍k", "sing"]], ["做伙", "tsò-hué", ["tsò", "hué"]], ["行踏", "kiânn-ta̍h", ["kiânn", "ta̍h"]], ["來", "lâi", ["lâi"]], ["宣教", "suan-kàu", ["suan", "kàu"]], ["伊", "I", ["I"]], ["拄", "tú", ["tú"]], ["來", "lâi", ["lâi"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["的", "ê", ["ê"]], ["前", "tsîng", ["tsîng"]], ["七", "tshit", ["tshit"]], ["冬", "tang", ["tang"]], ["總共", "tsóng-kiōng", ["tsóng", "kiōng"]], ["工", "kang", ["kang"]], ["留", "lâu", ["lâu"]], ["佇", "tī", ["tī"]], ["淡水", "Tām-tsuí", ["Tām", "tsuí"]], ["扯勻", "tshé-ûn", ["tshé", "ûn"]], ["一", "tsi̍t", ["tsi̍t"]], ["冬", "tang", ["tang"]], ["干焦", "kan-na", ["kan", "na"]], ["工", "kang", ["kang"]], ["留", "lâu", ["lâu"]], ["佇", "tī", ["tī"]], ["厝裡", "tshù-lí", ["tshù", "lí"]], ["其他", "kî-thann", ["kî", "thann"]], ["的", "ê", ["ê"]], ["時間", "sî-kan", ["sî", "kan"]], ["攏", "lóng", ["lóng"]], ["是", "sī", ["sī"]], ["四界", "sì-kè", ["sì", "kè"]], ["行踏", "kiânn-ta̍h", ["kiânn", "ta̍h"]], ["深入", "tshim-ji̍p", ["tshim", "ji̍p"]], ["北", "pak", ["pak"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["每", "muí", ["muí"]], ["一", "tsi̍t", ["tsi̍t"]], ["个", "ê", ["ê"]], ["所在", "sóo-tsāi", ["sóo", "tsāi"]], ["不管", "Put-kuán", ["Put", "kuán"]], ["是", "sī", ["sī"]], ["怙", "kōo", ["kōo"]], ["步輦", "pōo-lián", ["pōo", "lián"]], ["的", "ê", ["ê"]], ["抑是", "ia̍h-sī", ["ia̍h", "sī"]], ["坐", "tsē", ["tsē"]], ["船", "tsûn", ["tsûn"]], ["坐", "tsē", ["tsē"]], ["火車", "hué-tshia", ["hué", "tshia"]], ["順", "sūn", ["sūn"]], ["水路", "tsuí-lōo", ["tsuí", "lōo"]], ["抑是", "ia̍h-sī", ["ia̍h", "sī"]], ["行", "kiânn", ["kiânn"]], ["山路", "suann-lōo", ["suann", "lōo"]], ["見若", "kiàn-nā", ["kiàn", "nā"]], ["看著", "khuànn-tio̍h", ["khuànn", "tio̍h"]], ["有", "ū", ["ū"]], ["人", "lâng", ["lâng"]], ["聚集", "tsū-tsi̍p", ["tsū", "tsi̍p"]], ["的", "ê", ["ê"]], ["所在", "sóo-tsāi", ["sóo", "tsāi"]], ["就", "tō", ["tō"]], ["替", "thè", ["thè"]], ["人", "lâng", ["lâng"]], ["挽", "bán", ["bán"]], ["喙齒", "tshuì-khí", ["tshuì", "khí"]], ["傳", "thuân", ["thuân"]], ["福音", "hok-im", ["hok", "im"]], ["彼陣", "Hit-tsūn", ["Hit", "tsūn"]], ["北宜", "Pak-gî", ["Pak", "gî"]], ["鐵路", "thih-lōo", ["thih", "lōo"]], ["猶未", "iáu-buē", ["iáu", "buē"]], ["開通", "khai-thong", ["khai", "thong"]], ["交通", "kau-thong", ["kau", "thong"]], ["誠", "tsiânn", ["tsiânn"]], ["無", "bô", ["bô"]], ["利便", "lī-piān", ["lī", "piān"]], ["欲", "beh", ["beh"]], ["去", "khì", ["khì"]], ["噶瑪蘭", "Kat-má-lán", ["Kat", "má", "lán"]], ["地區", "tē-khu", ["tē", "khu"]], ["攏", "lóng", ["lóng"]], ["愛", "ài", ["ài"]], ["歷", "li̍k", ["li̍k"]], ["盡", "tsīn", ["tsīn"]], ["千辛萬苦", "tshian-sin-bān-khóo", ["tshian", "sin", "bān", "khóo"]], ["盤山過嶺", "puânn-suann-kuè-niá", ["puânn", "suann", "kuè", "niá"]], ["才", "tsiah", ["tsiah"]], ["會得", "ē-tit", ["ē", "tit"]], ["到", "kàu", ["kàu"]], ["雖然", "Sui-jiân", ["Sui", "jiân"]], ["遮爾仔", "tsiah-nī-á", ["tsiah", "nī", "á"]], ["困難", "khùn-lân", ["khùn", "lân"]], ["佮", "kah", ["kah"]], ["危險", "guî-hiám", ["guî", "hiám"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["來來回回", "lâi-lâi-huê-huê", ["lâi", "lâi", "huê", "huê"]], ["猶是", "iáu-sī", ["iáu", "sī"]], ["去", "khì", ["khì"]], ["欲", "beh", ["beh"]], ["擺", "pái", ["pái"]], ["伊", "i", ["i"]], ["所", "sóo", ["sóo"]], ["經過", "king-kuè", ["king", "kuè"]], ["的", "ê", ["ê"]], ["路", "lōo", ["lōo"]], ["就", "tō", ["tō"]], ["是", "sī", ["sī"]], ["這馬", "tsit-má", ["tsit", "má"]], ["咱", "lán", ["lán"]], ["所", "sóo", ["sóo"]], ["講", "kóng", ["kóng"]], ["的", "ê", ["ê"]], ["淡蘭", "Tām-lân", ["Tām", "lân"]], ["古道", "kóo-tō", ["kóo", "tō"]], ["這", "Tsit", ["Tsit"]], ["个", "ê", ["ê"]], ["活動", "ua̍h-tāng", ["ua̍h", "tāng"]], ["就", "tō", ["tō"]], ["是", "sī", ["sī"]], ["欲", "beh", ["beh"]], ["順", "sūn", ["sūn"]], ["淡蘭", "Tām-lân", ["Tām", "lân"]], ["古道", "kóo-tō", ["kóo", "tō"]], ["引𤆬", "ín-tshuā", ["ín", "tshuā"]], ["逐家", "ta̍k-ke", ["ta̍k", "ke"]], ["做伙", "tsò-hué", ["tsò", "hué"]], ["走揣", "tsáu-tshuē", ["tsáu", "tshuē"]], ["當年", "tong-nî", ["tong", "nî"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["一", "tsi̍t", ["tsi̍t"]], ["步", "pōo", ["pōo"]], ["一", "tsi̍t", ["tsi̍t"]], ["跤印", "kha-ìn", ["kha", "ìn"]], ["所", "sóo", ["sóo"]], ["行過", "kiânn-kuè", ["kiânn", "kuè"]], ["的", "ê", ["ê"]], ["跤跡", "kha-jiah", ["kha", "jiah"]]],
+      "49": [["一下", "Tsi̍t-ē", ["Tsi̍t", "ē"]], ["揣落去", "tshuē-lo̍h-khì", ["tshuē", "lo̍h", "khì"]], ["阮", "guán", ["guán"]], ["才", "tsiah", ["tsiah"]], ["知影", "tsai-iánn", ["tsai", "iánn"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["宣教", "suan-kàu", ["suan", "kàu"]], ["的", "ê", ["ê"]], ["艱難", "kan-lân", ["kan", "lân"]], ["有", "Ū", ["Ū"]], ["一", "tsi̍t", ["tsi̍t"]], ["擺", "pái", ["pái"]], ["伊", "i", ["i"]], ["佇", "tī", ["tī"]], ["三角湧", "Sann-kak-íng", ["Sann", "kak", "íng"]], ["傳教", "thuân-kàu", ["thuân", "kàu"]], ["險仔", "hiám-á", ["hiám", "á"]], ["去", "khì", ["khì"]], ["予", "hōo", ["hōo"]], ["人", "lâng", ["lâng"]], ["用", "iōng", ["iōng"]], ["一", "tsi̍t", ["tsi̍t"]], ["塊", "tè", ["tè"]], ["三", "sann", ["sann"]], ["斤", "kin", ["kin"]], ["重", "tāng", ["tāng"]], ["的", "ê", ["ê"]], ["石頭", "tsio̍h-thâu", ["tsio̍h", "thâu"]], ["撼著", "hám-tio̍h", ["hám", "tio̍h"]], ["另外", "Līng-guā", ["Līng", "guā"]], ["一", "tsi̍t", ["tsi̍t"]], ["擺", "pái", ["pái"]], ["佇", "tī", ["tī"]], ["艋舺", "Báng-kah", ["Báng", "kah"]], ["一", "tsi̍t", ["tsi̍t"]], ["个", "ê", ["ê"]], ["暴民", "pō-bîn", ["pō", "bîn"]], ["攑", "gia̍h", ["gia̍h"]], ["刀仔", "to-á", ["to", "á"]], ["衝", "tshiong", ["tshiong"]], ["起去", "khí-khì", ["khí", "khì"]], ["台仔頂", "tâi-á-tíng", ["tâi", "á", "tíng"]], ["欲", "beh", ["beh"]], ["共", "kā", ["kā"]], ["刣", "thâi", ["thâi"]], ["好佳哉", "Hó-ka-tsài", ["Hó", "ka", "tsài"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["真", "tsin", ["tsin"]], ["冷靜", "líng-tsīng", ["líng", "tsīng"]], ["用", "iōng", ["iōng"]], ["伊", "i", ["i"]], ["真", "tsin", ["tsin"]], ["威嚴", "ui-giâm", ["ui", "giâm"]], ["的", "ê", ["ê"]], ["眼神", "gán-sîn", ["gán", "sîn"]], ["看", "khuànn", ["khuànn"]], ["這", "tsit", ["tsit"]], ["个", "ê", ["ê"]], ["暴民", "pō-bîn", ["pō", "bîn"]], ["這", "tsit", ["tsit"]], ["个", "ê", ["ê"]], ["暴民", "pō-bîn", ["pō", "bîn"]], ["就按呢", "tsiū-án-ne", ["tsiū", "án", "ne"]], ["跤痠手軟", "kha-sng-tshiú-nńg", ["kha", "sng", "tshiú", "nńg"]], ["越頭", "ua̍t-thâu", ["ua̍t", "thâu"]], ["做", "tsò", ["tsò"]], ["伊", "i", ["i"]], ["旋", "suan", ["suan"]], ["講來", "Kóng-lâi", ["Kóng", "lâi"]], ["嘛", "mā", ["mā"]], ["實在", "si̍t-tsāi", ["si̍t", "tsāi"]], ["真", "tsin", ["tsin"]], ["可憐", "khó-liân", ["khó", "liân"]], ["佇", "tī", ["tī"]], ["艋舺", "Báng-kah", ["Báng", "kah"]], ["伊", "i", ["i"]], ["三", "sann", ["sann"]], ["擺", "pái", ["pái"]], ["予", "hōo", ["hōo"]], ["人", "lâng", ["lâng"]], ["趕出", "kuánn-tshut", ["kuánn", "tshut"]], ["城", "siânn", ["siânn"]], ["教堂", "kàu-tn̂g", ["kàu", "tn̂g"]], ["兩", "nn̄g", ["nn̄g"]], ["擺", "pái", ["pái"]], ["予", "hōo", ["hōo"]], ["艋舺人", "Báng-kah-lâng", ["Báng", "kah", "lâng"]], ["拆", "thiah", ["thiah"]], ["㧒捔", "hiat-ka̍k", ["hiat", "ka̍k"]], ["幾若", "Kuí-nā", ["Kuí", "nā"]], ["擺", "pái", ["pái"]], ["險仔", "hiám-á", ["hiám", "á"]], ["去", "khì", ["khì"]], ["予", "hōo", ["hōo"]], ["原住民", "guân-tsū-bîn", ["guân", "tsū", "bîn"]], ["出草", "tshut-tsháu", ["tshut", "tsháu"]], ["刣刣死", "thâi-thâi-sí", ["thâi", "thâi", "sí"]], ["伊", "I", ["I"]], ["攏", "lóng", ["lóng"]], ["靠", "khò", ["khò"]], ["堅定", "kian-tīng", ["kian", "tīng"]], ["的", "ê", ["ê"]], ["意志", "ì-tsì", ["ì", "tsì"]], ["用", "iōng", ["iōng"]], ["智慧", "tì-huī", ["tì", "huī"]], ["佮", "kah", ["kah"]], ["疼心", "thiànn-sim", ["thiànn", "sim"]], ["去", "khì", ["khì"]], ["化解", "huà-kái", ["huà", "kái"]], ["阻力", "tsóo-li̍k", ["tsóo", "li̍k"]], ["落尾", "lo̍h-bué", ["lo̍h", "bué"]], ["才", "tsiah", ["tsiah"]], ["得著", "tit-tio̍h", ["tit", "tio̍h"]], ["臺灣人", "Tâi-uân-lâng", ["Tâi", "uân", "lâng"]], ["的", "ê", ["ê"]], ["信任", "sìn-jīm", ["sìn", "jīm"]], ["佮", "kah", ["kah"]], ["敬愛", "kìng-ài", ["kìng", "ài"]]],
+      "50": [["年", "nî", ["nî"]], ["月", "gue̍h", ["gue̍h"]], ["初", "tshe", ["tshe"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["來", "lâi", ["lâi"]], ["到", "kàu", ["kàu"]], ["淡水", "Tām-tsuí", ["Tām", "tsuí"]], ["傳教", "thuân-kàu", ["thuân", "kàu"]], ["伊", "i", ["i"]], ["才", "tsiah", ["tsiah"]], ["歲", "huè", ["huè"]], ["到", "kàu", ["kàu"]], ["伊", "i", ["i"]], ["過身", "kuè-sin", ["kuè", "sin"]], ["彼", "hit", ["hit"]], ["年", "nî", ["nî"]], ["歲", "huè", ["huè"]], ["伊", "i", ["i"]], ["總共", "tsóng-kiōng", ["tsóng", "kiōng"]], ["佇", "tī", ["tī"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["傳教", "thuân-kàu", ["thuân", "kàu"]], ["冬", "tang", ["tang"]], ["一世人", "tsi̍t-sì-lâng", ["tsi̍t", "sì", "lâng"]], ["上", "siōng", ["siōng"]], ["媠", "suí", ["suí"]], ["的", "ê", ["ê"]], ["日子", "ji̍t-tsí", ["ji̍t", "tsí"]], ["攏", "lóng", ["lóng"]], ["奉獻", "hōng-hiàn", ["hōng", "hiàn"]], ["予", "hōo", ["hōo"]], ["咱", "lán", ["lán"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["伊", "I", ["I"]], ["毋但", "m̄-nā", ["m̄", "nā"]], ["佇", "tī", ["tī"]], ["淡水", "Tām-tsuí", ["Tām", "tsuí"]], ["創辦", "tshòng-pān", ["tshòng", "pān"]], ["牛津", "Gû-tin", ["Gû", "tin"]], ["學堂", "O̍h-tn̂g", ["O̍h", "tn̂g"]], ["佮", "kah", ["kah"]], ["女學堂", "Lú-o̍h-tn̂g", ["Lú", "o̍h", "tn̂g"]], ["予", "hōo", ["hōo"]], ["查某人", "tsa-bóo-lâng", ["tsa", "bóo", "lâng"]], ["會當", "ē-tàng", ["ē", "tàng"]], ["接受", "tsiap-siū", ["tsiap", "siū"]], ["新式", "sin-sik", ["sin", "sik"]], ["的", "ê", ["ê"]], ["教育", "kàu-io̍k", ["kàu", "io̍k"]], ["閣", "koh", ["koh"]], ["創立", "tshòng-li̍p", ["tshòng", "li̍p"]], ["六十幾", "la̍k-tsa̍p-kuí", ["la̍k", "tsa̍p", "kuí"]], ["間", "king", ["king"]], ["的", "ê", ["ê"]], ["教會", "kàu-huē", ["kàu", "huē"]], ["將近", "tsiong-kīn", ["tsiong", "kīn"]], ["三", "sann", ["sann"]], ["四", "sì", ["sì"]], ["千", "tshing", ["tshing"]], ["人", "lâng", ["lâng"]], ["領", "niá", ["niá"]], ["洗禮", "sé-lé", ["sé", "lé"]], ["這", "tse", ["tse"]], ["是", "sī", ["sī"]], ["非常", "hui-siông", ["hui", "siông"]], ["了不起", "liáu-put-khí", ["liáu", "put", "khí"]], ["的", "ê", ["ê"]], ["成就", "sîng-tsiū", ["sîng", "tsiū"]], ["就按呢", "Tsiū-án-ne", ["Tsiū", "án", "ne"]], ["傳道", "thuân-tō", ["thuân", "tō"]], ["行醫", "hîng-i", ["hîng", "i"]], ["辦", "pān", ["pān"]], ["教育", "kàu-io̍k", ["kàu", "io̍k"]], ["一世人", "tsi̍t-sì-lâng", ["tsi̍t", "sì", "lâng"]], ["閣", "koh", ["koh"]], ["娶", "tshuā", ["tshuā"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["某", "bóo", ["bóo"]], ["做", "tsò", ["tsò"]], ["臺灣人", "Tâi-uân-lâng", ["Tâi", "uân", "lâng"]], ["認同", "jīn-tông", ["jīn", "tông"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["這", "tsit", ["tsit"]], ["塊", "tè", ["tè"]], ["土地", "thóo-tē", ["thóo", "tē"]], ["死後", "sí-āu", ["sí", "āu"]], ["嘛", "mā", ["mā"]], ["埋", "tâi", ["tâi"]], ["佇", "tī", ["tī"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["淡水", "Tām-tsuí", ["Tām", "tsuí"]], ["就", "Tō", ["Tō"]], ["親像", "tshin-tshiūnn", ["tshin", "tshiūnn"]], ["伊", "i", ["i"]], ["佇", "tī", ["tī"]], ["日記", "ji̍t-kì", ["ji̍t", "kì"]], ["所", "sóo", ["sóo"]], ["寫的", "siá-ê", ["siá", "ê"]], ["我", "Guá", ["Guá"]], ["全心", "tsuân-sim", ["tsuân", "sim"]], ["所", "sóo", ["sóo"]], ["疼惜", "thiànn-sioh", ["thiànn", "sioh"]], ["的", "ê", ["ê"]], ["臺灣啊", "Tâi-uân-ah", ["Tâi", "uân", "ah"]], ["我", "Guá", ["Guá"]], ["的", "ê", ["ê"]], ["青春", "tshing-tshun", ["tshing", "tshun"]], ["攏總", "lóng-tsóng", ["lóng", "tsóng"]], ["獻", "hiàn", ["hiàn"]], ["予你", "hōo-lī", ["hōo", "lī"]], ["我", "guá", ["guá"]], ["一生", "it-sing", ["it", "sing"]], ["的", "ê", ["ê"]], ["歡喜", "huann-hí", ["huann", "hí"]], ["攏", "lóng", ["lóng"]], ["佇", "tī", ["tī"]], ["遮", "tsia", ["tsia"]], ["這", "Tsit", ["Tsit"]], ["款", "khuán", ["khuán"]], ["博愛", "phok-ài", ["phok", "ài"]], ["無私", "bû-su", ["bû", "su"]], ["的", "ê", ["ê"]], ["精神", "tsing-sîn", ["tsing", "sîn"]], ["實在", "si̍t-tsāi", ["si̍t", "tsāi"]], ["予", "hōo", ["hōo"]], ["人", "lâng", ["lâng"]], ["誠", "tsiânn", ["tsiânn"]], ["感動", "kám-tōng", ["kám", "tōng"]]],
+      "51": [["有", "Ū", ["Ū"]], ["認同", "jīn-tông", ["jīn", "tông"]], ["就", "tiō", ["tiō"]], ["有", "ū", ["ū"]], ["疼", "thiànn", ["thiànn"]], ["有", "ū", ["ū"]], ["疼", "thiànn", ["thiànn"]], ["的", "ê", ["ê"]], ["所在", "sóo-tsāi", ["sóo", "tsāi"]], ["就", "tō", ["tō"]], ["是", "sī", ["sī"]], ["故鄉", "kòo-hiong", ["kòo", "hiong"]], ["這", "Tse", ["Tse"]], ["是", "sī", ["sī"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["牧師", "bo̍k-su", ["bo̍k", "su"]], ["予", "hōo", ["hōo"]], ["我", "guá", ["guá"]], ["上", "siōng", ["siōng"]], ["大", "tuā", ["tuā"]], ["的", "ê", ["ê"]], ["啟示", "khé-sī", ["khé", "sī"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["條", "tiâu", ["tiâu"]], ["宣教", "suan-kàu", ["suan", "kàu"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]], ["嘛", "mā", ["mā"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["條", "tiâu", ["tiâu"]], ["文化", "bûn-huà", ["bûn", "huà"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]], ["這", "Tsit", ["Tsit"]], ["條", "tiâu", ["tiâu"]], ["路", "lōo", ["lōo"]], ["有", "ū", ["ū"]], ["伊", "i", ["i"]], ["奉獻", "hōng-hiàn", ["hōng", "hiàn"]], ["的", "ê", ["ê"]], ["形影", "hîng-iánn", ["hîng", "iánn"]], ["有", "ū", ["ū"]], ["伊", "i", ["i"]], ["對", "tuì", ["tuì"]], ["這", "tsit", ["tsit"]], ["塊", "tè", ["tè"]], ["土地", "thóo-tē", ["thóo", "tē"]], ["無私", "bû-su", ["bû", "su"]], ["的", "ê", ["ê"]], ["愛", "ài", ["ài"]], ["這", "tsit", ["tsit"]], ["條", "tiâu", ["tiâu"]], ["路", "lōo", ["lōo"]], ["嘛", "mā", ["mā"]], ["是", "sī", ["sī"]], ["一", "tsi̍t", ["tsi̍t"]], ["條", "tiâu", ["tiâu"]], ["學習", "ha̍k-si̍p", ["ha̍k", "si̍p"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]], ["會當", "Ē-tàng", ["Ē", "tàng"]], ["予", "hōo", ["hōo"]], ["咱", "lán", ["lán"]], ["後代", "hiō-tāi", ["hiō", "tāi"]], ["囝孫", "kiánn-sun", ["kiánn", "sun"]], ["學習", "ha̍k-si̍p", ["ha̍k", "si̍p"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["的", "ê", ["ê"]], ["遠見", "uán-kiàn", ["uán", "kiàn"]], ["學習", "ha̍k-si̍p", ["ha̍k", "si̍p"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["對", "tuì", ["tuì"]], ["臺灣", "Tâi-uân", ["Tâi", "uân"]], ["全心", "tsuân-sim", ["tsuân", "sim"]], ["的", "ê", ["ê"]], ["奉獻", "hōng-hiàn", ["hōng", "hiàn"]], ["向望", "Ǹg-bāng", ["Ǹg", "bāng"]], ["逐家", "ta̍k-ke", ["ta̍k", "ke"]], ["做伙", "tsò-hué", ["tsò", "hué"]], ["跟綴", "kin-tuè", ["kin", "tuè"]], ["馬偕", "Má-kai", ["Má", "kai"]], ["的", "ê", ["ê"]], ["跤步", "kha-pōo", ["kha", "pōo"]], ["鬥陣", "tàu-tīn", ["tàu", "tīn"]], ["來", "lâi", ["lâi"]], ["行", "kiânn", ["kiânn"]], ["這", "tsit", ["tsit"]], ["條", "tiâu", ["tiâu"]], ["永遠", "íng-uán", ["íng", "uán"]], ["予", "hōo", ["hōo"]], ["人", "lâng", ["lâng"]], ["數念", "siàu-liām", ["siàu", "liām"]], ["的", "ê", ["ê"]], ["文化", "bûn-huà", ["bûn", "huà"]], ["之", "tsi", ["tsi"]], ["路", "lōo", ["lōo"]]]
     };
 
     const database = {
-      "6": [
-        { word: "誠濟", roman: "tsiânn-tsē", order: 1, chinese: "很多", page: "6" },
-        { word: "佮", roman: "kah", order: 2, chinese: "和", page: "6" },
-        { word: "攏", roman: "lóng", order: 3, chinese: "都", page: "6" },
-        { word: "衝擊", roman: "tshiong-kik", order: 4, chinese: "衝擊", page: "6" },
-        { word: "趨勢", roman: "tshu-sè", order: 5, chinese: "趨勢", page: "6" },
-        { word: "慢慢仔", roman: "bān-bān-á", order: 6, chinese: "慢慢的", page: "6" },
-        { word: "真濟", roman: "tsin-tsē", order: 7, chinese: "很多", page: "6" },
-        { word: "逐家", roman: "ta̍k-ke", order: 8, chinese: "大家", page: "6" },
-        { word: "閣", roman: "koh", order: 9, chinese: "又", page: "6" },
-        { word: "不止仔", roman: "put-tsí-á", order: 10, chinese: "非常", page: "6" },
-        { word: "懸", roman: "kuân", order: 11, chinese: "高", page: "6" },
-        { word: "見擺", roman: "kiàn-pái", order: 12, chinese: "每次", page: "6" },
-        { word: "oo-tóo-bái", roman: "oo-tóo-bái", order: 13, chinese: "機車", page: "6" },
-        { word: "較濟", roman: "khah-tsē", order: 14, chinese: "比較多", page: "6" },
-        { word: "定定", roman: "tiānn-tiānn", order: 15, chinese: "常常", page: "6" },
-        { word: "拄著", roman: "tú-tio̍h", order: 16, chinese: "遇到", page: "6" },
-        { word: "个", roman: "ê", order: 17, chinese: "個", page: "6" },
-        { word: "𪜶", roman: "in", order: 18, chinese: "他們", page: "6" },
-        { word: "嘛是", roman: "mā-sī", order: 19, chinese: "也是", page: "6" },
-        { word: "仝款", roman: "kāng-khuán", order: 20, chinese: "相同", page: "6" },
-        { word: "按呢", roman: "án-ne", order: 21, chinese: "這樣", page: "6" },
-        { word: "bùn", roman: "bùn", order: 22, chinese: "竄", page: "6" },
-        { word: "四常", roman: "sù-siông", order: 23, chinese: "經常", page: "6" },
-        { word: "啥物", roman: "siánn-mi̍h", order: 24, chinese: "什麼", page: "6" },
-        { word: "通", roman: "thang", order: 25, chinese: "可以", page: "6" },
-        { word: "共", roman: "kā", order: 26, chinese: "把", page: "6" },
-        { word: "踮", roman: "tiàm", order: 27, chinese: "在", page: "6" },
-        { word: "斟酌", roman: "tsim-tsiok", order: 28, chinese: "仔細", page: "6" },
-        { word: "抑是", roman: "ia̍h-sī", order: 29, chinese: "還是", page: "6" },
-        { word: "敲", roman: "khà", order: 30, chinese: "打", page: "6" }
+      "48": [
+        { word: "啥物", roman: "siánn-mih", order: 1, chinese: "什麼", page: "48" },
+        { word: "佇", roman: "tī", order: 2, chinese: "在…", page: "48" },
+        { word: "行", roman: "kiânn", order: 3, chinese: "走", page: "48" },
+        { word: "斯當年", roman: "su-tong-nî", order: 4, chinese: "那年", page: "48" },
+        { word: "四界", roman: "sì-kè", order: 5, chinese: "到處", page: "48" },
+        { word: "攏", roman: "lóng", order: 6, chinese: "都", page: "48" },
+        { word: "荒埔", roman: "hng-poo", order: 7, chinese: "荒地", page: "48" },
+        { word: "佮", roman: "kah", order: 8, chinese: "和", page: "48" },
+        { word: "做伙", roman: "tsò-hué", order: 9, chinese: "一起", page: "48" },
+        { word: "行踏", roman: "kiânn-ta̍h", order: 10, chinese: "與人來往", page: "48" },
+        { word: "拄來", roman: "tú-lâi", order: 11, chinese: "剛到", page: "48" },
+        { word: "冬", roman: "tang", order: 12, chinese: "年的單位", page: "48" },
+        { word: "扯勻", roman: "tshé-ûn", order: 13, chinese: "平均", page: "48" },
+        { word: "干焦", roman: "kan-na", order: 14, chinese: "只有", page: "48" },
+        { word: "怙", roman: "kōo", order: 15, chinese: "憑藉", page: "48" },
+        { word: "步輦", roman: "pōo-lián", order: 16, chinese: "徒步", page: "48" },
+        { word: "見若", roman: "kiàn-nā", order: 17, chinese: "凡是", page: "48" },
+        { word: "挽", roman: "bán", order: 18, chinese: "拔", page: "48" },
+        { word: "猶未", roman: "iáu-buē", order: 19, chinese: "尚未", page: "48" },
+        { word: "利便", roman: "lī-piān", order: 20, chinese: "便利", page: "48" },
+        { word: "這馬", roman: "tsit-má", order: 21, chinese: "現在", page: "48" },
+        { word: "引𤆬", roman: "ín-tshuā", order: 22, chinese: "帶領", page: "48" },
+        { word: "跤跡", roman: "kha-jiah", order: 23, chinese: "足跡", page: "48" }
       ],
-      "7": [
-        { word: "工課", roman: "khang-khuè", order: 31, chinese: "工作", page: "7" },
-        { word: "毋過", roman: "m̄-koh", order: 32, chinese: "不過", page: "7" },
-        { word: "著", roman: "tio̍h", order: 33, chinese: "就", page: "7" },
-        { word: "愛", roman: "ài", order: 34, chinese: "要", page: "7" },
-        { word: "熱人", roman: "jua̍h--lâng", order: 35, chinese: "夏天", page: "7" },
-        { word: "燒唿唿", roman: "sio-hut-hut", order: 36, chinese: "酷熱", page: "7" },
-        { word: "佮", roman: "kah", order: 37, chinese: "和", page: "7" },
-        { word: "寒人", roman: "kuânn--lâng", order: 38, chinese: "冬天", page: "7" },
-        { word: "冷sih-sih", roman: "冷sih-sih", order: 39, chinese: "寒冷", page: "7" },
-        { word: "有當時仔", roman: "ū-tang-sî-á", order: 40, chinese: "有時候", page: "7" },
-        { word: "物件", roman: "mi̍h-kiānn", order: 41, chinese: "東西", page: "7" },
-        { word: "延延", roman: "iân-tshiân", order: 42, chinese: "延宕", page: "7" },
-        { word: "閣會", roman: "koh-ē", order: 43, chinese: "還會", page: "7" },
-        { word: "工", roman: "kang", order: 44, chinese: "天", page: "7" },
-        { word: "揣", roman: "tshuē", order: 45, chinese: "找", page: "7" },
-        { word: "當咧", roman: "tng-leh", order: 46, chinese: "正在", page: "7" },
-        { word: "掛", roman: "kuà", order: 47, chinese: "戴", page: "7" },
-        { word: "喙罨", roman: "tshuì-am", order: 48, chinese: "口罩", page: "7" },
-        { word: "手囊", roman: "tshiú-lông", order: 49, chinese: "袖套", page: "7" },
-        { word: "目鏡", roman: "ba̍k-kiànn", order: 50, chinese: "眼鏡", page: "7" },
-        { word: "貯", roman: "té", order: 51, chinese: "裝", page: "7" },
-        { word: "滇", roman: "tīnn", order: 52, chinese: "滿", page: "7" },
-        { word: "按呢", roman: "án-ne", order: 53, chinese: "這樣", page: "7" },
-        { word: "規身軀", roman: "kui-sing-khu", order: 54, chinese: "全身", page: "7" },
-        { word: "密喌喌", roman: "ba̍t-tsiuh-tsiuh", order: 55, chinese: "緊密", page: "7" },
-        { word: "傱", roman: "tsông", order: 56, chinese: "衝", page: "7" },
-        { word: "規工", roman: "kui-kang", order: 57, chinese: "整天", page: "7" },
-        { word: "呔", roman: "thài", order: 58, chinese: "怎麼", page: "7" },
-        { word: "袂", roman: "bē", order: 59, chinese: "不", page: "7" },
-        { word: "忝頭", roman: "thiám-thâu", order: 60, chinese: "累", page: "7" }
+      "49": [
+        { word: "三角湧", roman: "Sann-kak-íng", order: 24, chinese: "三峽", page: "49" },
+        { word: "險仔", roman: "hiám-á", order: 25, chinese: "差一點", page: "49" },
+        { word: "撼", roman: "hám", order: 26, chinese: "重物猛擊", page: "49" },
+        { word: "艋舺", roman: "Báng-kah", order: 27, chinese: "萬華", page: "49" },
+        { word: "攑", roman: "gia̍h", order: 28, chinese: "舉", page: "49" },
+        { word: "共", roman: "kā", order: 29, chinese: "向", page: "49" },
+        { word: "刣", roman: "thâi", order: 30, chinese: "殺", page: "49" },
+        { word: "好佳哉", roman: "hó-ka-tsài", order: 31, chinese: "幸虧", page: "49" },
+        { word: "就按呢", roman: "tsiū-án-ne", order: 32, chinese: "就這樣", page: "49" },
+        { word: "越頭", roman: "ua̍t-thâu", order: 33, chinese: "頭向後轉", page: "49" },
+        { word: "做伊旋", roman: "tsò-i-suan", order: 34, chinese: "自顧自溜走", page: "49" },
+        { word: "拆㧒捔", roman: "thiah-hiat-kak", order: 35, chinese: "拆毀", page: "49" },
+        { word: "幾若擺", roman: "kuí-nā-pái", order: 36, chinese: "好幾次", page: "49" },
+        { word: "出草", roman: "tshut-tsháu", order: 37, chinese: "獵人頭", page: "49" },
+        { word: "疼心", roman: "thiànn-sim", order: 38, chinese: "愛心", page: "49" },
+        { word: "落尾", roman: "lo̍h-bué", order: 39, chinese: "最後", page: "49" }
       ],
-      "8": [
-        { word: "兜", roman: "tau", order: 61, chinese: "家", page: "8" },
-        { word: "阮", roman: "gún", order: 62, chinese: "我們", page: "8" },
-        { word: "佇", roman: "tī", order: 63, chinese: "在", page: "8" },
-        { word: "開講", roman: "khai-káng", order: 64, chinese: "聊天", page: "8" },
-        { word: "雄雄", roman: "hiông-hiông", order: 65, chinese: "突然", page: "8" },
-        { word: "放送", roman: "hòng-sàng", order: 66, chinese: "播放", page: "8" },
-        { word: "䆀", roman: "bái", order: 67, chinese: "不好", page: "8" },
-        { word: "透早", roman: "thàu-tsá", order: 68, chinese: "早上", page: "8" },
-        { word: "予", roman: "hōo", order: 69, chinese: "給", page: "8" },
-        { word: "毋甘", roman: "m̄-kam", order: 70, chinese: "心疼", page: "8" },
-        { word: "遐", roman: "hia", order: 71, chinese: "那裡", page: "8" },
-        { word: "會使", roman: "ē-sái", order: 72, chinese: "可以", page: "8" },
-        { word: "莫", roman: "mài", order: 73, chinese: "不要", page: "8" },
-        { word: "遮爾", roman: "tsiah-nī", order: 74, chinese: "這麼", page: "8" },
-        { word: "煞", roman: "suah", order: 75, chinese: "卻", page: "8" },
-        { word: "落去", roman: "lo̍h-khì", order: 76, chinese: "下去", page: "8" },
-        { word: "彼", roman: "hit", order: 77, chinese: "那", page: "8" },
-        { word: "翁仔某", roman: "ang-á-bóo", order: 78, chinese: "夫妻", page: "8" },
-        { word: "三不五時", roman: "sam-put-gōo-sî", order: 79, chinese: "不時", page: "8" },
-        { word: "窒", roman: "that", order: 80, chinese: "塞", page: "8" },
-        { word: "莫怪", roman: "bo̍k-kuài", order: 81, chinese: "難怪", page: "8" },
-        { word: "開拓", roman: "khai-thok", order: 82, chinese: "開拓", page: "8" },
-        { word: "利純", roman: "lī-sûn", order: 83, chinese: "利益", page: "8" },
-        { word: "好好仔", roman: "hó-hó-á", order: 84, chinese: "好好地", page: "8" },
-        { word: "較", roman: "khah", order: 85, chinese: "比較", page: "8" }
+      "50": [
+        { word: "媠", roman: "suí", order: 40, chinese: "漂亮的", page: "50" },
+        { word: "毋但", roman: "m̄-nā", order: 41, chinese: "不只", page: "50" },
+        { word: "領洗禮", roman: "niá-sé-lé", order: 42, chinese: "受洗", page: "50" },
+        { word: "埋", roman: "tâi", order: 43, chinese: "埋葬", page: "50" },
+        { word: "親像", roman: "tshin-tshiūnn", order: 44, chinese: "好像", page: "50" },
+        { word: "攏總", roman: "lóng-tsóng", order: 45, chinese: "全部", page: "50" },
+        { word: "歡喜", roman: "huann-hí", order: 46, chinese: "感到高興", page: "50" },
+        { word: "遮", roman: "tsia", order: 47, chinese: "這裡", page: "50" },
+        { word: "款", roman: "khuán", order: 48, chinese: "種類", page: "50" },
+        { word: "博愛", roman: "phok-ài", order: 49, chinese: "平等愛心", page: "50" },
+        { word: "誠", roman: "tsiânn", order: 50, chinese: "很", page: "50" }
+      ],
+      "51": [
+        { word: "疼", roman: "thiànn", order: 51, chinese: "疼愛", page: "51" },
+        { word: "所在", roman: "sóo-tsāi", order: 52, chinese: "地方", page: "51" },
+        { word: "上", roman: "siōng", order: 53, chinese: "最", page: "51" },
+        { word: "形影", roman: "hîng-iánn", order: 54, chinese: "行蹤", page: "51" },
+        { word: "咱", roman: "lán", order: 55, chinese: "我們的", page: "51" },
+        { word: "囝孫", roman: "kiánn-sun", order: 56, chinese: "後代", page: "51" },
+        { word: "跟綴", roman: "kin-tuè", order: 57, chinese: "跟隨", page: "51" },
+        { word: "跤步", roman: "kha-pōo", order: 58, chinese: "行為", page: "51" },
+        { word: "鬥陣", roman: "tàu-tīn", order: 59, chinese: "一起", page: "51" },
+        { word: "數念", roman: "siàu-liām", order: 60, chinese: "懷念", page: "51" }
       ]
     };
 
     const pages = {
-      "6": `因為新冠肺炎 (sin kuan hì-iām) 的關係，誠濟人的生活型態佮經濟活動攏受著真大的衝擊。有一個真明顯的趨勢，就是「美食外送」已經慢慢仔行入真濟小型家庭，而且逐家的接受度閣不止仔懸，是一項熱門的新行業。\n我見擺去市區買物件抑是辦代誌，大部份攏是騎oo-tóo-bái較濟，定定會去拄著五、六个「美食外送」的送餐員，𪜶嘛是仝款騎oo-tóo-bái，大街小巷按呢bùn來bùn去，這差不多已經是現代人四常會看著的情景，無啥物通感覺奇怪。我嘛不時看著有外送員共oo-tóo-bái 停踮路邊，斟酌咧研究地圖抑是敲電話參訂餐客戶聯絡。`,
-      "7": `外送餐點的工課看起來誠簡單，毋過著愛忍受熱人燒唿唿的天氣佮寒人冷sih-sih的霜風，有當時仔若是領物件延延著，閣會受著顧客的指責，其中的心酸佮委屈，真正是無講無人知！\n有一工早起，我去市內揣朋友。當咧停紅燈的時，我看著兩个送餐員除了戴安全帽仔、掛喙罨閣掛手囊和變色目鏡，車後的保溫袋仔嘛貯甲滇滿滿的餐點。我心內咧想，𪜶按呢規身軀封甲密喌喌走傱規工，呔有可能袂忝頭？`,
-      "8": `到朋友𪜶兜以後，阮幾个佇客廳開講、泡茶，雄雄新聞放送一件「外送人員車禍」的消息，看著這个事件我的心情有夠䆀，想起透早外送人員辛苦付出的畫面，予人誠毋甘。我就佇遐唸講：「會使莫叫外送就莫叫啦！你看外送人員遮爾拚命，煞因為交通事故破壞一个完整的家庭，而且……」\n當我繼續欲講落去的時，彼對少年翁仔某隨就講：「毋過𪜶的服務真好呢！毋免出門就送到位，三不五時攏有優待喔！閣再講， 交通事件嘛袂因為阮無叫就袂發生啊……」聽𪜶按呢回應，我喙去予窒起來矣。\n「美食外送」是一項新興商業，也是一个新時代的產物，美食外送解決真濟現代人的需求，莫怪佇競爭激烈的市場會當開拓新的局面。希望佇產業良性發展的考量之下，外送平台的業者除了追求商業利純以外，嘛會當好好仔照顧外送員的權益佮福利，積極改善經營過程的缺點，未來提供予消費者閣較滿意的服務。`
+      "48": `啥物是「馬偕之路」咧？就是馬偕牧師佇臺灣傳教所行過的路。斯當年，臺灣四界攏是荒埔，伊攏佮伊的學生做伙「行踏 」來宣教。伊拄來臺灣的前七冬（1872-1879），總共 175 工留佇淡水，扯勻一冬干焦 25 工留佇厝裡，其他的時間攏是四界行踏，深入北臺灣每一个所在。\n不管是怙 步輦 的抑是坐船、坐火車，順水路抑是行山路，見若看著有人聚集的所在，就替人挽喙齒、傳福音。彼陣，北宜鐵路猶未開通，交通誠無利便，欲去噶瑪蘭地區（宜蘭），攏愛歷盡千辛萬苦、盤山過嶺才會得到。雖然遮爾仔困難佮危險，馬偕牧師來來回回猶是去欲 40擺，伊所經過的路，就是這馬咱所講的「淡蘭古道」。這个活動，就是欲順淡蘭古道，引𤆬逐家做伙走揣當年馬偕牧師一步一跤印所行過的跤跡。`,
+      "49": `一下揣落去，阮才知影馬偕牧師宣教的艱難。有一擺，伊佇三角湧傳教，險仔去予人用一塊三斤重的石頭撼著。另外一擺，佇艋舺，一个暴民攑刀仔衝起去台仔頂，欲共刣。好佳哉！馬偕牧師真冷靜，用伊真威嚴的眼神看這个暴民，這个暴民就按呢跤痠手軟，越頭 做伊旋 。\n講來嘛實在真可憐，佇艋舺，伊三擺予人趕出城，教堂兩擺予艋舺人拆㧒捔 。幾若擺，險仔去予原住民出草刣刣死。伊攏靠堅定的意志，用智慧佮疼心去化解阻力，落尾，才得著臺灣人的信任佮敬愛。`,
+      "50": `1872 年 3 月初 9，馬偕牧師來到淡水傳教，伊才 28 歲，到伊過身彼年58 歲，伊總共佇臺灣傳教 30 冬，一世人上媠的日子，攏奉獻予咱臺灣。\n伊毋但佇淡水創辦牛津學堂佮女學堂，予查某人會當接受新式的教育，閣創立六十幾間的教會，將近三、四千人領洗禮 ，這是非常了不起的成就。\n就按呢， 傳道、行醫、辦教育一世人，閣娶臺灣某，做臺灣人，認同臺灣這塊土地，死後嘛埋佇臺灣 淡水。就親像伊佇日記所寫的：「我全心所疼惜的臺灣啊！我的青春攏總獻予你；我一生的歡喜攏佇遮。」這款博愛無私的精神，實在予人誠感動！`,
+      "51": `「有認同，就有疼；有疼的所在，就是故鄉。」這是馬偕牧師予我上大的啟示。「馬偕之路」是一條「宣教之路」，嘛是一條「文化之路」。這條路，有伊奉獻的形影，有伊對這塊土地無私的愛；這條路，嘛是一條「學習之路」。會當予咱後代囝孫，學習馬偕的遠見，學習馬偕對臺灣全心的奉獻。向望逐家做伙跟綴馬偕的跤步，鬥陣來行這條永遠予人數念的文化之路。`
     };
 
     function escapeHtml(text) {
@@ -1915,7 +1908,7 @@
 
     /* ===================== 校時模式（?edit=1） ===================== */
 
-    const CAL_KEY = 'taigi-diamtho-times-YUDA-B1L1-v2';
+    const CAL_KEY = 'taigi-diamtho-times-YUDA-B1L4-v2';
     let calMode = false;
     let calCursor = 0;      // 下一個要標記的句子（全篇連續索引）
     let calClockTimer = null;
@@ -2049,7 +2042,7 @@
       const blob = new Blob([out], { type: 'text/plain;charset=utf-8' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'sentenceTimes-YUDA-B1L1.txt';
+      a.download = 'sentenceTimes-YUDA-B1L4.txt';
       a.click();
       URL.revokeObjectURL(a.href);
     }
