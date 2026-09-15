@@ -388,6 +388,183 @@
       }
     }
 
+    /* ===== 跟讀錄音與逐詞評分 ===== */
+    .mic-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.55em;
+      height: 1.55em;
+      margin: 0 6px 0 0;
+      vertical-align: middle;
+      border: none;
+      border-radius: 50%;
+      background: #ffffff;
+      color: var(--black);
+      border: 2px solid var(--black);
+      font-size: 0.62em;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .mic-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .mic-btn.recording {
+      background: #e04b3b;
+      border-color: #e04b3b;
+      color: #ffffff;
+      animation: pulse 1s infinite;
+    }
+
+    .speak-status,
+    .speak-result {
+      display: block;
+      font-size: 0.62em;
+      line-height: 1.6;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .speak-status:empty,
+    .speak-result:empty {
+      margin: 0;
+    }
+
+    .speak-status {
+      color: var(--ink);
+      margin: 2px 0 0 0.2em;
+    }
+
+    .pulse-dot {
+      display: inline-block;
+      animation: pulse 1s infinite;
+    }
+
+    .speak-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 2px 0;
+    }
+
+    .speak-play-btn,
+    .speak-eval-btn {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 1em;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .speak-play-btn:hover,
+    .speak-eval-btn:hover {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .speak-eval-card {
+      margin: 6px 0 14px 0.2em;
+      padding: 10px 14px;
+      background: #fafafa;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      font-size: 0.62em;
+      line-height: 1.7;
+    }
+
+    .speak-eval-score-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .speak-eval-score {
+      font-size: 1.4em;
+      font-weight: bold;
+      padding: 2px 12px;
+      border-radius: 20px;
+      color: #ffffff;
+    }
+
+    .speak-eval-score.score-excellent {
+      background: #2f9e44;
+    }
+
+    .speak-eval-score.score-good {
+      background: #e6b800;
+      color: var(--black);
+    }
+
+    .speak-eval-score.score-retry {
+      background: #999999;
+    }
+
+    .speak-eval-feedback {
+      font-size: 1.05em;
+    }
+
+    .speak-contour-wrap {
+      margin: 8px 0;
+    }
+
+    .speak-contour {
+      width: 100%;
+      height: 60px;
+      display: block;
+      background: #fafafa;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .speak-contour polyline {
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .speak-contour .contour-ref {
+      stroke: var(--black);
+      opacity: 0.55;
+    }
+
+    .speak-contour .contour-rec {
+      stroke: #e6b800;
+    }
+
+    .speak-contour-legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 4px;
+      font-size: 0.9em;
+    }
+
+    .speak-contour-legend .legend-ref {
+      color: var(--black);
+      opacity: 0.7;
+    }
+
+    .speak-contour-legend .legend-rec {
+      color: #b38f00;
+      font-weight: bold;
+    }
+
+    .speak-accuracy-note {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      background: #eeeeee;
+      color: #555;
+    }
+
     /* ===== 底部浮動迷你播放列 ===== */
     .player-bar {
       position: fixed;
@@ -1725,6 +1902,8 @@
           }
           lastPara = sentence.para;
 
+          const seqIndex = allSentences.length;
+
           const span = document.createElement('span');
           span.className = 'sentence';
           span.dataset.page = pageNum;
@@ -1733,15 +1912,29 @@
           const timed = !!getTime(pageNum, idx);
           span.innerHTML =
             `<button class="play-btn${timed ? '' : ' untimed'}" title="${timed ? '播放這一句' : '本句尚未校時'}">▶</button>` +
+            `<button class="mic-btn" id="mic-S-${seqIndex}" title="錄音跟讀練習這一句">🎤</button>` +
             highlightVocabulary(sentence.text, pageNum);
 
           content.appendChild(span);
 
-          const seqIndex = allSentences.length;
           allSentences.push({ page: pageNum, idx: idx, text: sentence.text, el: span });
 
           span.addEventListener('click', function() {
             onSentenceClick(seqIndex);
+          });
+
+          const statusDiv = document.createElement('div');
+          statusDiv.className = 'speak-status';
+          statusDiv.id = 'status-S-' + seqIndex;
+          content.appendChild(statusDiv);
+
+          const resultDiv = document.createElement('div');
+          resultDiv.className = 'speak-result';
+          resultDiv.id = 'result-S-' + seqIndex;
+          content.appendChild(resultDiv);
+
+          span.querySelector('.mic-btn').addEventListener('click', function(e) {
+            toggleRecording(e, seqIndex);
           });
         });
 
@@ -1863,6 +2056,352 @@
       });
     }
 
+    /* ===================== 跟讀錄音與聲音相似度評分 =====================
+       不用語音辨識（不管本機 whisper 或瀏覽器內建，對台語都只能辨識出「近似音」的
+       華語字），改成直接比對「錄音」跟「範例音檔」兩段聲音本身的相似度：
+       範例音檔是用專案既有的 TTS 管線（意傳媠聲）事先為每一句合成好的 wav，
+       跟這支 html 一起放在同資料夾的 audio/<課次檔名>/s<句序>.wav，純靜態檔案、不需要後端，
+       https（Google Sites 嵌入）環境也能直接 fetch。
+
+       比對方式：兩段音檔都用 Web Audio API 解碼、重取樣到同一個取樣率，
+       切成一小段一小段（frame）算「音量（RMS）」和「過零率（ZCR，粗略反映音色明亮度）」
+       兩個特徵，再用動態時間規整（DTW）把長短不一定的兩段特徵序列對齊、算出平均差距，
+       轉成 0～100 分。
+
+       ⚠️ 這只是「聲音的節奏／音量走勢像不像」，沒有語意內容，沒辦法像文字辨識那樣
+       標出「哪個字唸錯」，分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let currentRecordSeq = null;
+    let recordingStream = null;
+
+    function toggleRecording(event, seqIndex) {
+      event.stopPropagation();
+      const micBtn = document.getElementById('mic-S-' + seqIndex);
+      const statusDiv = document.getElementById('status-S-' + seqIndex);
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      if (isRecording) {
+        const wasSameSentence = currentRecordSeq === seqIndex;
+        stopRecording();
+        if (wasSameSentence) return;
+      }
+
+      startRecording(seqIndex, micBtn, statusDiv, resultDiv);
+    }
+
+    function startRecording(seqIndex, btn, statusDiv, resultDiv) {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('這個瀏覽器不支援錄音功能，請改用電腦版 Chrome 或 Edge。');
+        return;
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          recordingStream = stream;
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          isRecording = true;
+          currentRecordSeq = seqIndex;
+
+          mediaRecorder.ondataavailable = e => {
+            if (e.data && e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            recordingStream.getTracks().forEach(track => track.stop());
+
+            statusDiv.innerHTML = `
+              <div class="speak-controls">
+                <button type="button" class="speak-play-btn">▶️ 播放我的發音</button>
+                <button type="button" class="speak-eval-btn">🎯 開始評估</button>
+              </div>
+            `;
+            statusDiv.querySelector('.speak-play-btn').addEventListener('click', function(e) {
+              playRecord(e, audioUrl);
+            });
+            statusDiv.querySelector('.speak-eval-btn').addEventListener('click', function(e) {
+              evaluateAudio(e, seqIndex, audioBlob);
+            });
+          };
+
+          mediaRecorder.start();
+          btn.textContent = '⏹️';
+          btn.classList.add('recording');
+          statusDiv.innerHTML = `<span class="pulse-dot">🔴</span> 錄音中…請跟著唸這句，唸完再按一次麥克風結束`;
+          resultDiv.innerHTML = '';
+        })
+        .catch(err => {
+          console.error('無法取得麥克風權限:', err);
+          alert('無法取得麥克風權限，請確認已允許瀏覽器使用麥克風。');
+        });
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+      isRecording = false;
+      const btn = document.getElementById('mic-S-' + currentRecordSeq);
+      if (btn) {
+        btn.textContent = '🎤';
+        btn.classList.remove('recording');
+      }
+    }
+
+    function playRecord(event, url) {
+      event.stopPropagation();
+      const audio = new Audio(url);
+      audio.play().catch(err => console.error('播放錄音失敗:', err));
+    }
+
+    /* ---------- 聲音特徵擷取與 DTW 相似度 ---------- */
+
+    let sharedAudioCtx = null;
+    function getAudioCtx() {
+      if (!sharedAudioCtx) {
+        const Ctor = window.AudioContext || window.webkitAudioContext;
+        sharedAudioCtx = new Ctor();
+      }
+      return sharedAudioCtx;
+    }
+
+    function decodeAudioSamples(audioCtx, arrayBuffer) {
+      return new Promise((resolve, reject) => {
+        audioCtx.decodeAudioData(arrayBuffer.slice(0), buffer => {
+          let mono = buffer.getChannelData(0);
+          if (buffer.numberOfChannels > 1) {
+            mono = new Float32Array(buffer.length);
+            for (let c = 0; c < buffer.numberOfChannels; c++) {
+              const data = buffer.getChannelData(c);
+              for (let i = 0; i < buffer.length; i++) mono[i] += data[i] / buffer.numberOfChannels;
+            }
+          }
+          resolve({ samples: mono, sampleRate: buffer.sampleRate });
+        }, reject);
+      });
+    }
+
+    /* 錄音跟範例音檔解碼出來的取樣率不一定一樣（瀏覽器解碼常會用自己的
+       AudioContext 取樣率），統一線性重取樣到同一個取樣率，兩邊每一幀代表
+       的實際時間長度才會一致，DTW 比對才公平。 */
+    function resampleLinear(samples, fromRate, toRate) {
+      if (fromRate === toRate) return samples;
+      const ratio = fromRate / toRate;
+      const newLen = Math.max(1, Math.floor(samples.length / ratio));
+      const out = new Float32Array(newLen);
+      for (let i = 0; i < newLen; i++) {
+        const srcPos = i * ratio;
+        const i0 = Math.floor(srcPos);
+        const i1 = Math.min(i0 + 1, samples.length - 1);
+        const frac = srcPos - i0;
+        out[i] = samples[i0] * (1 - frac) + samples[i1] * frac;
+      }
+      return out;
+    }
+
+    const AUDIO_TARGET_SR = 16000;
+    const AUDIO_FRAME_SIZE = 400;   // 25ms
+    const AUDIO_HOP_SIZE = 160;     // 10ms
+    const AUDIO_MAX_SECONDS = 20;   // 超過就截斷，避免誤按錄很久導致 DTW 算太久
+
+    function extractFeatures(samples, sampleRate) {
+      const resampled = resampleLinear(samples, sampleRate, AUDIO_TARGET_SR);
+      const maxSamples = AUDIO_MAX_SECONDS * AUDIO_TARGET_SR;
+      const sig = resampled.length > maxSamples ? resampled.subarray(0, maxSamples) : resampled;
+
+      const rms = [];
+      const zcr = [];
+      for (let start = 0; start + AUDIO_FRAME_SIZE <= sig.length; start += AUDIO_HOP_SIZE) {
+        let sumSq = 0;
+        let crossings = 0;
+        for (let i = 0; i < AUDIO_FRAME_SIZE; i++) {
+          const v = sig[start + i];
+          sumSq += v * v;
+          if (i > 0 && ((sig[start + i - 1] >= 0) !== (v >= 0))) crossings++;
+        }
+        rms.push(Math.sqrt(sumSq / AUDIO_FRAME_SIZE));
+        zcr.push(crossings / AUDIO_FRAME_SIZE);
+      }
+      return { rms, zcr };
+    }
+
+    /* 麥克風錄音前後常會多錄到一小段安靜的空白，裁掉頭尾低於門檻的幀，
+       不然 DTW 對齊會被這段「兩邊都很安靜但不一定等長」的空白拖累。 */
+    function trimSilence(rms, zcr, threshold) {
+      const max = Math.max(1e-6, ...rms);
+      const thr = max * threshold;
+      let start = 0, end = rms.length;
+      while (start < end && rms[start] < thr) start++;
+      while (end > start && rms[end - 1] < thr) end--;
+      if (end - start < 3) return { rms, zcr };  // 太短就整段保留，避免裁過頭
+      return { rms: rms.slice(start, end), zcr: zcr.slice(start, end) };
+    }
+
+    function zscoreNormalize(arr) {
+      const n = arr.length;
+      if (!n) return arr.slice();
+      const mean = arr.reduce((a, b) => a + b, 0) / n;
+      const variance = arr.reduce((a, b) => a + (b - mean) * (b - mean), 0) / n;
+      const sd = Math.sqrt(variance) || 1;
+      return arr.map(v => (v - mean) / sd);
+    }
+
+    /* 動態時間規整（DTW）：featA/featB 是 {rms:[...], zcr:[...]}，長度不用一樣。
+       回傳依實際規整路徑長度正規化過的平均差距，轉成的 0~100 分數。 */
+    function dtwSimilarity(featA, featB) {
+      const n = featA.rms.length;
+      const m = featB.rms.length;
+      if (n < 2 || m < 2) return { score: 0, avgCost: Infinity };
+
+      const rmsA = zscoreNormalize(featA.rms);
+      const rmsB = zscoreNormalize(featB.rms);
+      const zcrA = zscoreNormalize(featA.zcr);
+      const zcrB = zscoreNormalize(featB.zcr);
+
+      const dp = new Array(n + 1);
+      for (let i = 0; i <= n; i++) dp[i] = new Float64Array(m + 1).fill(Infinity);
+      dp[0][0] = 0;
+
+      for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= m; j++) {
+          const dRms = rmsA[i - 1] - rmsB[j - 1];
+          const dZcr = zcrA[i - 1] - zcrB[j - 1];
+          const cost = Math.sqrt(dRms * dRms + dZcr * dZcr);
+          const best = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+          dp[i][j] = cost + best;
+        }
+      }
+
+      let i = n, j = m, pathLen = 0;
+      while (i > 0 || j > 0) {
+        pathLen++;
+        if (i === 0) { j--; continue; }
+        if (j === 0) { i--; continue; }
+        const diag = dp[i - 1][j - 1], up = dp[i - 1][j], left = dp[i][j - 1];
+        if (diag <= up && diag <= left) { i--; j--; }
+        else if (up <= left) { i--; }
+        else { j--; }
+      }
+
+      const avgCost = dp[n][m] / Math.max(1, pathLen);
+      // avgCost 是正規化特徵空間裡的平均步進距離；用指數衰減轉成 0~100 分，
+      // k 值（1.1）是憑經驗抓的寬鬆常數，之後可依實測回饋再調整。
+      const score = Math.round(Math.max(0, Math.min(100, 100 * Math.exp(-avgCost / 1.1))));
+      return { score, avgCost };
+    }
+
+    /* ---------- 範例音檔載入（快取，同一句只抓一次） ---------- */
+
+    const refAudioCache = {};
+    function loadReferenceAudio(seqIndex) {
+      if (refAudioCache[seqIndex]) return refAudioCache[seqIndex];
+      const url = `audio/YUDA-B1L3/s${seqIndex}.wav`;
+      const p = fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.arrayBuffer();
+        })
+        .then(buf => decodeAudioSamples(getAudioCtx(), buf))
+        .catch(err => {
+          delete refAudioCache[seqIndex];
+          console.error('無法載入範例音檔:', url, err);
+          throw err;
+        });
+      refAudioCache[seqIndex] = p;
+      return p;
+    }
+
+    /* ---------- 評估流程 ---------- */
+
+    function evaluateAudio(event, seqIndex, audioBlob) {
+      event.stopPropagation();
+      const statusDiv = document.getElementById('status-S-' + seqIndex);
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      resultDiv.innerHTML = '';
+      statusDiv.innerHTML = '⚙️ 正在比對聲音中…';
+
+      Promise.all([
+        audioBlob.arrayBuffer().then(buf => decodeAudioSamples(getAudioCtx(), buf)),
+        loadReferenceAudio(seqIndex)
+      ])
+        .then(([rec, ref]) => {
+          const featRecRaw = extractFeatures(rec.samples, rec.sampleRate);
+          const featRefRaw = extractFeatures(ref.samples, ref.sampleRate);
+          const featRec = trimSilence(featRecRaw.rms, featRecRaw.zcr, 0.08);
+          const featRef = trimSilence(featRefRaw.rms, featRefRaw.zcr, 0.08);
+          const { score } = dtwSimilarity(featRec, featRef);
+          statusDiv.innerHTML = '✅ 分析完成';
+          showAudioEvaluationResult(seqIndex, score, featRef.rms, featRec.rms);
+        })
+        .catch(err => {
+          console.error('聲音比對失敗:', err);
+          statusDiv.innerHTML = '⚠️ 沒辦法完成聲音比對，請確認網路連線、或重新錄音後再試一次。';
+        });
+    }
+
+    /* 兩條線各自依自己的長度正規化 x 軸（不是照 DTW 路徑對齊），
+       用意是讓使用者一眼看出「節奏快慢、抑揚頓挫」大致像不像，
+       不是精準的逐幀對齊圖。 */
+    function buildContourSvg(refRms, recRms) {
+      const w = 300, h = 60, pad = 2;
+      const toPoints = arr => {
+        const max = Math.max(1e-6, ...arr);
+        return arr.map((v, i) => {
+          const x = arr.length > 1 ? (i / (arr.length - 1)) * (w - pad * 2) + pad : w / 2;
+          const y = h - pad - (v / max) * (h - pad * 2);
+          return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(' ');
+      };
+      return `
+        <svg class="speak-contour" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="${toPoints(refRms)}" class="contour-ref" fill="none" />
+          <polyline points="${toPoints(recRms)}" class="contour-rec" fill="none" />
+        </svg>
+      `;
+    }
+
+    function showAudioEvaluationResult(seqIndex, score, refRms, recRms) {
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      let feedbackText, scoreClass;
+      if (score >= 70) {
+        feedbackText = '🌟 太棒了，節奏和音量走勢很接近範例！';
+        scoreClass = 'score-excellent';
+      } else if (score >= 40) {
+        feedbackText = '👍 有點像了，再多聽幾次範例音、跟著練習！';
+        scoreClass = 'score-good';
+      } else {
+        feedbackText = '💡 落差還蠻大的，建議先聽範例音、跟著慢慢唸！';
+        scoreClass = 'score-retry';
+      }
+
+      const chartHtml = buildContourSvg(refRms, recRms);
+
+      resultDiv.innerHTML = `
+        <div class="speak-eval-card">
+          <div class="speak-eval-score-row">
+            <span class="speak-eval-score ${scoreClass}">${score} 分</span>
+            <span class="speak-eval-feedback">${feedbackText}</span>
+          </div>
+          <div class="speak-contour-wrap">
+            ${chartHtml}
+            <div class="speak-contour-legend">
+              <span class="legend-ref">━ 範例音</span>
+              <span class="legend-rec">━ 我的錄音</span>
+            </div>
+          </div>
+          <div class="speak-accuracy-note">⚠️ 這是「聲音節奏／音量走勢」的相似度，不是逐字發音辨識，不代表有沒有唸對每一個字，僅供練習參考，不是正式發音評量。</div>
+        </div>
+      `;
+    }
+
     function refreshSentenceButtons() {
       buildTimedList();
       allSentences.forEach(s => {
@@ -1916,7 +2455,7 @@
 
     /* ===================== 校時模式（?edit=1） ===================== */
 
-    const CAL_KEY = 'taigi-diamtho-times-YUDA-B1L3-v2';
+    const CAL_KEY = 'taigi-diamtho-times-YUDA-B1L3-speak-v1';
     let calMode = false;
     let calCursor = 0;      // 下一個要標記的句子（全篇連續索引）
     let calClockTimer = null;
