@@ -421,6 +421,10 @@
       animation: pulse 1s infinite;
     }
 
+    .nobr {
+      white-space: nowrap;
+    }
+
     .speak-status,
     .speak-result {
       display: block;
@@ -1346,6 +1350,14 @@
           .map(s => s.trim())
           .filter(s => s.length > 0)
           .forEach(s => {
+            // 斷句點在「？」「！」後面時，像「…啥？」、「…」的「」、」會落到下一句句首；
+            // 每句各自換行後會孤零零掛在行首，所以接回上一句結尾
+            const lead = s.match(/^[」』）)》〉】”’、，,；;：:]+/);
+            if (result.length && lead) {
+              result[result.length - 1].text += lead[0];
+              s = s.slice(lead[0].length).trim();
+              if (!s) return;
+            }
             // 例如自成一行的收尾引號「」」，併回上一句，不另給一顆 ▶
             if (result.length && !hasWord(s)) {
               result[result.length - 1].text += s;
@@ -1900,14 +1912,7 @@
         content.className = 'content';
 
         const sentences = splitSentences(pages[pageNum]);
-        let lastPara = 0;
-
         sentences.forEach((sentence, idx) => {
-          if (idx > 0 && sentence.para !== lastPara) {
-            content.appendChild(document.createElement('br'));
-          }
-          lastPara = sentence.para;
-
           const seqIndex = allSentences.length;
 
           const span = document.createElement('span');
@@ -1950,6 +1955,7 @@
       });
 
       applyTailo();
+      glueBreakingPunctuation(contentArea);
 
       // 保險：若課文改動使句數與時間戳陣列長度不符，補 null 對齊，避免陣列越界
       Object.keys(pages).forEach(p => {
@@ -2416,6 +2422,43 @@
           <div class="speak-accuracy-note">⚠️ 這是「聲音節奏／音量走勢」的相似度，不是逐字發音辨識，不代表有沒有唸對每一個字，僅供練習參考，不是正式發音評量。</div>
         </div>
       `;
+    }
+
+    /* 臺羅標音把每個詞包成 ruby（加生詞的 inline-block），標點變成夾在中間的獨立文字，
+       瀏覽器的中文避頭尾規則在這裡失效，會出現「。」「」」落在行首、「「」掛在行尾。
+       把收尾標點跟前一個詞、開頭標點跟後一個詞包進不換行的 span。 */
+    const CLOSE_PUNCT = /^\s*[。，、；：？！」』）》〉】”’…,.;:?!)]+/;
+    const OPEN_PUNCT = /[「『（《〈【“‘(]+\s*$/;
+
+    function glueBreakingPunctuation(root) {
+      const isWord = el => el && el.nodeType === 1 &&
+        (el.tagName === 'RUBY' || el.classList.contains('vocabulary') || el.classList.contains('nobr'));
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        const close = node.nodeValue.match(CLOSE_PUNCT);
+        const prev = node.previousSibling;
+        if (close && isWord(prev)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          prev.parentNode.insertBefore(wrap, prev);
+          wrap.appendChild(prev);
+          wrap.appendChild(document.createTextNode(close[0]));
+          node.nodeValue = node.nodeValue.slice(close[0].length);
+        }
+        const open = node.nodeValue.match(OPEN_PUNCT);
+        const next = node.nextSibling;
+        if (open && isWord(next)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          next.parentNode.insertBefore(wrap, next);
+          wrap.appendChild(document.createTextNode(open[0]));
+          wrap.appendChild(next);
+          node.nodeValue = node.nodeValue.slice(0, node.nodeValue.length - open[0].length);
+        }
+      });
     }
 
     function refreshSentenceButtons() {
