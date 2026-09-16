@@ -1,0 +1,2869 @@
+<!doctype html>
+<html lang="zh-TW">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1課 媠花</title>
+  <link href="https://tauhu.tw/tauhu-oo.css" rel="stylesheet">
+  <script src="https://oikasu1.github.io/snd/snd.js"></script>
+  <style>
+    /* 主視覺：黑／黃／白（底色以白為主）
+       黃色只當底色或強調塊，不當白底上的文字色，確保對比度足夠 */
+    :root {
+      --black: #111111;
+      --ink: #222222;
+      --yellow: #ffd400;
+      --yellow-deep: #e6b800;
+      --yellow-soft: #fff3b8;
+      --line: #e0e0e0;
+    }
+
+    html { height: 100%; }
+    html, body { margin: 0; padding: 0; }
+
+    body {
+      box-sizing: border-box;
+      font-family: tauhu-oo, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: #ffffff;
+      color: var(--ink);
+      min-height: 100%;
+      padding-inline: 16px;
+      padding-block: 16px 112px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    /* 版面吃滿螢幕寬度，不留左右白邊；只留 16px 的安全邊界（body 的 padding-inline） */
+    .container { width: 100%; margin: 0 auto; }
+
+    .header {
+      position: relative;
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 30px;
+      padding: 22px 20px;
+      background: var(--black);
+      border-radius: 20px;
+      border-bottom: 8px solid var(--yellow);
+    }
+
+    .credit-author {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 0.8em;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: tauhu-oo, sans-serif;
+      letter-spacing: 0.02em;
+    }
+
+    .header h1 {
+      font-size: 2.8em;
+      margin: 0 0 10px 0;
+      color: var(--yellow);
+      font-family: tauhu-oo, sans-serif;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .header h2 {
+      font-size: 1.5em;
+      margin: 0;
+      font-weight: normal;
+      opacity: 0.95;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+    }
+
+    .page-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      position: relative;
+      transition: all 0.3s ease;
+      border: 2px solid var(--line);
+    }
+
+    .page-section:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      border-color: var(--yellow);
+    }
+
+    .page-head {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .page-number {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--black);
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.3em;
+      border: 2px solid var(--black);
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .page-play {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      transition: all 0.2s;
+    }
+
+    .page-play:hover {
+      background: var(--yellow);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .content {
+      line-height: 3.0;
+      font-size: 1.4em;
+      color: var(--ink);
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .sentence {
+      display: block;
+      border-radius: 8px;
+      padding: 2px 6px;
+      transition: background 0.25s ease;
+      cursor: pointer;
+    }
+
+    .sentence:hover { background: #f4f4f4; }
+
+    .sentence.playing {
+      background: var(--yellow-soft);
+      box-shadow: inset 4px 0 0 var(--black);
+    }
+
+    .play-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.55em;
+      height: 1.55em;
+      margin: 0 8px 0 2px;
+      vertical-align: middle;
+      border: none;
+      border-radius: 50%;
+      background: var(--black);
+      color: var(--yellow);
+      font-size: 0.62em;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .play-btn:hover { transform: scale(1.15); }
+    .play-btn:active { transform: scale(0.92); }
+
+    /* 臺羅標音：以「詞」為單位標在漢字下方，保留詞內連字號 */
+    ruby {
+      ruby-position: under;
+      -webkit-ruby-position: after;
+      ruby-align: center;
+      margin: 0 0.12em;
+    }
+
+    rt {
+      font-size: 0.48em;
+      font-family: tauhu-oo, sans-serif;
+      color: #444;
+      line-height: 1;
+      font-weight: normal;
+      letter-spacing: 0;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .rb { line-height: 1.15; }
+
+    .vocabulary {
+      font-weight: bold;
+      color: var(--black);
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+      white-space: nowrap;
+      padding: 0 2px;
+      margin: 0 0.2em;
+      line-height: 1.15;
+      transition: background 0.2s ease;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    /* 螢光筆畫在漢字下半部；底下的臺羅只加一條細黃線，跟著畫記走 */
+    .vocabulary .rb {
+      background: linear-gradient(to top, var(--yellow) 0.42em, transparent 0.42em);
+    }
+
+    .vocabulary rt {
+      border-bottom: 2px solid var(--yellow);
+      color: var(--ink);
+    }
+
+    .vocabulary:hover .rb { background: var(--yellow); }
+    .vocabulary:hover rt { border-bottom-color: var(--yellow-deep); }
+    .vocabulary:active { transform: scale(0.95); }
+
+    /* 編號用課本註標式的小上標：正常流排版，不會壓到隔壁字 */
+    .vocab-number {
+      display: inline;
+      vertical-align: super;
+      font-size: 0.58em;
+      line-height: 1;
+      font-weight: bold;
+      font-family: tauhu-oo, sans-serif;
+      color: var(--black);
+      margin-left: 1px;
+      letter-spacing: 0;
+    }
+
+    .tooltip {
+      position: absolute;
+      background: white;
+      border: 4px solid var(--black);
+      border-radius: 20px;
+      padding: 1mm;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      z-index: 1000;
+      min-width: 320px;
+      animation: popIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8) translateY(-10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .tooltip-header {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: var(--black);
+      background: var(--yellow);
+      border-radius: 14px;
+      margin-bottom: 1mm;
+      border-bottom: 3px solid var(--black);
+      padding: 1mm 2mm;
+      font-family: tauhu-oo, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      line-height: 1;
+    }
+
+    .tooltip-content {
+      font-size: 1.2em;
+      color: var(--ink);
+      line-height: 1;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .tooltip-content div {
+      margin: 1mm 0;
+      padding: 1mm 0;
+      border-bottom: 1px solid #f0f0f0;
+      line-height: 1;
+    }
+
+    .tooltip-content div:last-child { border-bottom: none; }
+
+    .tooltip-label {
+      color: var(--black);
+      font-weight: bold;
+      margin-right: 8px;
+      border-bottom: 3px solid var(--yellow);
+    }
+
+    .tooltip-close {
+      background: var(--black);
+      color: var(--yellow);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      font-size: 1.4em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      font-weight: bold;
+    }
+
+    .tooltip-close:hover {
+      background: var(--yellow);
+      color: var(--black);
+      transform: rotate(90deg) scale(1.1);
+    }
+
+    .speaker-icon {
+      display: inline-block;
+      font-size: 0.9em;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    /* ===== 跟讀錄音與逐句評分 ===== */
+    .mic-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.55em;
+      height: 1.55em;
+      margin: 0 6px 0 0;
+      vertical-align: middle;
+      border-radius: 50%;
+      background: #ffffff;
+      color: var(--black);
+      border: 2px solid var(--black);
+      font-size: 0.62em;
+      cursor: pointer;
+      transition: transform 0.15s, background 0.2s;
+      font-family: tauhu-oo, sans-serif;
+      line-height: 1;
+      padding: 0;
+    }
+
+    .mic-btn:hover { transform: scale(1.15); }
+
+    .mic-btn.recording {
+      background: #e04b3b;
+      border-color: #e04b3b;
+      color: #ffffff;
+      animation: pulse 1s infinite;
+    }
+
+    .nobr { white-space: nowrap; }
+
+    .speak-status,
+    .speak-result {
+      display: block;
+      font-size: 0.62em;
+      line-height: 1.6;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .speak-status:empty,
+    .speak-result:empty { margin: 0; }
+
+    .speak-status { color: var(--ink); margin: 2px 0 0 0.2em; }
+
+    .pulse-dot { display: inline-block; animation: pulse 1s infinite; }
+
+    .speak-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 2px 0;
+    }
+
+    .speak-play-btn,
+    .speak-eval-btn {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 1em;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .speak-play-btn:hover,
+    .speak-eval-btn:hover {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .speak-eval-card {
+      margin: 6px 0 14px 0.2em;
+      padding: 10px 14px;
+      background: #fafafa;
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      font-size: 0.62em;
+      line-height: 1.7;
+    }
+
+    .speak-eval-score-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .speak-eval-score {
+      font-size: 1.4em;
+      font-weight: bold;
+      padding: 2px 12px;
+      border-radius: 20px;
+      color: #ffffff;
+    }
+
+    .speak-eval-score.score-excellent { background: #2f9e44; }
+    .speak-eval-score.score-good { background: #e6b800; color: var(--black); }
+    .speak-eval-score.score-retry { background: #999999; }
+
+    .speak-eval-feedback { font-size: 1.05em; }
+
+    .speak-contour-wrap { margin: 8px 0; }
+
+    .speak-contour {
+      width: 100%;
+      height: 60px;
+      display: block;
+      background: #fafafa;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+    }
+
+    .speak-contour polyline {
+      stroke-width: 2;
+      vector-effect: non-scaling-stroke;
+    }
+
+    .speak-contour .contour-ref { stroke: var(--black); opacity: 0.55; }
+    .speak-contour .contour-rec { stroke: #e6b800; }
+
+    .speak-contour-legend {
+      display: flex;
+      gap: 14px;
+      margin-top: 4px;
+      font-size: 0.9em;
+    }
+
+    .speak-contour-legend .legend-ref { color: var(--black); opacity: 0.7; }
+    .speak-contour-legend .legend-rec { color: #b38f00; font-weight: bold; }
+
+    .speak-accuracy-note {
+      margin-top: 8px;
+      padding: 6px 10px;
+      border-radius: 10px;
+      font-size: 0.9em;
+      background: #eeeeee;
+      color: #555;
+    }
+
+    /* ===== 底部浮動迷你播放列 ===== */
+    .player-bar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 10px 18px;
+      background: var(--black);
+      border-top: 5px solid var(--yellow);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
+      color: #ffffff;
+      font-family: tauhu-oo, sans-serif;
+      transition: transform 0.3s ease;
+    }
+
+    .player-bar.collapsed { transform: translateY(110%); }
+
+    .bar-handle {
+      position: fixed;
+      right: 12px;
+      bottom: 12px;
+      z-index: 901;
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.9em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .bar-handle.hidden { display: none; }
+
+    .player-seek {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .player-seek .time {
+      font-size: 0.78em;
+      font-variant-numeric: tabular-nums;
+      opacity: 0.9;
+      flex: 0 0 auto;
+    }
+
+    #seekbar {
+      flex: 1 1 auto;
+      min-width: 80px;
+      height: 4px;
+      accent-color: var(--yellow);
+      cursor: pointer;
+    }
+
+    .tts-badge {
+      flex: 0 0 auto;
+      width: 62px;
+      text-align: center;
+      font-size: 0.72em;
+      line-height: 1.3;
+      color: var(--black);
+      background: var(--yellow);
+      border-radius: 10px;
+      padding: 6px 4px;
+      font-weight: bold;
+    }
+
+    .player-info { flex: 1 1 auto; min-width: 0; }
+
+    .player-now {
+      font-size: 1.05em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 6px;
+    }
+
+    .player-now.warn { color: var(--yellow); font-weight: bold; white-space: normal; }
+
+    .player-credit {
+      font-size: 0.78em;
+      opacity: 0.7;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .player-credit a { color: var(--yellow); }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+    }
+
+    .pbtn {
+      background: #ffffff;
+      border: 2px solid #ffffff;
+      color: var(--black);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .pbtn:hover { background: var(--yellow); border-color: var(--yellow); }
+
+    .pbtn.on {
+      background: var(--yellow);
+      border-color: var(--yellow);
+      color: var(--black);
+    }
+
+    .pbtn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 130px;
+      transform: translateX(-50%);
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      padding: 12px 22px;
+      border-radius: 30px;
+      font-family: tauhu-oo, sans-serif;
+      font-size: 1.05em;
+      z-index: 1200;
+      animation: popIn 0.25s ease;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    @media (max-height: 520px) {
+      body { padding-block-end: 120px; }
+      .player-bar { padding: 6px 10px; gap: 8px; }
+      .player-credit { display: none; }
+      .pbtn { padding: 6px 10px; font-size: 0.85em; }
+    }
+
+    @media (max-width: 768px) {
+      body { padding-inline: 10px; padding-block: 10px 130px; }
+
+      .credit-author {
+        position: static;
+        display: block;
+        margin-bottom: 8px;
+        text-align: center;
+        font-size: 0.72em;
+      }
+
+      .header h1 { font-size: 2em; }
+      .header h2 { font-size: 1.2em; }
+      .page-section { padding: 20px; }
+      .content { font-size: 1.2em; line-height: 2.8; }
+
+      .tooltip {
+        min-width: auto;
+        width: 90%;
+        max-width: 90%;
+        left: 5% !important;
+        padding: 1mm;
+      }
+
+      .page-number { font-size: 1.1em; padding: 10px 24px; }
+      .player-bar { gap: 10px; padding: 8px 10px; }
+      .tts-badge { display: none; }
+      .player-credit { display: none; }
+      .pbtn { padding: 7px 10px; font-size: 0.85em; }
+      .pbtn .lbl { display: none; }
+      .player-now { font-size: 0.95em; margin-bottom: 0; }
+      .toast { bottom: 110px; }
+    }
+
+    @media (max-width: 480px) {
+      .header h1 { font-size: 1.6em; }
+      .header h2 { font-size: 1em; }
+      .content { font-size: 1.1em; }
+      .page-number { font-size: 1em; padding: 8px 20px; }
+
+      .tooltip {
+        min-width: auto;
+        width: 90%;
+        max-width: 90%;
+        left: 5% !important;
+        padding: 1mm;
+      }
+
+      .tooltip-header { font-size: 1.5em; }
+      .tooltip-content { font-size: 1.1em; }
+
+      body { padding-block-end: 180px; }
+      .player-bar { flex-wrap: wrap; }
+      .player-controls { flex: 1 1 100%; justify-content: center; }
+      .player-bar.collapsed { transform: translateY(110%); }
+      .toast { bottom: 145px; }
+    }
+  </style>
+ </head>
+ <body>
+  <main>
+   <div class="container">
+    <header class="header">
+     <div class="credit-author">臺中明道中學　詹宗龍　製作</div>
+     <h1 id="page-title">📖自學點讀筆 📖</h1>
+     <h2 id="page-subtitle">全華版國中第3冊 第1課 媠花</h2>
+    </header>
+    <div id="content-area"></div>
+   </div>
+  </main>
+
+  <div class="player-bar" id="player-bar">
+   <div class="tts-badge">意傳<br>媠聲</div>
+   <div class="player-info">
+    <div class="player-now" id="player-now">點課文句子前的 ▶ 就會唸這一句</div>
+    <div class="player-seek">
+     <span class="time" id="time-now">0:00</span>
+     <input type="range" id="seekbar" min="0" max="100" step="0.1" value="0" aria-label="時間軸（可拖拉）">
+     <span class="time" id="time-dur">0:00</span>
+    </div>
+    <div class="player-credit">課文語音：意傳科技「媠聲」台語合成 —
+     <a href="https://suisiann.ithuan.tw/" target="_blank" rel="noopener">suisiann.ithuan.tw</a>　/
+     臺羅依全華國中閩南語第三冊附錄二</div>
+   </div>
+   <div class="player-controls">
+    <button class="pbtn" id="btn-replay" title="重播這一句">⟲<span class="lbl"> 重播</span></button>
+    <button class="pbtn" id="btn-auto" title="播完自動接下一句">⏭<span class="lbl"> 連播</span></button>
+    <button class="pbtn" id="btn-rate" title="放慢速度">1x</button>
+    <button class="pbtn" id="btn-stop" title="停止">■</button>
+    <button class="pbtn" id="btn-fold" title="完全收起播放列">⌄</button>
+   </div>
+  </div>
+
+  <button class="bar-handle hidden" id="bar-handle" title="展開播放列">⌃ 播放器</button>
+
+  <script>
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    let currentAudioObj = null;
+
+    /* 單獨指定音檔的詞：直接取教育部《臺灣台語常用詞辭典》的真人錄音。 */
+    const DICT_AUDIO = {
+      "kāng": "https://sutian.moe.edu.tw/media/senn/mp3/imtong/subak/1/1305.mp3"
+    };
+
+    /* ===================== 課文資料 =====================
+       每一句都是一筆：
+         han    漢字原文（校對依據＝全華第三冊附錄二「台羅課文」）
+         tailo  整句臺羅
+         audio  這一句的意傳媠聲合成音檔（相對路徑）
+         groups 逐詞對齊 [漢字, 臺羅, [音節…]]；臺羅為空字串的是標點，不標音
+       ================================================== */
+    const AUDIO_BASE = 'CHUANHWA-B3L1/';
+    const pages = {
+      "8": [
+        {
+          "han": "對今仔日開始",
+          "tailo": "Uì kin-á-ji̍t khai-sí",
+          "audio": "B3L1-p8-01.mp3",
+          "groups": [
+            [
+              "對",
+              "Uì",
+              [
+                "Uì"
+              ]
+            ],
+            [
+              "今仔日",
+              "kin-á-ji̍t",
+              [
+                "kin",
+                "á",
+                "ji̍t"
+              ]
+            ],
+            [
+              "開始",
+              "khai-sí",
+              [
+                "khai",
+                "sí"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "我欲逐工照鏡呵咾家己",
+          "tailo": "Guá beh ta̍k-kang tsiò-kiànn o-ló ka-kī",
+          "audio": "B3L1-p8-02.mp3",
+          "groups": [
+            [
+              "我",
+              "Guá",
+              [
+                "Guá"
+              ]
+            ],
+            [
+              "欲",
+              "beh",
+              [
+                "beh"
+              ]
+            ],
+            [
+              "逐工",
+              "ta̍k-kang",
+              [
+                "ta̍k",
+                "kang"
+              ]
+            ],
+            [
+              "照鏡",
+              "tsiò-kiànn",
+              [
+                "tsiò",
+                "kiànn"
+              ]
+            ],
+            [
+              "呵咾",
+              "o-ló",
+              [
+                "o",
+                "ló"
+              ]
+            ],
+            [
+              "家己",
+              "ka-kī",
+              [
+                "ka",
+                "kī"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "我上𠢕我上媠",
+          "tailo": "Guá siōng gâu  Guá siōng suí",
+          "audio": "B3L1-p8-03.mp3",
+          "groups": [
+            [
+              "我",
+              "Guá",
+              [
+                "Guá"
+              ]
+            ],
+            [
+              "上",
+              "siōng",
+              [
+                "siōng"
+              ]
+            ],
+            [
+              "𠢕",
+              "gâu",
+              [
+                "gâu"
+              ]
+            ],
+            [
+              "我",
+              "Guá",
+              [
+                "Guá"
+              ]
+            ],
+            [
+              "上",
+              "siōng",
+              [
+                "siōng"
+              ]
+            ],
+            [
+              "媠",
+              "suí",
+              [
+                "suí"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "我是獨一無二的自己",
+          "tailo": "Guá sī to̍k-it-bû-jī ê tsū-kí",
+          "audio": "B3L1-p8-04.mp3",
+          "groups": [
+            [
+              "我",
+              "Guá",
+              [
+                "Guá"
+              ]
+            ],
+            [
+              "是",
+              "sī",
+              [
+                "sī"
+              ]
+            ],
+            [
+              "獨一無二",
+              "to̍k-it-bû-jī",
+              [
+                "to̍k",
+                "it",
+                "bû",
+                "jī"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "自己",
+              "tsū-kí",
+              [
+                "tsū",
+                "kí"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "啊　無需要煩惱我佮別人無相仝",
+          "tailo": "Ah   Bô su-iàu huân-ló guá kah pa̍t-lâng bô sio-kāng",
+          "audio": "B3L1-p8-05.mp3",
+          "groups": [
+            [
+              "啊",
+              "Ah",
+              [
+                "Ah"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "無",
+              "Bô",
+              [
+                "Bô"
+              ]
+            ],
+            [
+              "需要",
+              "su-iàu",
+              [
+                "su",
+                "iàu"
+              ]
+            ],
+            [
+              "煩惱",
+              "huân-ló",
+              [
+                "huân",
+                "ló"
+              ]
+            ],
+            [
+              "我",
+              "guá",
+              [
+                "guá"
+              ]
+            ],
+            [
+              "佮",
+              "kah",
+              [
+                "kah"
+              ]
+            ],
+            [
+              "別人",
+              "pa̍t-lâng",
+              [
+                "pa̍t",
+                "lâng"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "相仝",
+              "sio-kāng",
+              [
+                "sio",
+                "kāng"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "親像每一蕊花　攏有無仝款的清芳",
+          "tailo": "\u0007Tshin-tshiūnn muí tsi̍t luí hue lóng ū bô kāng-khuán ê tshing-phang",
+          "audio": "B3L1-p8-06.mp3",
+          "groups": [
+            [
+              "親像",
+              "\u0007Tshin-tshiūnn",
+              [
+                "\u0007Tshin",
+                "tshiūnn"
+              ]
+            ],
+            [
+              "每",
+              "muí",
+              [
+                "muí"
+              ]
+            ],
+            [
+              "一",
+              "tsi̍t",
+              [
+                "tsi̍t"
+              ]
+            ],
+            [
+              "蕊",
+              "luí",
+              [
+                "luí"
+              ]
+            ],
+            [
+              "花",
+              "hue",
+              [
+                "hue"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "有",
+              "ū",
+              [
+                "ū"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "仝款",
+              "kāng-khuán",
+              [
+                "kāng",
+                "khuán"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "清芳",
+              "tshing-phang",
+              [
+                "tshing",
+                "phang"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "啊　咱攏是世界上媠的人",
+          "tailo": "Ah   Lán lóng sī sè-kài siōng suí ê lâng",
+          "audio": "B3L1-p8-07.mp3",
+          "groups": [
+            [
+              "啊",
+              "Ah",
+              [
+                "Ah"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "咱",
+              "Lán",
+              [
+                "Lán"
+              ]
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "是",
+              "sī",
+              [
+                "sī"
+              ]
+            ],
+            [
+              "世界",
+              "sè-kài",
+              [
+                "sè",
+                "kài"
+              ]
+            ],
+            [
+              "上",
+              "siōng",
+              [
+                "siōng"
+              ]
+            ],
+            [
+              "媠",
+              "suí",
+              [
+                "suí"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "人",
+              "lâng",
+              [
+                "lâng"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "親像每一蕊花　攏有無仝款的紅",
+          "tailo": "Tshin-tshiūnn muí tsi̍t luí hue lóng ū bô kāng-khuán ê âng",
+          "audio": "B3L1-p8-08.mp3",
+          "groups": [
+            [
+              "親像",
+              "Tshin-tshiūnn",
+              [
+                "Tshin",
+                "tshiūnn"
+              ]
+            ],
+            [
+              "每",
+              "muí",
+              [
+                "muí"
+              ]
+            ],
+            [
+              "一",
+              "tsi̍t",
+              [
+                "tsi̍t"
+              ]
+            ],
+            [
+              "蕊",
+              "luí",
+              [
+                "luí"
+              ]
+            ],
+            [
+              "花",
+              "hue",
+              [
+                "hue"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "有",
+              "ū",
+              [
+                "ū"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "仝款",
+              "kāng-khuán",
+              [
+                "kāng",
+                "khuán"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "紅",
+              "âng",
+              [
+                "âng"
+              ]
+            ]
+          ]
+        }
+      ],
+      "9": [
+        {
+          "han": "西北雨一目𥍉　連鞭就過去",
+          "tailo": "Sai-pak-hōo tsi̍t-ba̍k-nih liâm-mi tō kuè--khì",
+          "audio": "B3L1-p9-01.mp3",
+          "groups": [
+            [
+              "西北雨",
+              "Sai-pak-hōo",
+              [
+                "Sai",
+                "pak",
+                "hōo"
+              ]
+            ],
+            [
+              "一目𥍉",
+              "tsi̍t-ba̍k-nih",
+              [
+                "tsi̍t",
+                "ba̍k",
+                "nih"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "連鞭",
+              "liâm-mi",
+              [
+                "liâm",
+                "mi"
+              ]
+            ],
+            [
+              "就",
+              "tō",
+              [
+                "tō"
+              ]
+            ],
+            [
+              "過去",
+              "kuè--khì",
+              [
+                "kuè",
+                "khì"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "紲落美麗的彩虹　充滿著各種的色水",
+          "tailo": "Suà--lo̍h bí-lē ê tshái-hông tshiong-buán-tio̍h kok-tsióng ê sik-tsuí",
+          "audio": "B3L1-p9-02.mp3",
+          "groups": [
+            [
+              "紲落",
+              "Suà--lo̍h",
+              [
+                "Suà",
+                "lo̍h"
+              ]
+            ],
+            [
+              "美麗",
+              "bí-lē",
+              [
+                "bí",
+                "lē"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "彩虹",
+              "tshái-hông",
+              [
+                "tshái",
+                "hông"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "充滿著",
+              "tshiong-buán-tio̍h",
+              [
+                "tshiong",
+                "buán",
+                "tio̍h"
+              ]
+            ],
+            [
+              "各種",
+              "kok-tsióng",
+              [
+                "kok",
+                "tsióng"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "色水",
+              "sik-tsuí",
+              [
+                "sik",
+                "tsuí"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "啊　無需要煩惱我佮別人無相仝",
+          "tailo": "Ah   Bô su-iàu huân-ló guá kah pa̍t-lâng bô sio-kāng",
+          "audio": "B3L1-p9-03.mp3",
+          "groups": [
+            [
+              "啊",
+              "Ah",
+              [
+                "Ah"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "無",
+              "Bô",
+              [
+                "Bô"
+              ]
+            ],
+            [
+              "需要",
+              "su-iàu",
+              [
+                "su",
+                "iàu"
+              ]
+            ],
+            [
+              "煩惱",
+              "huân-ló",
+              [
+                "huân",
+                "ló"
+              ]
+            ],
+            [
+              "我",
+              "guá",
+              [
+                "guá"
+              ]
+            ],
+            [
+              "佮",
+              "kah",
+              [
+                "kah"
+              ]
+            ],
+            [
+              "別人",
+              "pa̍t-lâng",
+              [
+                "pa̍t",
+                "lâng"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "相仝",
+              "sio-kāng",
+              [
+                "sio",
+                "kāng"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "親像每一蕊花　攏有無仝款的清芳",
+          "tailo": "Tshin-tshiūnn muí tsi̍t luí hue lóng ū bô kāng-khuán ê tshing-phang",
+          "audio": "B3L1-p9-04.mp3",
+          "groups": [
+            [
+              "親像",
+              "Tshin-tshiūnn",
+              [
+                "Tshin",
+                "tshiūnn"
+              ]
+            ],
+            [
+              "每",
+              "muí",
+              [
+                "muí"
+              ]
+            ],
+            [
+              "一",
+              "tsi̍t",
+              [
+                "tsi̍t"
+              ]
+            ],
+            [
+              "蕊",
+              "luí",
+              [
+                "luí"
+              ]
+            ],
+            [
+              "花",
+              "hue",
+              [
+                "hue"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "有",
+              "ū",
+              [
+                "ū"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "仝款",
+              "kāng-khuán",
+              [
+                "kāng",
+                "khuán"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "清芳",
+              "tshing-phang",
+              [
+                "tshing",
+                "phang"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "啊　咱攏是世界上媠的人",
+          "tailo": "Ah   Lán lóng sī sè-kài siōng suí ê lâng",
+          "audio": "B3L1-p9-05.mp3",
+          "groups": [
+            [
+              "啊",
+              "Ah",
+              [
+                "Ah"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "咱",
+              "Lán",
+              [
+                "Lán"
+              ]
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "是",
+              "sī",
+              [
+                "sī"
+              ]
+            ],
+            [
+              "世界",
+              "sè-kài",
+              [
+                "sè",
+                "kài"
+              ]
+            ],
+            [
+              "上",
+              "siōng",
+              [
+                "siōng"
+              ]
+            ],
+            [
+              "媠",
+              "suí",
+              [
+                "suí"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "人",
+              "lâng",
+              [
+                "lâng"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "親像每一蕊花　攏有無仝款的紅",
+          "tailo": "Tshin-tshiūnn muí tsi̍t luí hue lóng ū bô kāng-khuán ê âng",
+          "audio": "B3L1-p9-06.mp3",
+          "groups": [
+            [
+              "親像",
+              "Tshin-tshiūnn",
+              [
+                "Tshin",
+                "tshiūnn"
+              ]
+            ],
+            [
+              "每",
+              "muí",
+              [
+                "muí"
+              ]
+            ],
+            [
+              "一",
+              "tsi̍t",
+              [
+                "tsi̍t"
+              ]
+            ],
+            [
+              "蕊",
+              "luí",
+              [
+                "luí"
+              ]
+            ],
+            [
+              "花",
+              "hue",
+              [
+                "hue"
+              ]
+            ],
+            [
+              "　",
+              "",
+              []
+            ],
+            [
+              "攏",
+              "lóng",
+              [
+                "lóng"
+              ]
+            ],
+            [
+              "有",
+              "ū",
+              [
+                "ū"
+              ]
+            ],
+            [
+              "無",
+              "bô",
+              [
+                "bô"
+              ]
+            ],
+            [
+              "仝款",
+              "kāng-khuán",
+              [
+                "kāng",
+                "khuán"
+              ]
+            ],
+            [
+              "的",
+              "ê",
+              [
+                "ê"
+              ]
+            ],
+            [
+              "紅",
+              "âng",
+              [
+                "âng"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "西北雨連鞭就過去",
+          "tailo": "Sai-pak-hōo liâm-mi tō kuè--khì",
+          "audio": "B3L1-p9-07.mp3",
+          "groups": [
+            [
+              "西北雨",
+              "Sai-pak-hōo",
+              [
+                "Sai",
+                "pak",
+                "hōo"
+              ]
+            ],
+            [
+              "連鞭",
+              "liâm-mi",
+              [
+                "liâm",
+                "mi"
+              ]
+            ],
+            [
+              "就",
+              "tō",
+              [
+                "tō"
+              ]
+            ],
+            [
+              "過去",
+              "kuè--khì",
+              [
+                "kuè",
+                "khì"
+              ]
+            ]
+          ]
+        },
+        {
+          "han": "西北雨連鞭就過去",
+          "tailo": "Sai-pak-hōo liâm-mi tō kuè--khì",
+          "audio": "B3L1-p9-08.mp3",
+          "groups": [
+            [
+              "西北雨",
+              "Sai-pak-hōo",
+              [
+                "Sai",
+                "pak",
+                "hōo"
+              ]
+            ],
+            [
+              "連鞭",
+              "liâm-mi",
+              [
+                "liâm",
+                "mi"
+              ]
+            ],
+            [
+              "就",
+              "tō",
+              [
+                "tō"
+              ]
+            ],
+            [
+              "過去",
+              "kuè--khì",
+              [
+                "kuè",
+                "khì"
+              ]
+            ]
+          ]
+        }
+      ]
+    };
+
+    const database = {
+      "8": [
+        {
+          "word": "對",
+          "roman": "tuì / uì",
+          "order": 1,
+          "chinese": "從(9)"
+        },
+        {
+          "word": "今仔日",
+          "roman": "kin-á-ji̍t / li̍t",
+          "order": 2,
+          "chinese": "今天、今日"
+        },
+        {
+          "word": "欲",
+          "roman": "beh / bueh",
+          "order": 3,
+          "chinese": "表意願；表假設；將要"
+        },
+        {
+          "word": "逐工",
+          "roman": "ta̍k-kang",
+          "order": 4,
+          "chinese": "每天"
+        },
+        {
+          "word": "呵咾",
+          "roman": "o-ló",
+          "order": 5,
+          "chinese": "讚美、表揚"
+        },
+        {
+          "word": "家己",
+          "roman": "ka-kī / ka-tī",
+          "order": 6,
+          "chinese": "自己、本身"
+        },
+        {
+          "word": "上",
+          "roman": "siōng",
+          "order": 7,
+          "chinese": "最…；空間位置"
+        },
+        {
+          "word": "𠢕",
+          "roman": "gâu",
+          "order": 8,
+          "chinese": "能幹；擅某事；易發生"
+        },
+        {
+          "word": "媠",
+          "roman": "suí",
+          "order": 9,
+          "chinese": "漂亮的、美麗的"
+        },
+        {
+          "word": "佮",
+          "roman": "kah",
+          "order": 10,
+          "chinese": "和；搭配；附帶；適合"
+        },
+        {
+          "word": "仝",
+          "roman": "kāng / kâng",
+          "order": 11,
+          "chinese": "相同、無差異"
+        },
+        {
+          "word": "親像",
+          "roman": "tshin-tshiūnn / tshan-tshiūnn",
+          "order": 12,
+          "chinese": "好像、好比"
+        },
+        {
+          "word": "攏",
+          "roman": "lóng",
+          "order": 13,
+          "chinese": "都、皆、全部"
+        },
+        {
+          "word": "款",
+          "roman": "khuán",
+          "order": 14,
+          "chinese": "種類(5)"
+        },
+        {
+          "word": "咱",
+          "roman": "lán",
+          "order": 15,
+          "chinese": "我們；我們的；您、您們"
+        }
+      ],
+      "9": [
+        {
+          "word": "西北雨",
+          "roman": "sai-pak-hōo",
+          "order": 16,
+          "chinese": "雷陣雨"
+        },
+        {
+          "word": "一目𥍉",
+          "roman": "tsi̍t-ba̍k-nih",
+          "order": 17,
+          "chinese": "指時間短暫"
+        },
+        {
+          "word": "連鞭",
+          "roman": "liâm-mi / liâm-pinn",
+          "order": 18,
+          "chinese": "立刻；即時"
+        },
+        {
+          "word": "過去",
+          "roman": "kuè--khì / kuè--khì",
+          "order": 19,
+          "chinese": "指時限已過/從前"
+        },
+        {
+          "word": "紲",
+          "roman": "suà",
+          "order": 20,
+          "chinese": "接、續"
+        },
+        {
+          "word": "落",
+          "roman": "lo̍h",
+          "order": 21,
+          "chinese": "下降(11)"
+        },
+        {
+          "word": "虹",
+          "roman": "khīng",
+          "order": 22,
+          "chinese": "彩虹"
+        },
+        {
+          "word": "色水",
+          "roman": "sik-tsuí",
+          "order": 23,
+          "chinese": "顏色"
+        },
+        {
+          "word": "無",
+          "roman": "bô",
+          "order": 24,
+          "chinese": "修飾形容詞或動詞(7)"
+        },
+        {
+          "word": "煩惱",
+          "roman": "huân-ló",
+          "order": 25,
+          "chinese": "煩悶，不快活"
+        }
+      ]
+    };
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    /* ===================== 生詞提示泡泡 ===================== */
+
+    function showTooltip(event, word, roman, chinese, page, order) {
+      const existingTooltip = document.querySelector('.tooltip');
+      if (existingTooltip) existingTooltip.remove();
+
+      const tooltip = document.createElement('div');
+      tooltip.className = 'tooltip';
+      tooltip.innerHTML = `
+        <div class="tooltip-header">
+          <span>${escapeHtml(word)} <span class="speaker-icon">🔊</span></span>
+          <button class="tooltip-close">✕</button>
+        </div>
+        <div class="tooltip-content">
+          <div><span class="tooltip-label">臺羅</span>${escapeHtml(roman)}</div>
+          <div><span class="tooltip-label">華語</span>${escapeHtml(chinese)}</div>
+          <div><span class="tooltip-label">出處</span>第 ${escapeHtml(String(page))} 頁　生詞 ${escapeHtml(String(order))}</div>
+        </div>
+      `;
+      document.body.appendChild(tooltip);
+
+      const closeBtn = tooltip.querySelector('.tooltip-close');
+      closeBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tooltip.remove();
+      });
+      tooltip.addEventListener('click', function(e) {
+        e.stopPropagation();
+        tooltip.remove();
+      });
+
+      const rect = event.target.getBoundingClientRect();
+      tooltip.style.left = (rect.left + window.scrollX) + 'px';
+      tooltip.style.top = (rect.bottom + window.scrollY + 10) + 'px';
+      requestAnimationFrame(() => {
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile && tooltipRect.right > window.innerWidth - 10) {
+          tooltip.style.left = (window.innerWidth - tooltipRect.width - 10 + window.scrollX) + 'px';
+        }
+        if (tooltipRect.bottom > window.innerHeight + window.scrollY - 10) {
+          tooltip.style.top = (rect.top + window.scrollY - tooltipRect.height - 10) + 'px';
+        }
+      });
+
+      setTimeout(() => {
+        document.addEventListener('click', function closeOnce() {
+          tooltip.remove();
+          document.removeEventListener('click', closeOnce);
+        }, { once: true });
+      }, 0);
+    }
+
+    /* ===================== 播放（本地 mp3） ===================== */
+
+    const allSentences = [];   // [{page, idx, han, audio, el}]，全篇連續順序
+    let player = new Audio();
+    let currentSeq = null;
+    let autoNext = false;
+    let playRate = 1;
+    let queue = [];            // 播整頁時待播的序號
+    let seeking = false;
+
+    function toast(msg) {
+      const old = document.querySelector('.toast');
+      if (old) old.remove();
+      const el = document.createElement('div');
+      el.className = 'toast';
+      el.textContent = msg;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 2200);
+    }
+
+    function setBtnGlyph(el, playing) {
+      if (!el) return;
+      const b = el.querySelector('.play-btn');
+      if (b) b.textContent = playing ? '❚❚' : '▶';
+    }
+
+    function setPlayingEl(seqIndex) {
+      allSentences.forEach((s, i) => {
+        const on = i === seqIndex;
+        s.el.classList.toggle('playing', on);
+        setBtnGlyph(s.el, on);
+      });
+    }
+
+    function fmtTime(sec) {
+      if (!isFinite(sec) || sec < 0) sec = 0;
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return m + ':' + String(s).padStart(2, '0');
+    }
+
+    function updateSeek() {
+      const bar = document.getElementById('seekbar');
+      const dur = isFinite(player.duration) ? player.duration : 0;
+      bar.max = dur || 100;
+      if (!seeking) bar.value = player.currentTime || 0;
+      document.getElementById('time-now').textContent = fmtTime(player.currentTime);
+      document.getElementById('time-dur').textContent = fmtTime(dur);
+    }
+
+    function stopPlayback() {
+      queue = [];
+      player.pause();
+      player.currentTime = 0;
+      setPlayingEl(-1);
+      updateSeek();
+      document.getElementById('player-now').textContent = '已停止';
+      document.getElementById('player-now').classList.remove('warn');
+    }
+
+    function playSeq(seqIndex) {
+      const s = allSentences[seqIndex];
+      if (!s) return;
+      currentSeq = seqIndex;
+      const now = document.getElementById('player-now');
+      now.classList.remove('warn');
+      now.textContent = `第 ${s.page} 頁：${s.han}`;
+      player.src = AUDIO_BASE + s.audio;
+      player.playbackRate = playRate;
+      setPlayingEl(seqIndex);
+      player.play().catch(err => {
+        console.error('播放失敗:', err);
+        now.classList.add('warn');
+        now.textContent = '⚠️ 播不出來：確認 mp3 資料夾跟這個網頁放在一起，或先點一下畫面再按播放。';
+        setPlayingEl(-1);
+      });
+    }
+
+    function onSentenceClick(seqIndex) {
+      if (currentSeq === seqIndex && !player.paused) {
+        player.pause();
+        setPlayingEl(-1);
+        return;
+      }
+      queue = [];
+      playSeq(seqIndex);
+    }
+
+    function playPage(pageNum) {
+      const list = [];
+      allSentences.forEach((s, i) => { if (s.page === pageNum) list.push(i); });
+      if (!list.length) { toast('這一頁沒有可播的句子'); return; }
+      queue = list.slice(1);
+      playSeq(list[0]);
+    }
+
+    player.addEventListener('timeupdate', updateSeek);
+    player.addEventListener('loadedmetadata', updateSeek);
+    player.addEventListener('ended', () => {
+      setPlayingEl(-1);
+      if (queue.length) {
+        playSeq(queue.shift());
+      } else if (autoNext && currentSeq !== null && currentSeq + 1 < allSentences.length) {
+        playSeq(currentSeq + 1);
+      }
+    });
+
+    function bindPlayerBar() {
+      document.getElementById('btn-replay').addEventListener('click', () => {
+        if (currentSeq === null) { toast('還沒播過任何句子'); return; }
+        queue = [];
+        playSeq(currentSeq);
+      });
+
+      const btnAuto = document.getElementById('btn-auto');
+      btnAuto.addEventListener('click', () => {
+        autoNext = !autoNext;
+        btnAuto.classList.toggle('on', autoNext);
+        toast(autoNext ? '逐句連播：開' : '逐句連播：關');
+      });
+
+      const btnRate = document.getElementById('btn-rate');
+      btnRate.addEventListener('click', () => {
+        playRate = playRate === 1 ? 0.75 : 1;
+        btnRate.textContent = playRate + 'x';
+        btnRate.classList.toggle('on', playRate !== 1);
+        player.playbackRate = playRate;
+        toast('播放速度 ' + playRate + 'x');
+      });
+
+      document.getElementById('btn-stop').addEventListener('click', stopPlayback);
+
+      const bar = document.getElementById('player-bar');
+      const handle = document.getElementById('bar-handle');
+      document.getElementById('btn-fold').addEventListener('click', () => {
+        bar.classList.add('collapsed');
+        handle.classList.remove('hidden');
+      });
+      handle.addEventListener('click', () => {
+        bar.classList.remove('collapsed');
+        handle.classList.add('hidden');
+      });
+
+      const seek = document.getElementById('seekbar');
+      const onStart = () => { seeking = true; };
+      const onEnd = () => {
+        seeking = false;
+        if (isFinite(player.duration)) player.currentTime = parseFloat(seek.value) || 0;
+      };
+      seek.addEventListener('mousedown', onStart);
+      seek.addEventListener('touchstart', onStart, { passive: true });
+      seek.addEventListener('change', onEnd);
+      seek.addEventListener('mouseup', onEnd);
+      seek.addEventListener('touchend', onEnd);
+    }
+
+    /* ===================== 課文渲染 ===================== */
+
+    /* 課文這個位置實際唸的臺羅（把涵蓋到的詞組音節接起來）。 */
+    function tailoAt(groups, start, end) {
+      let at = 0;
+      const syl = [];
+      groups.forEach(g => {
+        const s = at, e = at + g[0].length;
+        at = e;
+        if (s < end && e > start && g[1]) syl.push(g[1]);
+      });
+      return syl.join('-');
+    }
+
+    /* 比對臺羅時只看字母本身：去掉連字號、空白、斜線變體與大小寫差異。
+       聲調符號保留，不然「雨水 ú-suí／hōo-tsuí」這種才分得出來。 */
+    function normRoman(s) {
+      return (s || '').toLowerCase().replace(/[-\s.]/g, '');
+    }
+
+    /* 同形生詞挑出唸法對得上的那一條；都對不上就退回第一條。 */
+    function pickEntry(entries, actual) {
+      if (entries.length === 1) return entries[0];
+      const want = normRoman(actual);
+      let best = null, bestScore = -1;
+      entries.forEach(v => {
+        v.roman.split('/').forEach(variant => {
+          const got = normRoman(variant);
+          let score = 0;
+          if (got === want) score = 3;
+          else if (want && (got.indexOf(want) >= 0 || want.indexOf(got) >= 0)) score = 2;
+          if (score > bestScore) { bestScore = score; best = v; }
+        });
+      });
+      return bestScore > 0 ? best : entries[0];
+    }
+
+    /* 一句課文 → DOM：逐詞包成 <ruby>漢字<rt>臺羅</rt></ruby>，
+       再把落在生詞範圍內的詞整組加上 .vocabulary 螢光與編號。 */
+    function buildSentenceNodes(sentence, pageNum) {
+      const vocabList = database[pageNum] || [];
+      const flat = sentence.groups.map(g => g[0]).join('');
+
+      // 同一頁常出現同形不同音的生詞（第3課整課都是），所以先依「詞面」分組，
+      // 同一個詞面有好幾個詞條時，再用課文當場的臺羅去分辨是哪一條
+      const byWord = new Map();
+      vocabList.forEach(v => {
+        if (!byWord.has(v.word)) byWord.set(v.word, []);
+        byWord.get(v.word).push(v);
+      });
+      const words = Array.from(byWord.keys()).sort((a, b) => b.length - a.length);
+
+      // 找出生詞在整句裡的位置：長詞優先，位置不重疊
+      const hits = [];
+      const used = new Array(flat.length).fill(false);
+      words.forEach(word => {
+        const spots = [];
+        let from = 0;
+        for (;;) {
+          const at = flat.indexOf(word, from);
+          if (at < 0) break;
+          const end = at + word.length;
+          let free = true;
+          for (let i = at; i < end; i++) if (used[i]) free = false;
+          if (free) {
+            for (let i = at; i < end; i++) used[i] = true;
+            spots.push({ start: at, end: end });
+          }
+          from = at + 1;
+        }
+        const entries = byWord.get(word);
+        spots.forEach(spot => {
+          spot.v = pickEntry(entries, tailoAt(sentence.groups, spot.start, spot.end));
+          hits.push(spot);
+        });
+      });
+      hits.sort((a, b) => a.start - b.start);
+
+      // 生詞若只蓋到某個詞的一部分（例如「著愛」的「著」），就把那個詞拆開，
+      // 螢光筆才會剛好落在生詞上，而不是整個詞都被畫到
+      const cuts = new Set();
+      hits.forEach(h => { cuts.add(h.start); cuts.add(h.end); });
+      const groups = splitGroupsAt(sentence.groups, cuts);
+
+      const offsets = [];
+      let at = 0;
+      groups.forEach(g => {
+        offsets.push([at, at + g[0].length]);
+        at += g[0].length;
+      });
+
+      // 每一組屬於哪一個生詞（同一個生詞可能橫跨數組）
+      const mark = new Array(groups.length).fill(null);
+      hits.forEach(h => {
+        groups.forEach((g, gi) => {
+          const [s, e] = offsets[gi];
+          if (s < h.end && e > h.start && mark[gi] === null) mark[gi] = h.v;
+        });
+      });
+
+      const frag = document.createDocumentFragment();
+      let gi = 0;
+      while (gi < groups.length) {
+        const v = mark[gi];
+        if (!v) {
+          frag.appendChild(renderGroup(groups[gi]));
+          gi++;
+          continue;
+        }
+        // 同一個生詞的連續詞組包成一個 .vocabulary
+        const box = document.createElement('span');
+        box.className = 'vocabulary';
+        box.dataset.word = v.word;
+        box.dataset.roman = v.roman;
+        box.dataset.chinese = v.chinese;
+        box.dataset.page = pageNum;
+        box.dataset.order = v.order;
+        while (gi < groups.length && mark[gi] === v) {
+          box.appendChild(renderGroup(groups[gi]));
+          gi++;
+        }
+        const num = document.createElement('span');
+        num.className = 'vocab-number';
+        num.textContent = v.order;
+        frag.appendChild(box);
+        frag.appendChild(num);
+      }
+      return frag;
+    }
+
+    /* 在指定的整句字元位置把詞組切開，音節跟著分。
+       只有「漢字數＝音節數」的詞組才切得開；課文裡直接寫羅馬字的詞組
+       （像「--looh」「Pā-pu」一個片段就是好幾個音節）對不出切點，整組保留。 */
+    function splitGroupsAt(groups, cuts) {
+      const out = [];
+      let at = 0;
+      groups.forEach(g => {
+        const [text, rom, syl] = g;
+        const start = at;
+        at += text.length;
+        const chars = Array.from(text);
+        if (!rom || chars.length !== text.length || chars.length !== (syl || []).length) {
+          out.push(g);
+          return;
+        }
+        const points = [];
+        for (let i = 1; i < chars.length; i++) if (cuts.has(start + i)) points.push(i);
+        if (!points.length) { out.push(g); return; }
+        let from = 0;
+        points.concat([chars.length]).forEach(to => {
+          const part = chars.slice(from, to);
+          const parts = syl.slice(from, to);
+          out.push([part.join(''), parts.join('-'), parts]);
+          from = to;
+        });
+      });
+      return out;
+    }
+
+    function renderGroup(g) {
+      const [text, rom, syl] = g;
+      if (!rom) return document.createTextNode(text);
+      const ruby = document.createElement('ruby');
+      const rb = document.createElement('span');
+      rb.className = 'rb';
+      rb.textContent = text;
+      const rt = document.createElement('rt');
+      rt.textContent = (syl && syl.length) ? syl.join('-') : rom;
+      ruby.appendChild(rb);
+      ruby.appendChild(rt);
+      return ruby;
+    }
+
+    function renderContent() {
+      const contentArea = document.getElementById('content-area');
+      contentArea.innerHTML = '';
+      allSentences.length = 0;
+
+      Object.keys(pages).forEach(pageNum => {
+        const section = document.createElement('div');
+        section.className = 'page-section';
+
+        const head = document.createElement('div');
+        head.className = 'page-head';
+
+        const pageNumber = document.createElement('div');
+        pageNumber.className = 'page-number';
+        pageNumber.textContent = `第 ${pageNum} 頁`;
+
+        const pagePlay = document.createElement('button');
+        pagePlay.className = 'page-play';
+        pagePlay.textContent = '▶ 播整頁';
+        pagePlay.addEventListener('click', () => playPage(pageNum));
+
+        head.appendChild(pageNumber);
+        head.appendChild(pagePlay);
+
+        const content = document.createElement('div');
+        content.className = 'content';
+
+        pages[pageNum].forEach((sentence, idx) => {
+          const seqIndex = allSentences.length;
+
+          const span = document.createElement('span');
+          span.className = 'sentence';
+          span.dataset.page = pageNum;
+          span.dataset.idx = idx;
+
+          const play = document.createElement('button');
+          play.className = 'play-btn';
+          play.title = '播放這一句';
+          play.textContent = '▶';
+          span.appendChild(play);
+
+          const mic = document.createElement('button');
+          mic.className = 'mic-btn';
+          mic.id = 'mic-S-' + seqIndex;
+          mic.title = '錄音跟讀練習這一句';
+          mic.textContent = '🎤';
+          span.appendChild(mic);
+
+          span.appendChild(buildSentenceNodes(sentence, pageNum));
+          content.appendChild(span);
+
+          allSentences.push({
+            page: pageNum, idx: idx, han: sentence.han,
+            audio: sentence.audio, el: span
+          });
+
+          span.addEventListener('click', function() { onSentenceClick(seqIndex); });
+
+          const statusDiv = document.createElement('div');
+          statusDiv.className = 'speak-status';
+          statusDiv.id = 'status-S-' + seqIndex;
+          content.appendChild(statusDiv);
+
+          const resultDiv = document.createElement('div');
+          resultDiv.className = 'speak-result';
+          resultDiv.id = 'result-S-' + seqIndex;
+          content.appendChild(resultDiv);
+
+          mic.addEventListener('click', function(e) { toggleRecording(e, seqIndex); });
+        });
+
+        section.appendChild(head);
+        section.appendChild(content);
+        contentArea.appendChild(section);
+      });
+
+      glueBreakingPunctuation(contentArea);
+
+      document.querySelectorAll('.vocabulary').forEach(elem => {
+        elem.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const word = this.dataset.word;
+          const roman = this.dataset.roman;
+          const audioRoman = roman.split('/')[0].trim();
+          if (DICT_AUDIO[audioRoman]) {
+            if (currentAudioObj) {
+              currentAudioObj.pause();
+              currentAudioObj.currentTime = 0;
+            }
+            currentAudioObj = new Audio(DICT_AUDIO[audioRoman]);
+            currentAudioObj.play().catch(err => console.error('Audio play error:', err));
+          } else if (typeof holo === 'function') {
+            holo(this, roman);
+          }
+          showTooltip(e, word, roman, this.dataset.chinese, this.dataset.page, this.dataset.order);
+        });
+      });
+    }
+
+    /* 臺羅標音把每個詞包成 ruby，標點變成夾在中間的獨立文字，瀏覽器的中文避頭尾
+       規則在這裡失效，會出現「。」落在行首、「「」掛在行尾。
+       把收尾標點跟前一個詞、開頭標點跟後一個詞包進不換行的 span。 */
+    const CLOSE_PUNCT = /^\s*[。，、；：？！」』）》〉】”’…,.;:?!)]+/;
+    const OPEN_PUNCT = /[「『（《〈【“‘(]+\s*$/;
+
+    function glueBreakingPunctuation(root) {
+      const isWord = el => el && el.nodeType === 1 &&
+        (el.tagName === 'RUBY' || el.classList.contains('vocabulary') || el.classList.contains('nobr'));
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        const close = node.nodeValue.match(CLOSE_PUNCT);
+        const prev = node.previousSibling;
+        if (close && isWord(prev)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          prev.parentNode.insertBefore(wrap, prev);
+          wrap.appendChild(prev);
+          wrap.appendChild(document.createTextNode(close[0]));
+          node.nodeValue = node.nodeValue.slice(close[0].length);
+        }
+        const open = node.nodeValue.match(OPEN_PUNCT);
+        const next = node.nextSibling;
+        if (open && isWord(next)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          next.parentNode.insertBefore(wrap, next);
+          wrap.appendChild(document.createTextNode(open[0]));
+          wrap.appendChild(next);
+          node.nodeValue = node.nodeValue.slice(0, node.nodeValue.length - open[0].length);
+        }
+      });
+    }
+
+    /* ===================== 跟讀錄音與聲音相似度評分 =====================
+       不用語音辨識（不管本機 whisper 或瀏覽器內建，對台語都只能辨識出「近似音」的
+       華語字），改成直接比對「錄音」跟「範例音檔」兩段聲音本身的相似度：
+       範例音檔就是這一句的意傳媠聲 mp3（跟播放用的是同一個檔）。
+
+       比對方式：兩段音檔都用 Web Audio API 解碼、重取樣到同一個取樣率，
+       切成一小段一小段（frame）算「音量（RMS）」和「過零率（ZCR，粗略反映音色明亮度）」
+       兩個特徵，再用動態時間規整（DTW）把長短不一定的兩段特徵序列對齊、算出平均差距，
+       轉成 0～100 分。
+
+       ⚠️ 這只是「聲音的節奏／音量走勢像不像」，沒有語意內容，沒辦法像文字辨識那樣
+       標出「哪個字唸錯」，分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecording = false;
+    let currentRecordSeq = null;
+    let recordingStream = null;
+
+    function toggleRecording(event, seqIndex) {
+      event.stopPropagation();
+      const micBtn = document.getElementById('mic-S-' + seqIndex);
+      const statusDiv = document.getElementById('status-S-' + seqIndex);
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      if (isRecording) {
+        const wasSameSentence = currentRecordSeq === seqIndex;
+        stopRecording();
+        if (wasSameSentence) return;
+      }
+
+      startRecording(seqIndex, micBtn, statusDiv, resultDiv);
+    }
+
+    function startRecording(seqIndex, btn, statusDiv, resultDiv) {
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        alert('這個瀏覽器不支援錄音功能，請改用電腦版 Chrome 或 Edge。');
+        return;
+      }
+
+      navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+          recordingStream = stream;
+          mediaRecorder = new MediaRecorder(stream);
+          audioChunks = [];
+          isRecording = true;
+          currentRecordSeq = seqIndex;
+
+          mediaRecorder.ondataavailable = e => {
+            if (e.data && e.data.size > 0) audioChunks.push(e.data);
+          };
+
+          mediaRecorder.onstop = () => {
+            const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+            const audioUrl = URL.createObjectURL(audioBlob);
+
+            recordingStream.getTracks().forEach(track => track.stop());
+
+            statusDiv.innerHTML = `
+              <div class="speak-controls">
+                <button type="button" class="speak-play-btn">▶️ 播放我的發音</button>
+                <button type="button" class="speak-eval-btn">🎯 開始評估</button>
+              </div>
+            `;
+            statusDiv.querySelector('.speak-play-btn').addEventListener('click', function(e) {
+              playRecord(e, audioUrl);
+            });
+            statusDiv.querySelector('.speak-eval-btn').addEventListener('click', function(e) {
+              evaluateAudio(e, seqIndex, audioBlob);
+            });
+          };
+
+          mediaRecorder.start();
+          btn.textContent = '⏹️';
+          btn.classList.add('recording');
+          statusDiv.innerHTML = `<span class="pulse-dot">🔴</span> 錄音中…請跟著唸這句，唸完再按一次麥克風結束`;
+          resultDiv.innerHTML = '';
+        })
+        .catch(err => {
+          console.error('無法取得麥克風權限:', err);
+          alert('無法取得麥克風權限，請確認已允許瀏覽器使用麥克風。');
+        });
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === 'recording') {
+        mediaRecorder.stop();
+      }
+      isRecording = false;
+      const btn = document.getElementById('mic-S-' + currentRecordSeq);
+      if (btn) {
+        btn.textContent = '🎤';
+        btn.classList.remove('recording');
+      }
+    }
+
+    function playRecord(event, url) {
+      event.stopPropagation();
+      const audio = new Audio(url);
+      audio.play().catch(err => console.error('播放錄音失敗:', err));
+    }
+
+    /* ---------- 聲音特徵擷取與 DTW 相似度 ---------- */
+
+    let sharedAudioCtx = null;
+    function getAudioCtx() {
+      if (!sharedAudioCtx) {
+        const Ctor = window.AudioContext || window.webkitAudioContext;
+        sharedAudioCtx = new Ctor();
+      }
+      return sharedAudioCtx;
+    }
+
+    function decodeAudioSamples(audioCtx, arrayBuffer) {
+      return new Promise((resolve, reject) => {
+        audioCtx.decodeAudioData(arrayBuffer.slice(0), buffer => {
+          let mono = buffer.getChannelData(0);
+          if (buffer.numberOfChannels > 1) {
+            mono = new Float32Array(buffer.length);
+            for (let c = 0; c < buffer.numberOfChannels; c++) {
+              const data = buffer.getChannelData(c);
+              for (let i = 0; i < buffer.length; i++) mono[i] += data[i] / buffer.numberOfChannels;
+            }
+          }
+          resolve({ samples: mono, sampleRate: buffer.sampleRate });
+        }, reject);
+      });
+    }
+
+    /* 錄音跟範例音檔解碼出來的取樣率不一定一樣（瀏覽器解碼常會用自己的
+       AudioContext 取樣率），統一線性重取樣到同一個取樣率，兩邊每一幀代表
+       的實際時間長度才會一致，DTW 比對才公平。 */
+    function resampleLinear(samples, fromRate, toRate) {
+      if (fromRate === toRate) return samples;
+      const ratio = fromRate / toRate;
+      const newLen = Math.max(1, Math.floor(samples.length / ratio));
+      const out = new Float32Array(newLen);
+      for (let i = 0; i < newLen; i++) {
+        const srcPos = i * ratio;
+        const i0 = Math.floor(srcPos);
+        const i1 = Math.min(i0 + 1, samples.length - 1);
+        const frac = srcPos - i0;
+        out[i] = samples[i0] * (1 - frac) + samples[i1] * frac;
+      }
+      return out;
+    }
+
+    const AUDIO_TARGET_SR = 16000;
+    const AUDIO_FRAME_SIZE = 400;   // 25ms
+    const AUDIO_HOP_SIZE = 160;     // 10ms
+    const AUDIO_MAX_SECONDS = 20;   // 超過就截斷，避免誤按錄很久導致 DTW 算太久
+
+    function extractFeatures(samples, sampleRate) {
+      const resampled = resampleLinear(samples, sampleRate, AUDIO_TARGET_SR);
+      const maxSamples = AUDIO_MAX_SECONDS * AUDIO_TARGET_SR;
+      const sig = resampled.length > maxSamples ? resampled.subarray(0, maxSamples) : resampled;
+
+      const rms = [];
+      const zcr = [];
+      for (let start = 0; start + AUDIO_FRAME_SIZE <= sig.length; start += AUDIO_HOP_SIZE) {
+        let sumSq = 0;
+        let crossings = 0;
+        for (let i = 0; i < AUDIO_FRAME_SIZE; i++) {
+          const v = sig[start + i];
+          sumSq += v * v;
+          if (i > 0 && ((sig[start + i - 1] >= 0) !== (v >= 0))) crossings++;
+        }
+        rms.push(Math.sqrt(sumSq / AUDIO_FRAME_SIZE));
+        zcr.push(crossings / AUDIO_FRAME_SIZE);
+      }
+      return { rms, zcr };
+    }
+
+    /* 麥克風錄音前後常會多錄到一小段安靜的空白，裁掉頭尾低於門檻的幀，
+       不然 DTW 對齊會被這段「兩邊都很安靜但不一定等長」的空白拖累。 */
+    function trimSilence(rms, zcr, threshold) {
+      const max = Math.max(1e-6, ...rms);
+      const thr = max * threshold;
+      let start = 0, end = rms.length;
+      while (start < end && rms[start] < thr) start++;
+      while (end > start && rms[end - 1] < thr) end--;
+      if (end - start < 3) return { rms, zcr };  // 太短就整段保留，避免裁過頭
+      return { rms: rms.slice(start, end), zcr: zcr.slice(start, end) };
+    }
+
+    function zscoreNormalize(arr) {
+      const n = arr.length;
+      if (!n) return arr.slice();
+      const mean = arr.reduce((a, b) => a + b, 0) / n;
+      const variance = arr.reduce((a, b) => a + (b - mean) * (b - mean), 0) / n;
+      const sd = Math.sqrt(variance) || 1;
+      return arr.map(v => (v - mean) / sd);
+    }
+
+    /* 動態時間規整（DTW）：featA/featB 是 {rms:[...], zcr:[...]}，長度不用一樣。
+       回傳依實際規整路徑長度正規化過的平均差距，轉成的 0~100 分數。 */
+    function dtwSimilarity(featA, featB) {
+      const n = featA.rms.length;
+      const m = featB.rms.length;
+      if (n < 2 || m < 2) return { score: 0, avgCost: Infinity };
+
+      const rmsA = zscoreNormalize(featA.rms);
+      const rmsB = zscoreNormalize(featB.rms);
+      const zcrA = zscoreNormalize(featA.zcr);
+      const zcrB = zscoreNormalize(featB.zcr);
+
+      const dp = new Array(n + 1);
+      for (let i = 0; i <= n; i++) dp[i] = new Float64Array(m + 1).fill(Infinity);
+      dp[0][0] = 0;
+
+      for (let i = 1; i <= n; i++) {
+        for (let j = 1; j <= m; j++) {
+          const dRms = rmsA[i - 1] - rmsB[j - 1];
+          const dZcr = zcrA[i - 1] - zcrB[j - 1];
+          const cost = Math.sqrt(dRms * dRms + dZcr * dZcr);
+          const best = Math.min(dp[i - 1][j], dp[i][j - 1], dp[i - 1][j - 1]);
+          dp[i][j] = cost + best;
+        }
+      }
+
+      let i = n, j = m, pathLen = 0;
+      while (i > 0 || j > 0) {
+        pathLen++;
+        if (i === 0) { j--; continue; }
+        if (j === 0) { i--; continue; }
+        const diag = dp[i - 1][j - 1], up = dp[i - 1][j], left = dp[i][j - 1];
+        if (diag <= up && diag <= left) { i--; j--; }
+        else if (up <= left) { i--; }
+        else { j--; }
+      }
+
+      const avgCost = dp[n][m] / Math.max(1, pathLen);
+      // avgCost 是正規化特徵空間裡的平均步進距離；用指數衰減轉成 0~100 分，
+      // k 值（1.1）是憑經驗抓的寬鬆常數，之後可依實測回饋再調整。
+      const score = Math.round(Math.max(0, Math.min(100, 100 * Math.exp(-avgCost / 1.1))));
+      return { score, avgCost };
+    }
+
+    /* ---------- 範例音檔載入（快取，同一句只抓一次） ----------
+       評估要拿到音檔的原始位元組來解碼，只能用 fetch／XHR；
+       用 file:// 直接開這支網頁時瀏覽器會擋跨檔案讀取（播放沒事、評估會失敗），
+       所以抓不到時給明確的提示：改用本機小伺服器或放到網站上開。 */
+
+    const refAudioCache = {};
+    function fetchArrayBuffer(url) {
+      return fetch(url)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.arrayBuffer();
+        })
+        .catch(() => new Promise((resolve, reject) => {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', url);
+          xhr.responseType = 'arraybuffer';
+          xhr.onload = () => (xhr.response ? resolve(xhr.response) : reject(new Error('empty')));
+          xhr.onerror = () => reject(new Error('xhr failed'));
+          xhr.send();
+        }));
+    }
+
+    function loadReferenceAudio(seqIndex) {
+      if (refAudioCache[seqIndex]) return refAudioCache[seqIndex];
+      const url = AUDIO_BASE + allSentences[seqIndex].audio;
+      const p = fetchArrayBuffer(url)
+        .then(buf => decodeAudioSamples(getAudioCtx(), buf))
+        .catch(err => {
+          delete refAudioCache[seqIndex];
+          console.error('無法載入範例音檔:', url, err);
+          err.stage = 'ref';
+          throw err;
+        });
+      refAudioCache[seqIndex] = p;
+      return p;
+    }
+
+    /* ---------- 評估流程 ---------- */
+
+    function evaluateAudio(event, seqIndex, audioBlob) {
+      event.stopPropagation();
+      const statusDiv = document.getElementById('status-S-' + seqIndex);
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      resultDiv.innerHTML = '';
+      statusDiv.innerHTML = '⚙️ 正在比對聲音中…';
+
+      Promise.all([
+        audioBlob.arrayBuffer()
+          .then(buf => decodeAudioSamples(getAudioCtx(), buf))
+          .catch(err => { err.stage = 'rec'; throw err; }),
+        loadReferenceAudio(seqIndex)
+      ])
+        .then(([rec, ref]) => {
+          const featRecRaw = extractFeatures(rec.samples, rec.sampleRate);
+          const featRefRaw = extractFeatures(ref.samples, ref.sampleRate);
+          const featRec = trimSilence(featRecRaw.rms, featRecRaw.zcr, 0.08);
+          const featRef = trimSilence(featRefRaw.rms, featRefRaw.zcr, 0.08);
+          const { score } = dtwSimilarity(featRec, featRef);
+          statusDiv.innerHTML = '✅ 分析完成';
+          showAudioEvaluationResult(seqIndex, score, featRef.rms, featRec.rms);
+        })
+        .catch(err => {
+          console.error('聲音比對失敗:', err);
+          if (err && err.stage === 'ref') {
+            statusDiv.innerHTML = '⚠️ 讀不到這一句的範例音檔。若是用檔案總管直接開這個檔，' +
+              '瀏覽器會擋住評分用的音檔讀取（播放不受影響）——請把整個資料夾放到網站上，' +
+              '或在資料夾裡開一個本機小伺服器再從 http://localhost 開啟。';
+          } else if (err && err.stage === 'rec') {
+            statusDiv.innerHTML = '⚠️ 這段錄音無法解析，可能太短或沒錄到聲音，請重新錄一次。';
+          } else {
+            statusDiv.innerHTML = '⚠️ 沒辦法完成聲音比對，請重新錄音後再試一次。';
+          }
+        });
+    }
+
+    /* 兩條線各自依自己的長度正規化 x 軸（不是照 DTW 路徑對齊），
+       用意是讓使用者一眼看出「節奏快慢、抑揚頓挫」大致像不像，
+       不是精準的逐幀對齊圖。 */
+    function buildContourSvg(refRms, recRms) {
+      const w = 300, h = 60, pad = 2;
+      const toPoints = arr => {
+        const max = Math.max(1e-6, ...arr);
+        return arr.map((v, i) => {
+          const x = arr.length > 1 ? (i / (arr.length - 1)) * (w - pad * 2) + pad : w / 2;
+          const y = h - pad - (v / max) * (h - pad * 2);
+          return `${x.toFixed(1)},${y.toFixed(1)}`;
+        }).join(' ');
+      };
+      return `
+        <svg class="speak-contour" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <polyline points="${toPoints(refRms)}" class="contour-ref" fill="none" />
+          <polyline points="${toPoints(recRms)}" class="contour-rec" fill="none" />
+        </svg>
+      `;
+    }
+
+    function showAudioEvaluationResult(seqIndex, score, refRms, recRms) {
+      const resultDiv = document.getElementById('result-S-' + seqIndex);
+
+      let feedbackText, scoreClass;
+      if (score >= 70) {
+        feedbackText = '🌟 太棒了，節奏和音量走勢很接近範例！';
+        scoreClass = 'score-excellent';
+      } else if (score >= 40) {
+        feedbackText = '👍 有點像了，再多聽幾次範例音、跟著練習！';
+        scoreClass = 'score-good';
+      } else {
+        feedbackText = '💡 落差還蠻大的，建議先聽範例音、跟著慢慢唸！';
+        scoreClass = 'score-retry';
+      }
+
+      resultDiv.innerHTML = `
+        <div class="speak-eval-card">
+          <div class="speak-eval-score-row">
+            <span class="speak-eval-score ${scoreClass}">${score} 分</span>
+            <span class="speak-eval-feedback">${feedbackText}</span>
+          </div>
+          <div class="speak-contour-wrap">
+            ${buildContourSvg(refRms, recRms)}
+            <div class="speak-contour-legend">
+              <span class="legend-ref">━ 範例音</span>
+              <span class="legend-rec">━ 我的錄音</span>
+            </div>
+          </div>
+          <div class="speak-accuracy-note">⚠️ 這是「聲音節奏／音量走勢」的相似度，不是逐字發音辨識，不代表有沒有唸對每一個字，僅供練習參考，不是正式發音評量。</div>
+        </div>
+      `;
+    }
+
+    /* ===================== 啟動 ===================== */
+
+    renderContent();
+    bindPlayerBar();
+  </script>
+ </body>
+</html>
