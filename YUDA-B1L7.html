@@ -516,6 +516,54 @@
       font-size: 1.05em;
     }
 
+    /* ===== 檢核項目明細（節奏音量走勢／音節數量／聲音長度） ===== */
+    .speak-eval-items {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin: 8px 0 2px 0;
+      padding-top: 6px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .speak-eval-item {
+      display: grid;
+      grid-template-columns: 8.5em 1fr 4em;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .speak-eval-item .item-name {
+      font-weight: bold;
+    }
+
+    .speak-eval-item .item-detail {
+      color: #555;
+    }
+
+    .speak-eval-item .item-score {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .speak-eval-item .item-score.lv-ok {
+      color: #2f9e44;
+    }
+
+    .speak-eval-item .item-score.lv-mid {
+      color: #b38f00;
+    }
+
+    .speak-eval-item .item-score.lv-low {
+      color: #c92a2a;
+    }
+
+    @media (max-width: 640px) {
+      .speak-eval-item {
+        grid-template-columns: 7em 1fr 3.4em;
+      }
+    }
+
     .speak-contour-wrap {
       margin: 8px 0;
     }
@@ -1977,6 +2025,8 @@
       });
 
       applyTailo();
+      // 臺羅標完才算得出每一句應有幾個音節（給跟讀評分的「音節數量」用）
+      allSentences.forEach(s => { s.sylCount = countExpectedSyllables(s.el); });
       glueBreakingPunctuation(contentArea);
 
       // 保險：若課文改動使句數與時間戳陣列長度不符，補 null 對齊，避免陣列越界
@@ -2090,6 +2140,36 @@
       });
     }
 
+    /* 逐句「應有音節數」：臺羅標音標完後，每個詞都是 <ruby><rt>tsi̍t-ê</rt></ruby>，
+       rt 裡用「-」分隔的段數就是音節數。課文裡本來就用羅馬字寫的詞
+       （oo-tóo-bái、冷sih-sih）沒有 ruby，另外掃羅馬字 token 補算；
+       括號裡的注音附註（例：新冠肺炎 (sin kuan hì-iām)）是註解不是課文，不計。 */
+    const LATIN_CH = 'A-Za-z\\u00c0-\\u024f\\u1e00-\\u1eff';
+    const LATIN_TOKEN = new RegExp(
+      `[${LATIN_CH}][${LATIN_CH}\\u0300-\\u036f]*(?:-[${LATIN_CH}][${LATIN_CH}\\u0300-\\u036f]*)*`, 'g');
+
+    function countExpectedSyllables(el) {
+      let n = 0;
+      el.querySelectorAll('rt').forEach(rt => {
+        n += rt.textContent.split('-').filter(s => s.trim()).length;
+      });
+
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let plain = '';
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (node.parentElement && node.parentElement.closest('ruby, .vocab-number, button')) continue;
+        // 加換行分隔：不然「bùn來bùn去」的 來／去 被 ruby 帶走後，
+        // 兩個 bùn 會黏成一個 token 而少算一個音節
+        plain += node.nodeValue + '\n';
+      }
+      plain = plain.replace(/[(（][^)）]*[)）]/g, ' ');
+      (plain.match(LATIN_TOKEN) || []).forEach(tok => {
+        n += tok.split('-').filter(s => s.trim()).length;
+      });
+      return n;
+    }
+
     /* ===================== 跟讀錄音與聲音相似度評分 =====================
        不用語音辨識（不管本機 whisper 或瀏覽器內建，對台語都只能辨識出「近似音」的
        華語字），改成直接比對「錄音」跟「範例音檔」兩段聲音本身的相似度：
@@ -2102,8 +2182,14 @@
        兩個特徵，再用動態時間規整（DTW）把長短不一定的兩段特徵序列對齊、算出平均差距，
        轉成 0～100 分。
 
-       ⚠️ 這只是「聲音的節奏／音量走勢像不像」，沒有語意內容，沒辦法像文字辨識那樣
-       標出「哪個字唸錯」，分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
+       檢核項目共三項，加權合成總分：
+         1. 節奏音量走勢（50%）：上面說的 DTW 相似度。
+         2. 音節數量（30%）：把音量包絡平滑後數「母音核心」的峰數當作唸了幾個音節，
+            跟課文臺羅算出來的應有音節數比；可抓出漏字、吞字、多唸字。
+         3. 聲音長度（20%）：錄音與範例音（都已裁掉頭尾靜音）的時長比，抓唸太快／太拖。
+
+       ⚠️ 三項都是「聲音層面」的指標，沒有語意內容，沒辦法像文字辨識那樣標出「哪個字唸錯」，
+       分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
 
     let mediaRecorder = null;
     let audioChunks = [];
@@ -2330,6 +2416,78 @@
       return { score, avgCost };
     }
 
+    /* ---------- 檢核項目二：音節數量 ---------- */
+
+    function movingAverage(arr, win) {
+      const half = Math.floor(win / 2);
+      return arr.map((_, i) => {
+        let sum = 0, cnt = 0;
+        for (let j = Math.max(0, i - half); j <= Math.min(arr.length - 1, i + half); j++) {
+          sum += arr[j]; cnt++;
+        }
+        return sum / cnt;
+      });
+    }
+
+    /* 台語是單音節文字，一個音節＝一個母音核心＝音量包絡上的一個峰。
+       做法：包絡平滑到 ~50ms（壓掉單幀抖動與塞音爆破），找局部極大值，
+       再把「離太近」或「兩峰之間沒有明顯凹下去」的峰合併成同一個音節。
+       這是粗估：連讀（tsi̍t-ê）、入聲尾、鼻音容易少算，氣音與雜音容易多算。 */
+    const SYL_SMOOTH_FRAMES = 5;   // 50ms
+    const SYL_FLOOR = 0.15;        // 低於最大音量 15% 不算母音核心
+    const SYL_MIN_GAP = 9;         // 兩個音節峰至少相隔 90ms
+    const SYL_DIP_RATIO = 0.78;    // 兩峰間要凹到較小峰的 78% 以下才算兩個音節
+
+    function countSyllablePeaks(rms) {
+      if (!rms || rms.length < 3) return 0;
+      const env = movingAverage(rms, SYL_SMOOTH_FRAMES);
+      const max = Math.max(1e-6, ...env);
+      const norm = env.map(v => v / max);
+
+      const peaks = [];
+      for (let i = 1; i < norm.length - 1; i++) {
+        if (norm[i] >= norm[i - 1] && norm[i] > norm[i + 1] && norm[i] >= SYL_FLOOR) peaks.push(i);
+      }
+
+      const kept = [];
+      peaks.forEach(p => {
+        if (!kept.length) { kept.push(p); return; }
+        const q = kept[kept.length - 1];
+        let valley = Infinity;
+        for (let i = q; i <= p; i++) valley = Math.min(valley, norm[i]);
+        const smaller = Math.min(norm[p], norm[q]);
+        if (p - q < SYL_MIN_GAP || valley > smaller * SYL_DIP_RATIO) {
+          if (norm[p] > norm[q]) kept[kept.length - 1] = p;   // 同一個音節，留較強的那個峰
+          return;
+        }
+        kept.push(p);
+      });
+      return kept.length;
+    }
+
+    /* 音節數量給分：偵測本身就有誤差（拿範例音自己回測大約 ±10%），
+       所以先放寬「應有音節數的 12%、至少 1.2 個音節」不扣分，超過的部分才線性遞減到 0。
+       短句每個音節佔比大，用固定下限才不會一差一個字就掉很多分。 */
+    function syllableCountScore(detected, expected) {
+      if (!expected) return null;
+      const allowance = Math.max(1.2, expected * 0.12);
+      const err = Math.max(0, Math.abs(detected - expected) - allowance) / expected;
+      return Math.round(100 * Math.max(0, 1 - err / 0.4));
+    }
+
+    /* ---------- 檢核項目三：聲音長度 ---------- */
+
+    function framesToSeconds(frameCount) {
+      return frameCount * AUDIO_HOP_SIZE / AUDIO_TARGET_SR;
+    }
+
+    /* 長度給分：用時長比的對數（快一倍與慢一倍對稱），±16% 內不扣分。 */
+    function durationScore(recSec, refSec) {
+      if (!(recSec > 0) || !(refSec > 0)) return null;
+      const dev = Math.max(0, Math.abs(Math.log(recSec / refSec)) - 0.15);
+      return Math.round(100 * Math.max(0, 1 - dev / 0.55));
+    }
+
     /* ---------- 範例音檔載入（快取，同一句只抓一次） ---------- */
 
     const REF_AUDIO_BASE = 'https://cyril-mingdao.github.io/pen/YUDA-B1L7/';
@@ -2374,9 +2532,24 @@
           const featRefRaw = extractFeatures(ref.samples, ref.sampleRate);
           const featRec = trimSilence(featRecRaw.rms, featRecRaw.zcr, 0.08);
           const featRef = trimSilence(featRefRaw.rms, featRefRaw.zcr, 0.08);
-          const { score } = dtwSimilarity(featRec, featRef);
+
+          const contour = dtwSimilarity(featRec, featRef).score;
+
+          const expected = (allSentences[seqIndex] || {}).sylCount || 0;
+          const recSyl = countSyllablePeaks(featRec.rms);
+          const refSyl = countSyllablePeaks(featRef.rms);
+
+          const recSec = framesToSeconds(featRec.rms.length);
+          const refSec = framesToSeconds(featRef.rms.length);
+
           statusDiv.innerHTML = '✅ 分析完成';
-          showAudioEvaluationResult(seqIndex, score, featRef.rms, featRec.rms);
+          showAudioEvaluationResult(seqIndex, {
+            contour: contour,
+            syllable: { detected: recSyl, expected: expected, refDetected: refSyl },
+            duration: { recSec: recSec, refSec: refSec },
+            refRms: featRef.rms,
+            recRms: featRec.rms
+          });
         })
         .catch(err => {
           console.error('聲音比對失敗:', err);
@@ -2411,28 +2584,102 @@
       `;
     }
 
-    function showAudioEvaluationResult(seqIndex, score, refRms, recRms) {
+    function itemScoreClass(score) {
+      if (score >= 70) return 'lv-ok';
+      if (score >= 40) return 'lv-mid';
+      return 'lv-low';
+    }
+
+    function renderEvalItem(name, detail, score) {
+      const scoreText = score === null ? '—' : `${score} 分`;
+      const cls = score === null ? '' : itemScoreClass(score);
+      return `
+        <div class="speak-eval-item">
+          <span class="item-name">${name}</span>
+          <span class="item-detail">${detail}</span>
+          <span class="item-score ${cls}">${scoreText}</span>
+        </div>
+      `;
+    }
+
+    function showAudioEvaluationResult(seqIndex, data) {
       const resultDiv = document.getElementById('result-S-' + seqIndex);
 
+      const contourScore = data.contour;
+      const syl = data.syllable;
+      const dur = data.duration;
+      const sylScore = syllableCountScore(syl.detected, syl.expected);
+      const durScore = durationScore(dur.recSec, dur.refSec);
+
+      /* 加權合成；某一項算不出來（例如這句沒有臺羅、或音檔長度為 0）就把它的權重
+         按比例分回其他項，避免整體分數被莫名拉低。 */
+      const parts = [
+        { score: contourScore, weight: 0.5 },
+        { score: sylScore, weight: 0.3 },
+        { score: durScore, weight: 0.2 }
+      ].filter(p => p.score !== null);
+      const weightSum = parts.reduce((a, p) => a + p.weight, 0) || 1;
+      const total = Math.round(parts.reduce((a, p) => a + p.score * p.weight, 0) / weightSum);
+
+      // 總分過關但有某一項明顯偏低時，不要講「三項都很接近」，直接指向最弱那一項
+      const weakest = parts.reduce((a, p) => (a === null || p.score < a.score ? p : a), null);
+
       let feedbackText, scoreClass;
-      if (score >= 70) {
-        feedbackText = '🌟 太棒了，節奏和音量走勢很接近範例！';
+      if (total >= 70 && weakest && weakest.score >= 70) {
+        feedbackText = '🌟 太棒了，三項都很接近範例！';
         scoreClass = 'score-excellent';
-      } else if (score >= 40) {
-        feedbackText = '👍 有點像了，再多聽幾次範例音、跟著練習！';
+      } else if (total >= 70) {
+        feedbackText = '🙂 整體不錯，但有一項還差一點，看下面明細補強！';
+        scoreClass = 'score-excellent';
+      } else if (total >= 40) {
+        feedbackText = '👍 有點像了，看下面哪一項分數較低再加強！';
         scoreClass = 'score-good';
       } else {
         feedbackText = '💡 落差還蠻大的，建議先聽範例音、跟著慢慢唸！';
         scoreClass = 'score-retry';
       }
 
-      const chartHtml = buildContourSvg(refRms, recRms);
+      // 音節數量的文字提示
+      let sylHint;
+      if (!syl.expected) {
+        sylHint = '這一句沒有逐詞臺羅資料，無法比對';
+      } else if (syl.detected < syl.expected * 0.9) {
+        sylHint = '偵測到的音節偏少，可能有字漏唸或連著吞過去';
+      } else if (syl.detected > syl.expected * 1.1) {
+        sylHint = '偵測到的音節偏多，可能多唸了字，或有雜音被當成音節';
+      } else {
+        sylHint = '音節數量對得上';
+      }
+      const sylDetail = syl.expected
+        ? `唸出 ${syl.detected}／應有 ${syl.expected} 音節（範例音偵測 ${syl.refDetected}）｜${sylHint}`
+        : sylHint;
+
+      // 聲音長度的文字提示
+      const ratio = dur.refSec > 0 ? dur.recSec / dur.refSec : 0;
+      let durHint;
+      if (!ratio) {
+        durHint = '長度算不出來';
+      } else if (ratio < 0.85) {
+        durHint = `比範例快 ${(1 / ratio).toFixed(2)} 倍，可能唸太趕`;
+      } else if (ratio > 1.18) {
+        durHint = `比範例慢 ${ratio.toFixed(2)} 倍，可能拖太久或有多餘停頓`;
+      } else {
+        durHint = '速度跟範例差不多';
+      }
+      const durDetail = `我的 ${dur.recSec.toFixed(1)} 秒／範例 ${dur.refSec.toFixed(1)} 秒｜${durHint}`;
+
+      const chartHtml = buildContourSvg(data.refRms, data.recRms);
 
       resultDiv.innerHTML = `
         <div class="speak-eval-card">
           <div class="speak-eval-score-row">
-            <span class="speak-eval-score ${scoreClass}">${score} 分</span>
+            <span class="speak-eval-score ${scoreClass}">${total} 分</span>
             <span class="speak-eval-feedback">${feedbackText}</span>
+          </div>
+          <div class="speak-eval-items">
+            ${renderEvalItem('🎵 節奏音量走勢', '整句的抑揚頓挫與音量起伏跟範例像不像', contourScore)}
+            ${renderEvalItem('🔢 音節數量', sylDetail, sylScore)}
+            ${renderEvalItem('⏱️ 聲音長度', durDetail, durScore)}
           </div>
           <div class="speak-contour-wrap">
             ${chartHtml}
@@ -2441,7 +2688,7 @@
               <span class="legend-rec">━ 我的錄音</span>
             </div>
           </div>
-          <div class="speak-accuracy-note">⚠️ 這是「聲音節奏／音量走勢」的相似度，不是逐字發音辨識，不代表有沒有唸對每一個字，僅供練習參考，不是正式發音評量。</div>
+          <div class="speak-accuracy-note">⚠️ 這三項都是從「聲音本身」算出來的（節奏音量走勢、音節數量、聲音長度），不是逐字發音辨識，不代表有沒有唸對每一個字。音節數量用音量峰數粗估，連讀、入聲尾容易少算，氣音、雜音容易多算；僅供練習參考，不是正式發音評量。</div>
         </div>
       `;
     }
