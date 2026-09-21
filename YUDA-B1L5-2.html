@@ -526,24 +526,25 @@
     }
 
     /* ===== 檢核項目明細（節奏音量走勢／音節數量／聲音長度） ===== */
+    /* 三列共用同一個格線：項目名稱與分數欄依內容自動取寬、不斷行，三列仍上下對齊；
+       只有中間的說明文字可以換行 */
     .speak-eval-items {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      align-items: baseline;
+      gap: 4px 10px;
       margin: 8px 0 2px 0;
       padding-top: 6px;
       border-top: 1px dashed var(--line);
     }
 
     .speak-eval-item {
-      display: grid;
-      grid-template-columns: 8.5em 1fr 4em;
-      align-items: baseline;
-      gap: 6px;
+      display: contents;
     }
 
     .speak-eval-item .item-name {
       font-weight: bold;
+      white-space: nowrap;
     }
 
     .speak-eval-item .item-detail {
@@ -553,6 +554,7 @@
     .speak-eval-item .item-score {
       text-align: right;
       font-weight: bold;
+      white-space: nowrap;
     }
 
     .speak-eval-item .item-score.lv-ok {
@@ -568,8 +570,8 @@
     }
 
     @media (max-width: 640px) {
-      .speak-eval-item {
-        grid-template-columns: 7em 1fr 3.4em;
+      .speak-eval-items {
+        column-gap: 6px;
       }
     }
 
@@ -739,10 +741,16 @@
 
     .player-credit {
       font-size: 0.78em;
-      opacity: 0.7;
+      opacity: 0.85;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    /* 授權書要求標示來源：「育達文化事業股份有限公司（經授權使用）」任何螢幕都要看得到，
+       空間不夠時只省略後面的片名 */
+    .player-credit .credit-src {
+      white-space: normal;
     }
 
     .player-credit a {
@@ -795,6 +803,15 @@
       display: none;
     }
 
+    .rate-select {
+      padding-right: 8px;
+    }
+
+    .rate-select option {
+      background: #ffffff;
+      color: var(--black);
+    }
+
     .pbtn:disabled {
       opacity: 0.4;
       cursor: not-allowed;
@@ -833,7 +850,7 @@
         gap: 8px;
       }
 
-      .player-credit {
+      .player-credit .credit-title {
         display: none;
       }
 
@@ -1093,7 +1110,7 @@
         height: 34px;
       }
 
-      .player-credit {
+      .player-credit .credit-title {
         display: none;
       }
 
@@ -1198,13 +1215,18 @@
      <input type="range" id="seekbar" min="0" max="75" step="0.1" value="0" aria-label="時間軸（可拖拉）">
      <span class="time" id="time-dur">1:15</span>
     </div>
-    <div class="player-credit">音檔來源：育達文化事業股份有限公司（經授權使用）《育達高中台語 第5單元 情批 全篇課文》</div>
+    <div class="player-credit"><span class="credit-src">音檔來源：育達文化事業股份有限公司（經授權使用）</span><span class="credit-title">《育達高中台語 第5單元 情批 全篇課文》</span></div>
    </div>
    <div class="player-controls">
     <a class="pbtn fallback hidden" id="yt-link" target="_blank" rel="noopener" title="到 YouTube 聽這一句">▶ 到 YouTube 聽這一句</a>
     <button class="pbtn" id="btn-replay" title="重播這一句">⟲<span class="lbl"> 重播</span></button>
     <button class="pbtn" id="btn-auto" title="播完自動接下一句">⏭<span class="lbl"> 連播</span></button>
-    <button class="pbtn" id="btn-rate" title="放慢速度">1x</button>
+    <select class="pbtn rate-select" id="btn-rate" title="播放速度" aria-label="播放速度">
+     <option value="0.5">0.5x</option>
+     <option value="0.75">0.75x</option>
+     <option value="1" selected>1x</option>
+     <option value="1.5">1.5x</option>
+    </select>
     <button class="pbtn" id="btn-stop" title="停止">■</button>
     <button class="pbtn" id="btn-fold" title="完全收起播放列">⌄</button>
    </div>
@@ -1513,6 +1535,7 @@
     let watchTimer = null;
     let currentSeg = null;     // {start, end, el, seqIndex}
     let autoNext = false;
+    let followScroll = false;  // 播整頁／逐句連播時，畫面自動捲到正在唸的句子
     let playRate = 1;
 
     /* YouTube 只允許有網域來源的頁面嵌入播放器。
@@ -1714,8 +1737,19 @@
       if (b) b.textContent = playing ? '⏸' : '▶';
     }
 
+    /* 捲到讓句子落在「可視區」正中央：扣掉底部浮動播放列的高度，才不會被它蓋住 */
+    function scrollSentenceToCenter(el) {
+      const bar = document.getElementById('player-bar');
+      const barH = bar.classList.contains('collapsed') ? 0 : bar.offsetHeight;
+      const r = el.getBoundingClientRect();
+      const visibleH = window.innerHeight - barH;
+      const target = window.scrollY + r.top + r.height / 2 - visibleH / 2;
+      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+    }
+
     function setPlayingEl(el) {
       if (trackedEl === el) return;
+      if (el && followScroll) scrollSentenceToCenter(el);
       if (trackedEl) {
         trackedEl.classList.remove('playing');
         setBtnGlyph(trackedEl, false);
@@ -1756,7 +1790,8 @@
 
     let pendingSegment = null;
 
-    function playSegment(start, end, el, seqIndex, label) {
+    function playSegment(start, end, el, seqIndex, label, follow) {
+      followScroll = !!follow;
       if (!canEmbed) {
         showFallbackLink(start, label);
         toast('請改用網址開啟；或按紅色鈕到 YouTube 聽這一句');
@@ -1857,6 +1892,7 @@
       clearWatch();
       clearTimeout(blockedCheckTimer);
       currentSeg = null;
+      followScroll = false;
       if (!ytReady) return;
       try {
         if (ytPlayer.setStopAt) ytPlayer.setStopAt(Infinity);
@@ -1907,7 +1943,7 @@
       playSentenceBySeq(seqIndex);
     }
 
-    function playSentenceBySeq(seqIndex) {
+    function playSentenceBySeq(seqIndex, follow) {
       const s = allSentences[seqIndex];
       if (!s) return;
       const t = getTime(s.page, s.idx);
@@ -1915,14 +1951,14 @@
         toast('本句尚未校時（老師可用 ?edit=1 校時）');
         return;
       }
-      playSegment(t.start, t.end, s.el, seqIndex, `第 ${s.page} 頁：${s.text.slice(0, 18)}…`);
+      playSegment(t.start, t.end, s.el, seqIndex, `第 ${s.page} 頁：${s.text.slice(0, 18)}…`, follow);
     }
 
     function playNextSentence(seqIndex) {
       for (let i = seqIndex + 1; i < allSentences.length; i++) {
         const s = allSentences[i];
         if (getTime(s.page, s.idx)) {
-          playSentenceBySeq(i);
+          playSentenceBySeq(i, true);
           return;
         }
       }
@@ -1942,7 +1978,7 @@
       // 標示由 UI 迴圈依秒數自動移到正在唸的那一句
       const first = getTime(list[0].s.page, list[0].s.idx);
       const last = getTime(list[list.length - 1].s.page, list[list.length - 1].s.idx);
-      playSegment(first.start, last.end, null, null, `第 ${pageNum} 頁（整頁）`);
+      playSegment(first.start, last.end, null, null, `第 ${pageNum} 頁（整頁）`, true);
     }
 
     function showNoEmbedNotice(msg) {
@@ -2838,9 +2874,8 @@
       });
 
       const btnRate = document.getElementById('btn-rate');
-      btnRate.addEventListener('click', () => {
-        playRate = playRate === 1 ? 0.75 : 1;
-        btnRate.textContent = playRate + 'x';
+      btnRate.addEventListener('change', () => {
+        playRate = parseFloat(btnRate.value) || 1;
         btnRate.classList.toggle('on', playRate !== 1);
         if (ytReady) { try { ytPlayer.setPlaybackRate(playRate); } catch (e) {} }
       });
