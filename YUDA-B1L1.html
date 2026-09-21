@@ -1198,8 +1198,7 @@
      <input type="range" id="seekbar" min="0" max="261" step="0.1" value="0" aria-label="時間軸（可拖拉）">
      <span class="time" id="time-dur">4:21</span>
     </div>
-    <div class="player-credit">音檔來源：育達文化事業股份有限公司（經授權使用）《育達高中台語 第1單元 美食外送 全篇課文》 ·
-     <a href="https://www.youtube.com/watch?v=fPD6_5iQZZw" target="_blank" rel="noopener">YouTube 原片</a></div>
+    <div class="player-credit">音檔來源：育達文化事業股份有限公司（經授權使用）《育達高中台語 第1單元 美食外送 全篇課文》</div>
    </div>
    <div class="player-controls">
     <a class="pbtn fallback hidden" id="yt-link" target="_blank" rel="noopener" title="到 YouTube 聽這一句">▶ 到 YouTube 聽這一句</a>
@@ -1266,7 +1265,8 @@
 
     /* 句子時間戳（秒）。每頁一個陣列，索引 = 該頁斷句後的順序。
        null 代表尚未校時 → 該句按鈕會呈灰色。
-       ★ 用 ?edit=1 校時後，把匯出的內容整段換掉下面這個物件。 */
+       ★ 用 ?edit=1 校時後，把匯出的內容整段換掉下面這個物件，
+         並依新時間戳重新切逐句音檔 s{n}.mp3 上傳到 REF_AUDIO_BASE（平常播放與跟讀評分都讀那批檔）。 */
     const sentenceTimes = {
       "6": [
         { "start": 0.08, "end": 11.50 },
@@ -1561,9 +1561,18 @@
       }, 0);
     }
 
-    /* ===================== 句子播放（YouTube） ===================== */
+    /* ===================== 句子播放 =====================
+       平常直接播 GitHub Pages 上已切好的逐句音檔（REF_AUDIO_BASE/s{n}.mp3，跟跟讀評分
+       用的是同一批），不連 YouTube。只有老師的校時模式（?edit=1）需要整支原片的連續
+       時間軸，才載入 YouTube 播放器。
+
+       逐句音檔播放器（createClipPlayer）刻意做成跟 YouTube 播放器同一組介面
+       （seekTo／playVideo／pauseVideo／getCurrentTime／getPlayerState／getDuration／
+       setPlaybackRate），時間一律用「原片秒數」：第 n 個音檔＝sentenceTimes 攤平後第 n 句
+       的 start～end。所以下面的句子標示、時間軸、整頁連播邏輯都照舊，不用分兩套。 */
 
     const allSentences = [];   // [{page, idx, text, el}]，全篇連續順序
+    const USE_YT = new URLSearchParams(location.search).has('edit');
     let ytPlayer = null;
     let ytReady = false;
     let ytFailed = false;
@@ -1575,7 +1584,118 @@
     /* YouTube 只允許有網域來源的頁面嵌入播放器。
        用 file:// 直接開啟時沒有來源，播放器會出現「錯誤 153」，
        此時改用「外連到 YouTube 指定秒數」的備援模式。 */
-    const canEmbed = location.protocol === 'http:' || location.protocol === 'https:';
+    const canEmbed = !USE_YT || location.protocol === 'http:' || location.protocol === 'https:';
+
+    /* 逐句音檔播放器。只用一個 <audio> 元素、換 src 接下一句：瀏覽器對「同一個元素、
+       使用者點過才開始播」的放行比較寬鬆，連播／整頁播換檔時才不會被擋。 */
+    function createClipPlayer(hooks) {
+      const list = Object.keys(sentenceTimes)
+        .flatMap(p => sentenceTimes[p])
+        .map((t, n) => (t && t.end > t.start) ? { start: t.start, end: t.end, url: `${REF_AUDIO_BASE}s${n}.mp3` } : null)
+        .filter(Boolean)
+        .sort((a, b) => a.start - b.start);
+      const aud = new Audio();
+      aud.preload = 'auto';
+      const preloader = new Audio();   // 先把下一句抓進快取，連播換檔時比較不會頓
+      preloader.preload = 'auto';
+      let cur = -1;               // 目前載入的是 list 第幾個
+      let pendingOffset = null;   // 剛換檔、還不能設定 currentTime 時先記著
+      let state = -1;             // 沿用 YouTube 的狀態碼：-1 未開始 0 播完 1 播放中 2 暫停 3 緩衝；-2 讀不到音檔
+      let rate = 1;
+      let stopAt = Infinity;      // 播到這個原片秒數為止，不再往下一個音檔接
+
+      function load(i, offset) {
+        if (i !== cur) {
+          cur = i;
+          pendingOffset = offset;
+          aud.src = list[i].url;
+          aud.defaultPlaybackRate = rate;
+          aud.playbackRate = rate;
+          if (list[i + 1]) preloader.src = list[i + 1].url;
+        } else {
+          try { aud.currentTime = offset; pendingOffset = null; } catch (e) { pendingOffset = offset; }
+        }
+      }
+
+      // 落在某句裡 → 那一句；落在句與句之間的空檔 → 下一句開頭
+      function indexAt(t) {
+        for (let i = 0; i < list.length; i++) {
+          if (t < list[i].end - 0.02) return i;
+        }
+        return -1;
+      }
+
+      function tryPlay() {
+        state = 3;
+        aud.playbackRate = rate;
+        aud.play().catch(err => {
+          if (err && err.name === 'AbortError') return;   // 播放途中換檔，不算失敗
+          if (state !== -2) state = 2;                     // 被瀏覽器擋住 → 交給 markBlocked 引導
+        });
+      }
+
+      aud.addEventListener('loadedmetadata', () => {
+        if (pendingOffset !== null) {
+          try { aud.currentTime = pendingOffset; } catch (e) {}
+          pendingOffset = null;
+        }
+        aud.playbackRate = rate;
+      });
+      aud.addEventListener('playing', () => {
+        state = 1;
+        if (hooks && hooks.onPlaying) hooks.onPlaying();
+      });
+      aud.addEventListener('waiting', () => { if (state === 1) state = 3; });
+      aud.addEventListener('pause', () => { if (state === 1 || state === 3) state = 2; });
+      aud.addEventListener('ended', () => {
+        const next = cur + 1;
+        if (next < list.length && list[next].start < stopAt - 0.05) {
+          load(next, 0);
+          tryPlay();
+        } else {
+          state = 0;
+        }
+      });
+      aud.addEventListener('error', () => {
+        if (!aud.getAttribute('src')) return;
+        state = -2;
+        if (hooks && hooks.onError) hooks.onError(aud.src);
+      });
+
+      return {
+        seekTo(t) {
+          const i = indexAt(t);
+          if (i < 0) {
+            aud.pause();
+            state = 0;
+            return;
+          }
+          load(i, Math.max(0, t - list[i].start));
+        },
+        playVideo() {
+          if (!list.length) return;
+          if (cur < 0) load(0, 0);
+          tryPlay();
+        },
+        pauseVideo() {
+          aud.pause();
+          if (state !== 0 && state !== -2) state = 2;
+        },
+        getCurrentTime() {
+          if (cur < 0) return 0;
+          const off = pendingOffset !== null ? pendingOffset : aud.currentTime;
+          return Math.min(list[cur].start + off, list[cur].end);
+        },
+        getPlayerState() { return state; },
+        getDuration() { return LESSON_VIDEO.duration; },
+        setPlaybackRate(r) {
+          rate = r;
+          aud.defaultPlaybackRate = r;
+          aud.playbackRate = r;
+        },
+        setStopAt(t) { stopAt = t; }
+      };
+    }
 
     function youtubeLinkAt(seconds) {
       return `https://www.youtube.com/watch?v=${LESSON_VIDEO.id}&t=${Math.max(0, Math.floor(seconds))}s`;
@@ -1590,6 +1710,12 @@
 
     function markBlocked(seg) {
       clearWatch();
+      if (!USE_YT) {
+        const msg = document.getElementById('player-now');
+        msg.classList.add('warn');
+        msg.textContent = '⚠ 瀏覽器擋住了播放，請再按一次句子前的 ▶';
+        return;
+      }
       pendingAfterUnlock = seg;
       document.getElementById('yt-player-box').classList.add('need-tap');
       const now = document.getElementById('player-now');
@@ -1720,6 +1846,7 @@
       document.getElementById('player-now').textContent = label || '播放中…';
 
       try {
+        if (ytPlayer.setStopAt) ytPlayer.setStopAt(end);
         ytPlayer.seekTo(start, true);
         ytPlayer.setPlaybackRate(playRate);
         ytPlayer.playVideo();
@@ -1735,7 +1862,7 @@
         blockedCheckTimer = setTimeout(() => {
           let st;
           try { st = ytPlayer.getPlayerState(); } catch (e) { return; }
-          if (st !== 1 && st !== 3) {   // 1=播放中 3=緩衝中
+          if (st !== 1 && st !== 3 && st !== -2) {   // 1=播放中 3=緩衝中 -2=讀不到音檔（另有提示）
             markBlocked({ start, end, el, seqIndex, label });
           }
         }, 1200);
@@ -1798,6 +1925,7 @@
       currentSeg = null;
       if (!ytReady) return;
       try {
+        if (ytPlayer.setStopAt) ytPlayer.setStopAt(Infinity);
         ytPlayer.seekTo(seconds, true);
         ytPlayer.setPlaybackRate(playRate);
         ytPlayer.playVideo();
@@ -2328,7 +2456,8 @@
     const AUDIO_TARGET_SR = 16000;
     const AUDIO_FRAME_SIZE = 400;   // 25ms
     const AUDIO_HOP_SIZE = 160;     // 10ms
-    const AUDIO_MAX_SECONDS = 20;   // 超過就截斷，避免誤按錄很久導致 DTW 算太久
+    const AUDIO_MAX_SECONDS = 60;   // 超過就截斷，避免誤按錄很久（課文最長一句約 36 秒，唸慢一點也在範圍內）
+    const DTW_MAX_FRAMES = 2000;    // 約 20 秒；超過就先把相鄰幀平均合併再比對，DTW 矩陣才不會太大
 
     function extractFeatures(samples, sampleRate) {
       const resampled = resampleLinear(samples, sampleRate, AUDIO_TARGET_SR);
@@ -2374,7 +2503,25 @@
 
     /* 動態時間規整（DTW）：featA/featB 是 {rms:[...], zcr:[...]}，長度不用一樣。
        回傳依實際規整路徑長度正規化過的平均差距，轉成的 0~100 分數。 */
+    function poolFeatures(feat, factor) {
+      const pool = arr => {
+        const out = [];
+        for (let i = 0; i < arr.length; i += factor) {
+          const seg = arr.slice(i, i + factor);
+          out.push(seg.reduce((a, b) => a + b, 0) / seg.length);
+        }
+        return out;
+      };
+      return { rms: pool(feat.rms), zcr: pool(feat.zcr) };
+    }
+
     function dtwSimilarity(featA, featB) {
+      // 長句（超過約 20 秒）兩邊用同一個倍數合併幀；20 秒內的句子維持原本的解析度與分數
+      const factor = Math.ceil(Math.max(featA.rms.length, featB.rms.length) / DTW_MAX_FRAMES);
+      if (factor > 1) {
+        featA = poolFeatures(featA, factor);
+        featB = poolFeatures(featB, factor);
+      }
       const n = featA.rms.length;
       const m = featB.rms.length;
       if (n < 2 || m < 2) return { score: 0, avgCost: Infinity };
@@ -3027,7 +3174,23 @@
     renderContent();
     buildTimedList();
     bindPlayerBar();
-    loadYouTubeApi();
+    if (USE_YT) {
+      loadYouTubeApi();
+    } else {
+      document.getElementById('yt-player-box').style.display = 'none';
+      ytPlayer = createClipPlayer({
+        onPlaying() {
+          playbackUnlocked = true;
+          clearBlocked();
+        },
+        onError(url) {
+          console.error('無法載入音檔:', url);
+          toast('讀不到這一句的音檔，請確認網路連線');
+        }
+      });
+      ytReady = true;
+      startUiLoop();
+    }
 
     if (new URLSearchParams(location.search).has('edit')) {
       initCalibration();
