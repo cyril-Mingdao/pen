@@ -1,4 +1,13 @@
 <!doctype html>
+<!--
+  【著作權聲明】
+  本網頁使用之課文內容、圖片及聲音檔，著作財產權屬「育達文化事業股份有限公司」所有。
+  製作者詹宗龍已於中華民國 115 年 9 月 16 日取得該公司簽署之《著作財產權授權同意書》，
+  授權於非營利之教案製作與教育教學用途範圍內重製、改編、公開播送、公開上映及公開傳輸。
+  本網頁之程式碼、版面與教案設計 © 2026 詹宗龍，保留一切權利。
+  除育達文化事業股份有限公司依前開授權書互惠條款使用外，任何人未經著作權人書面授權，
+  不得重製、改作、散布或修改本網頁及所附音檔之全部或一部分，違者將依著作權法追究民事及刑事責任。
+-->
 <html lang="zh-TW">
  <head>
   <meta charset="UTF-8">
@@ -1189,7 +1198,7 @@
      <input type="range" id="seekbar" min="0" max="261" step="0.1" value="0" aria-label="時間軸（可拖拉）">
      <span class="time" id="time-dur">4:21</span>
     </div>
-    <div class="player-credit">音檔來源：育達文化《育達高中台語 第1單元 美食外送 全篇課文》 ·
+    <div class="player-credit">音檔來源：育達文化事業股份有限公司（經授權使用）《育達高中台語 第1單元 美食外送 全篇課文》 ·
      <a href="https://www.youtube.com/watch?v=fPD6_5iQZZw" target="_blank" rel="noopener">YouTube 原片</a></div>
    </div>
    <div class="player-controls">
@@ -2164,8 +2173,8 @@
     /* ===================== 跟讀錄音與聲音相似度評分 =====================
        不用語音辨識（不管本機 whisper 或瀏覽器內建，對台語都只能辨識出「近似音」的
        華語字），改成直接比對「錄音」跟「範例音檔」兩段聲音本身的相似度：
-       範例音檔是用專案既有的 TTS 管線（意傳媠聲）事先為每一句合成好的 mp3，
-       放在 GitHub Pages（REF_AUDIO_BASE）。一律用完整網址讀取：這支 html 會被貼進
+       範例音檔是育達文化事業股份有限公司官方《全篇課文》朗讀（經授權使用），
+       依 sentenceTimes 逐句切出的 mp3，放在 GitHub Pages（REF_AUDIO_BASE）。一律用完整網址讀取：這支 html 會被貼進
        Google Sites 內嵌程式碼，那裡相對路徑找不到檔案；GitHub Pages 有開 CORS，可以跨網域 fetch。
 
        比對方式：兩段音檔都用 Web Audio API 解碼、重取樣到同一個取樣率，
