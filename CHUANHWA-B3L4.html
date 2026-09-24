@@ -1,11 +1,26 @@
 <!doctype html>
+<!--
+  【著作權聲明】
+  本網頁使用之《國中閩南語》第三冊課文內容、圖片及聲音檔，著作財產權屬「全華圖書股份有限公司」所有
+  （著作來源：全華圖書）。
+  製作者詹宗龍已於中華民國 115 年 9 月 23 日取得該公司簽署之《著作使用同意書》，
+  無償、非專屬授權使用該公司《國中閩南語》課本第一冊至第四冊之課文內容、圖片、聲音檔，
+  於製作及使用授課所需之教案、教材的必要範圍內重製、改作及為教學所需之公開利用，
+  並以非營利之教育及教學目的為限。
+  經全華圖書股份有限公司回覆確認：凡符合同意書第五條「以非營利之教育及教學目的為限」之使用，皆屬授權範圍。
+  本網頁及所附音檔僅供非營利之教育教學使用，不得作為營利用途，亦不得以足以替代原出版品之方式利用。
+  本網頁之程式碼、版面與教案設計 © 2026 詹宗龍，保留一切權利。
+  除全華圖書股份有限公司依前開同意書第四條使用外，任何人未經著作權人書面授權，
+  不得重製、改作、散布或修改本網頁及所附音檔之全部或一部分，違者將依著作權法追究民事及刑事責任。
+-->
 <html lang="zh-TW">
  <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>第4課 喝玲瑯，踅街路</title>
+  <title>第4課_喝玲瑯，踅街路</title>
   <link href="https://tauhu.tw/tauhu-oo.css" rel="stylesheet">
   <script src="https://oikasu1.github.io/snd/snd.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
   <style>
     /* 主視覺：黑／黃／白（底色以白為主）
        黃色只當底色或強調塊，不當白底上的文字色，確保對比度足夠 */
@@ -18,8 +33,14 @@
       --line: #e0e0e0;
     }
 
-    html { height: 100%; }
-    html, body { margin: 0; padding: 0; }
+    html {
+      height: 100%;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       box-sizing: border-box;
@@ -27,16 +48,22 @@
       background: #ffffff;
       color: var(--ink);
       min-height: 100%;
-      padding-inline: 16px;
-      padding-block: 16px 112px;
+      padding: 20px;
+      padding-bottom: 112px;
       user-select: none;
       -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
     }
 
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
-    /* 版面吃滿螢幕寬度，不留左右白邊；只留 16px 的安全邊界（body 的 padding-inline） */
-    .container { width: 100%; margin: 0 auto; }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
 
     .header {
       position: relative;
@@ -133,6 +160,14 @@
       transform: translateY(-2px);
     }
 
+    .page-play:disabled {
+      background: #c9c9c9;
+      color: #ffffff;
+      border-color: #c9c9c9;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .content {
       line-height: 3.0;
       font-size: 1.4em;
@@ -141,14 +176,15 @@
     }
 
     .sentence {
-      display: block;
       border-radius: 8px;
-      padding: 2px 6px;
+      padding: 2px 4px;
       transition: background 0.25s ease;
       cursor: pointer;
     }
 
-    .sentence:hover { background: #f4f4f4; }
+    .sentence:hover {
+      background: #f4f4f4;
+    }
 
     .sentence.playing {
       background: var(--yellow-soft);
@@ -175,8 +211,18 @@
       padding: 0;
     }
 
-    .play-btn:hover { transform: scale(1.15); }
-    .play-btn:active { transform: scale(0.92); }
+    .play-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .play-btn:active {
+      transform: scale(0.92);
+    }
+
+    .play-btn.untimed {
+      background: #cfcfcf;
+      color: #ffffff;
+    }
 
     /* 臺羅標音：以「詞」為單位標在漢字下方，保留詞內連字號 */
     ruby {
@@ -197,13 +243,16 @@
       user-select: none;
     }
 
-    .rb { line-height: 1.15; }
+    .rb {
+      line-height: 1.15;
+    }
 
     .vocabulary {
       font-weight: bold;
       color: var(--black);
       cursor: pointer;
       position: relative;
+      /* 整個詞不可被斷到兩行（會讓底色裂開、編號跑位） */
       display: inline-block;
       white-space: nowrap;
       padding: 0 2px;
@@ -223,11 +272,20 @@
       color: var(--ink);
     }
 
-    .vocabulary:hover .rb { background: var(--yellow); }
-    .vocabulary:hover rt { border-bottom-color: var(--yellow-deep); }
-    .vocabulary:active { transform: scale(0.95); }
+    .vocabulary:hover .rb {
+      background: var(--yellow);
+    }
 
-    /* 編號用課本註標式的小上標：正常流排版，不會壓到隔壁字 */
+    .vocabulary:hover rt {
+      border-bottom-color: var(--yellow-deep);
+    }
+
+    .vocabulary:active {
+      transform: scale(0.95);
+    }
+
+    /* 編號改成課本註標式的小上標：不占方塊、不會壓到隔壁字，
+       因為是正常流排版，也不可能再發生重疊 */
     .vocab-number {
       display: inline;
       vertical-align: super;
@@ -255,8 +313,14 @@
     }
 
     @keyframes popIn {
-      0% { opacity: 0; transform: scale(0.8) translateY(-10px); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
+      0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
 
     .tooltip-header {
@@ -289,7 +353,9 @@
       line-height: 1;
     }
 
-    .tooltip-content div:last-child { border-bottom: none; }
+    .tooltip-content div:last-child {
+      border-bottom: none;
+    }
 
     .tooltip-label {
       color: var(--black);
@@ -328,11 +394,15 @@
     }
 
     @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.1); }
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
     }
 
-    /* ===== 跟讀錄音與逐句評分 ===== */
+    /* ===== 跟讀錄音與逐詞評分 ===== */
     .mic-btn {
       display: inline-flex;
       align-items: center;
@@ -341,6 +411,7 @@
       height: 1.55em;
       margin: 0 6px 0 0;
       vertical-align: middle;
+      border: none;
       border-radius: 50%;
       background: #ffffff;
       color: var(--black);
@@ -353,7 +424,9 @@
       padding: 0;
     }
 
-    .mic-btn:hover { transform: scale(1.15); }
+    .mic-btn:hover {
+      transform: scale(1.15);
+    }
 
     .mic-btn.recording {
       background: #e04b3b;
@@ -362,7 +435,9 @@
       animation: pulse 1s infinite;
     }
 
-    .nobr { white-space: nowrap; }
+    .nobr {
+      white-space: nowrap;
+    }
 
     .speak-status,
     .speak-result {
@@ -373,11 +448,19 @@
     }
 
     .speak-status:empty,
-    .speak-result:empty { margin: 0; }
+    .speak-result:empty {
+      margin: 0;
+    }
 
-    .speak-status { color: var(--ink); margin: 2px 0 0 0.2em; }
+    .speak-status {
+      color: var(--ink);
+      margin: 2px 0 0 0.2em;
+    }
 
-    .pulse-dot { display: inline-block; animation: pulse 1s infinite; }
+    .pulse-dot {
+      display: inline-block;
+      animation: pulse 1s infinite;
+    }
 
     .speak-controls {
       display: flex;
@@ -430,13 +513,76 @@
       color: #ffffff;
     }
 
-    .speak-eval-score.score-excellent { background: #2f9e44; }
-    .speak-eval-score.score-good { background: #e6b800; color: var(--black); }
-    .speak-eval-score.score-retry { background: #999999; }
+    .speak-eval-score.score-excellent {
+      background: #2f9e44;
+    }
 
-    .speak-eval-feedback { font-size: 1.05em; }
+    .speak-eval-score.score-good {
+      background: #e6b800;
+      color: var(--black);
+    }
 
-    .speak-contour-wrap { margin: 8px 0; }
+    .speak-eval-score.score-retry {
+      background: #999999;
+    }
+
+    .speak-eval-feedback {
+      font-size: 1.05em;
+    }
+
+    /* ===== 檢核項目明細（節奏音量走勢／音節數量／聲音長度） ===== */
+    /* 三列共用同一個格線：項目名稱與分數欄依內容自動取寬、不斷行，三列仍上下對齊；
+       只有中間的說明文字可以換行 */
+    .speak-eval-items {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr) max-content;
+      align-items: baseline;
+      gap: 4px 10px;
+      margin: 8px 0 2px 0;
+      padding-top: 6px;
+      border-top: 1px dashed var(--line);
+    }
+
+    .speak-eval-item {
+      display: contents;
+    }
+
+    .speak-eval-item .item-name {
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .speak-eval-item .item-detail {
+      color: #555;
+    }
+
+    .speak-eval-item .item-score {
+      text-align: right;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .speak-eval-item .item-score.lv-ok {
+      color: #2f9e44;
+    }
+
+    .speak-eval-item .item-score.lv-mid {
+      color: #b38f00;
+    }
+
+    .speak-eval-item .item-score.lv-low {
+      color: #c92a2a;
+    }
+
+    @media (max-width: 640px) {
+      .speak-eval-items {
+        column-gap: 6px;
+      }
+    }
+
+    .speak-contour-wrap {
+      margin: 8px 0;
+    }
 
     .speak-contour {
       width: 100%;
@@ -452,8 +598,14 @@
       vector-effect: non-scaling-stroke;
     }
 
-    .speak-contour .contour-ref { stroke: var(--black); opacity: 0.55; }
-    .speak-contour .contour-rec { stroke: #e6b800; }
+    .speak-contour .contour-ref {
+      stroke: var(--black);
+      opacity: 0.55;
+    }
+
+    .speak-contour .contour-rec {
+      stroke: #e6b800;
+    }
 
     .speak-contour-legend {
       display: flex;
@@ -462,8 +614,15 @@
       font-size: 0.9em;
     }
 
-    .speak-contour-legend .legend-ref { color: var(--black); opacity: 0.7; }
-    .speak-contour-legend .legend-rec { color: #b38f00; font-weight: bold; }
+    .speak-contour-legend .legend-ref {
+      color: var(--black);
+      opacity: 0.7;
+    }
+
+    .speak-contour-legend .legend-rec {
+      color: #b38f00;
+      font-weight: bold;
+    }
 
     .speak-accuracy-note {
       margin-top: 8px;
@@ -493,7 +652,10 @@
       transition: transform 0.3s ease;
     }
 
-    .player-bar.collapsed { transform: translateY(110%); }
+    /* 收合＝整條收乾淨，只留右下角一個小把手可以叫回來 */
+    .player-bar.collapsed {
+      transform: translateY(110%);
+    }
 
     .bar-handle {
       position: fixed;
@@ -511,7 +673,9 @@
       font-family: tauhu-oo, sans-serif;
     }
 
-    .bar-handle.hidden { display: none; }
+    .bar-handle.hidden {
+      display: none;
+    }
 
     .player-seek {
       display: flex;
@@ -535,20 +699,16 @@
       cursor: pointer;
     }
 
-    .tts-badge {
-      flex: 0 0 auto;
-      width: 62px;
-      text-align: center;
-      font-size: 0.72em;
-      line-height: 1.3;
-      color: var(--black);
-      background: var(--yellow);
-      border-radius: 10px;
-      padding: 6px 4px;
+    .player-now.warn {
+      color: var(--yellow);
       font-weight: bold;
+      white-space: normal;
     }
 
-    .player-info { flex: 1 1 auto; min-width: 0; }
+    .player-info {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
 
     .player-now {
       font-size: 1.05em;
@@ -558,17 +718,23 @@
       margin-bottom: 6px;
     }
 
-    .player-now.warn { color: var(--yellow); font-weight: bold; white-space: normal; }
-
     .player-credit {
       font-size: 0.78em;
-      opacity: 0.7;
+      opacity: 0.85;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
 
-    .player-credit a { color: var(--yellow); }
+    /* 同意書要求註明著作來源為「全華圖書」，任何螢幕都要看得到，
+       空間不夠時只省略後面的片名 */
+    .player-credit .credit-src {
+      white-space: normal;
+    }
+
+    .player-credit a {
+      color: var(--yellow);
+    }
 
     .player-controls {
       display: flex;
@@ -592,7 +758,10 @@
       white-space: nowrap;
     }
 
-    .pbtn:hover { background: var(--yellow); border-color: var(--yellow); }
+    .pbtn:hover {
+      background: var(--yellow);
+      border-color: var(--yellow);
+    }
 
     .pbtn.on {
       background: var(--yellow);
@@ -600,7 +769,23 @@
       color: var(--black);
     }
 
-    .pbtn:disabled { opacity: 0.4; cursor: not-allowed; }
+    .pbtn.hidden {
+      display: none;
+    }
+
+    .rate-select {
+      padding-right: 8px;
+    }
+
+    .rate-select option {
+      background: #ffffff;
+      color: var(--black);
+    }
+
+    .pbtn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
 
     .toast {
       position: fixed;
@@ -616,19 +801,231 @@
       font-size: 1.05em;
       z-index: 1200;
       animation: popIn 0.25s ease;
-      max-width: 90vw;
-      text-align: center;
     }
 
+    /* 嵌在很矮的框裡（例如 Google Sites 的小嵌入區）時，播放列改精簡版，
+       盡量把高度讓給課文。但嵌入框仍建議拉到 600px 以上才好用。 */
     @media (max-height: 520px) {
-      body { padding-block-end: 120px; }
-      .player-bar { padding: 6px 10px; gap: 8px; }
-      .player-credit { display: none; }
-      .pbtn { padding: 6px 10px; font-size: 0.85em; }
+      body {
+        padding-bottom: 120px;
+      }
+
+      .player-bar {
+        padding: 6px 10px;
+        gap: 8px;
+      }
+
+      .player-credit .credit-title {
+        display: none;
+      }
+
+      .pbtn {
+        padding: 6px 10px;
+        font-size: 0.85em;
+      }
+    }
+
+    /* ===== 校時模式面板（?edit=1 才出現） ===== */
+    .cal-panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 360px;
+      max-width: 92vw;
+      background: white;
+      z-index: 1100;
+      box-shadow: -6px 0 24px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    /* 校時模式：右側預留面板寬度，課文不會被蓋住 */
+    body.cal-open {
+      padding-right: 380px;
+    }
+
+    body.cal-open .player-bar {
+      right: 360px;
+    }
+
+    .cal-toggle {
+      background: transparent;
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      border-radius: 14px;
+      padding: 4px 10px;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      font-size: 0.85em;
+    }
+
+    .cal-handle {
+      position: fixed;
+      top: 12px;
+      right: 12px;
+      z-index: 1102;
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--yellow);
+      border-radius: 20px;
+      padding: 8px 14px;
+      font-size: 0.9em;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+    }
+
+    .cal-handle.hidden {
+      display: none;
+    }
+
+    /* 視窗不夠寬就不預留空間（會把課文擠爛），改用收合鈕讓出畫面 */
+    @media (max-width: 1099px) {
+      body.cal-open {
+        padding-right: 20px;
+      }
+
+      body.cal-open .player-bar {
+        right: 0;
+      }
+    }
+
+    .cal-panel.hidden {
+      display: none;
+    }
+
+    .cal-head {
+      background: var(--black);
+      color: var(--yellow);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .cal-head h3 {
+      margin: 0;
+      font-size: 1.15em;
+    }
+
+    .cal-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      border-bottom: 2px solid #eee;
+    }
+
+    .cal-actions button {
+      background: var(--black);
+      color: var(--yellow);
+      border: 2px solid var(--black);
+      border-radius: 16px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-family: tauhu-oo, sans-serif;
+      font-size: 0.9em;
+    }
+
+    .cal-actions button:hover {
+      background: var(--yellow);
+      color: var(--black);
+    }
+
+    .cal-actions button.danger {
+      background: #ffffff;
+      color: var(--black);
+    }
+
+    .cal-hint {
+      padding: 8px 12px;
+      font-size: 0.85em;
+      color: var(--ink);
+      background: var(--yellow-soft);
+      line-height: 1.6;
+      max-height: 6em;
+      overflow-y: auto;
+      flex: 0 0 auto;
+    }
+
+    .cal-out {
+      margin: 8px 12px;
+      font-family: monospace;
+      font-size: 0.8em;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 6px;
+      resize: vertical;
+      user-select: text;
+      -webkit-user-select: text;
+    }
+
+    .cal-out.hidden {
+      display: none;
+    }
+
+    .cal-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      font-size: 0.85em;
+    }
+
+    .cal-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 8px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .cal-row.active {
+      background: var(--yellow-soft);
+      box-shadow: inset 4px 0 0 var(--black);
+    }
+
+    .cal-row .cal-text {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .cal-row input {
+      width: 58px;
+      font-size: 0.95em;
+      padding: 2px 4px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .cal-row button {
+      border: none;
+      background: #eee;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 3px 5px;
+      font-size: 0.9em;
+    }
+
+    .cal-badge {
+      background: var(--black);
+      color: var(--yellow);
+      border-radius: 10px;
+      padding: 1px 7px;
+      font-size: 0.85em;
+      flex: 0 0 auto;
     }
 
     @media (max-width: 768px) {
-      body { padding-inline: 10px; padding-block: 10px 130px; }
+      body {
+        padding: 10px;
+        padding-bottom: 130px;
+      }
 
       .credit-author {
         position: static;
@@ -638,10 +1035,22 @@
         font-size: 0.72em;
       }
 
-      .header h1 { font-size: 2em; }
-      .header h2 { font-size: 1.2em; }
-      .page-section { padding: 20px; }
-      .content { font-size: 1.2em; line-height: 2.8; }
+      .header h1 {
+        font-size: 2em;
+      }
+
+      .header h2 {
+        font-size: 1.2em;
+      }
+
+      .page-section {
+        padding: 20px;
+      }
+
+      .content {
+        font-size: 1.2em;
+        line-height: 2.8;
+      }
 
       .tooltip {
         min-width: auto;
@@ -651,21 +1060,56 @@
         padding: 1mm;
       }
 
-      .page-number { font-size: 1.1em; padding: 10px 24px; }
-      .player-bar { gap: 10px; padding: 8px 10px; }
-      .tts-badge { display: none; }
-      .player-credit { display: none; }
-      .pbtn { padding: 7px 10px; font-size: 0.85em; }
-      .pbtn .lbl { display: none; }
-      .player-now { font-size: 0.95em; margin-bottom: 0; }
-      .toast { bottom: 110px; }
+      .page-number {
+        font-size: 1.1em;
+        padding: 10px 24px;
+      }
+
+      .player-bar {
+        gap: 10px;
+        padding: 8px 10px;
+      }
+
+      .player-credit .credit-title {
+        display: none;
+      }
+
+      .pbtn {
+        padding: 7px 10px;
+        font-size: 0.85em;
+      }
+
+      .pbtn .lbl {
+        display: none;
+      }
+
+      .player-now {
+        font-size: 0.95em;
+        margin-bottom: 0;
+      }
+
+      .toast {
+        bottom: 110px;
+      }
     }
 
     @media (max-width: 480px) {
-      .header h1 { font-size: 1.6em; }
-      .header h2 { font-size: 1em; }
-      .content { font-size: 1.1em; }
-      .page-number { font-size: 1em; padding: 8px 20px; }
+      .header h1 {
+        font-size: 1.6em;
+      }
+
+      .header h2 {
+        font-size: 1em;
+      }
+
+      .content {
+        font-size: 1.1em;
+      }
+
+      .page-number {
+        font-size: 1em;
+        padding: 8px 20px;
+      }
 
       .tooltip {
         min-width: auto;
@@ -675,16 +1119,40 @@
         padding: 1mm;
       }
 
-      .tooltip-header { font-size: 1.5em; }
-      .tooltip-content { font-size: 1.1em; }
+      .tooltip-header {
+        font-size: 1.5em;
+      }
 
-      body { padding-block-end: 180px; }
-      .player-bar { flex-wrap: wrap; }
-      .player-controls { flex: 1 1 100%; justify-content: center; }
-      .player-bar.collapsed { transform: translateY(110%); }
-      .toast { bottom: 145px; }
+      .tooltip-content {
+        font-size: 1.1em;
+      }
+
+      /* 窄螢幕：播放列改成兩列（上：播放器＋目前句子／下：控制鈕） */
+      body {
+        padding-bottom: 180px;
+      }
+
+      .player-bar {
+        flex-wrap: wrap;
+      }
+
+      .player-controls {
+        flex: 1 1 100%;
+        justify-content: center;
+      }
+
+      .player-bar.collapsed {
+        transform: translateY(110%);
+      }
+
+      .toast {
+        bottom: 145px;
+      }
     }
   </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
  </head>
  <body>
   <main>
@@ -699,22 +1167,24 @@
   </main>
 
   <div class="player-bar" id="player-bar">
-   <div class="tts-badge">意傳<br>媠聲</div>
    <div class="player-info">
     <div class="player-now" id="player-now">點課文句子前的 ▶ 就會唸這一句</div>
     <div class="player-seek">
      <span class="time" id="time-now">0:00</span>
-     <input type="range" id="seekbar" min="0" max="100" step="0.1" value="0" aria-label="時間軸（可拖拉）">
-     <span class="time" id="time-dur">0:00</span>
+     <input type="range" id="seekbar" min="0" max="142" step="0.1" value="0" aria-label="時間軸（可拖拉）">
+     <span class="time" id="time-dur">2:22</span>
     </div>
-    <div class="player-credit">課文語音：意傳科技「媠聲」台語合成 —
-     <a href="https://suisiann.ithuan.tw/" target="_blank" rel="noopener">suisiann.ithuan.tw</a>　/
-     臺羅依全華國中閩南語第三冊附錄二</div>
+    <div class="player-credit"><span class="credit-src">課文及音檔來源：全華圖書（經授權使用）</span><span class="credit-title">《全華國中閩南語第三冊 第4課 喝玲瑯，踅街路 課文朗讀》</span></div>
    </div>
    <div class="player-controls">
     <button class="pbtn" id="btn-replay" title="重播這一句">⟲<span class="lbl"> 重播</span></button>
     <button class="pbtn" id="btn-auto" title="播完自動接下一句">⏭<span class="lbl"> 連播</span></button>
-    <button class="pbtn" id="btn-rate" title="放慢速度">1x</button>
+    <select class="pbtn rate-select" id="btn-rate" title="播放速度" aria-label="播放速度">
+     <option value="0.5">0.5x</option>
+     <option value="0.75">0.75x</option>
+     <option value="1" selected>1x</option>
+     <option value="1.5">1.5x</option>
+    </select>
     <button class="pbtn" id="btn-stop" title="停止">■</button>
     <button class="pbtn" id="btn-fold" title="完全收起播放列">⌄</button>
    </div>
@@ -722,2066 +1192,300 @@
 
   <button class="bar-handle hidden" id="bar-handle" title="展開播放列">⌃ 播放器</button>
 
+  <div class="cal-panel hidden" id="cal-panel">
+   <div class="cal-head">
+    <h3>⏱ 校時模式</h3>
+    <span class="cal-badge" id="cal-clock">0.00s</span>
+    <button class="cal-toggle" id="cal-collapse" title="收合面板，看整篇課文">⇥ 收合</button>
+   </div>
+   <div class="cal-actions">
+    <button id="cal-start">▶ 開始校時</button>
+    <button id="cal-mark">⏱ 標記此句（空白鍵）</button>
+    <button id="cal-end">⏹ 收尾（Enter）</button>
+    <button id="cal-export">📋 匯出 JSON</button>
+    <button id="cal-clear" class="danger">🗑 清空</button>
+   </div>
+   <div class="cal-hint">
+    按「開始校時」後課文音檔從頭播，<b>每聽到一句課文開頭就按一次空白鍵</b>，
+    最後一句唸完按 Enter。之後可用 −/＋ 或直接輸入微調，🔊 單句試聽。
+    完成後按「匯出 JSON」，把內容貼回檔案裡的 <code>sentenceTimes</code>。
+   </div>
+   <textarea class="cal-out hidden" id="cal-out" readonly rows="6" placeholder="匯出的內容會顯示在這裡，可自行全選複製"></textarea>
+   <div class="cal-list" id="cal-list"></div>
+  </div>
+
+  <button class="cal-handle hidden" id="cal-handle" title="展開校時面板">⏱ 校時面板</button>
+
   <script>
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
       return false;
     });
 
+    const defaultConfig = {
+      page_title: "📖自學點讀筆 📖",
+      page_subtitle: "全華版國中第3冊 第4課 喝玲瑯，踅街路"
+    };
+
     let currentAudioObj = null;
 
     /* 單獨指定音檔的詞：直接取教育部《臺灣台語常用詞辭典》的真人錄音。 */
     const DICT_AUDIO = {};
 
-    /* ===================== 課文資料 =====================
-       每一句都是一筆：
-         han    漢字原文（校對依據＝全華第三冊附錄二「台羅課文」）
-         tailo  整句臺羅
-         audio  這一句的意傳媠聲合成音檔（相對路徑）
-         groups 逐詞對齊 [漢字, 臺羅, [音節…]]；臺羅為空字串的是標點，不標音
-       ================================================== */
-    const AUDIO_BASE = 'CHUANHWA-B3L4/';
-    const pages = {
+    /* ===================== 課文音檔設定 =====================
+       課文音檔＝全華圖書《國中閩南語》第三冊官方課文朗讀（經授權使用）。
+       file 是整課原音檔，只有老師校時模式（?edit=1）會用到，學生平常只讀逐句音檔。 */
+    const LESSON_AUDIO = {
+      title: "全華國中閩南語第三冊 第4課 喝玲瑯，踅街路 課文朗讀",
+      duration: 142.95,
+      file: "../全華官方音檔/04音檔-第4課.mp3"
+    };
+
+    /* 句子時間戳（秒，原音檔時間）。每頁一個陣列，索引 = 該頁斷句後的順序。
+       null 代表尚未校時 → 該句按鈕會呈灰色。
+       ★ 用 ?edit=1 校時後，把匯出的內容整段換掉下面這個物件，
+         並依新時間戳重新切逐句音檔 s{n}.mp3 放到 REF_AUDIO_BASE（平常播放與跟讀評分都讀那批檔）。 */
+    const sentenceTimes = {
       "72": [
-        {
-          "han": "王先生注文米芳兩包，1.5 公里",
-          "tailo": "Ông--sian-sinn tsù-bûn bí-phang nn̄g pau, it-tiám-gōo kong-lí.",
-          "audio": "B3L4-p72-01.mp3",
-          "groups": [
-            [
-              "王先生",
-              "Ông--sian-sinn",
-              [
-                "Ông",
-                "sian",
-                "sinn"
-              ]
-            ],
-            [
-              "注文",
-              "tsù-bûn",
-              [
-                "tsù",
-                "bûn"
-              ]
-            ],
-            [
-              "米芳",
-              "bí-phang",
-              [
-                "bí",
-                "phang"
-              ]
-            ],
-            [
-              "兩",
-              "nn̄g",
-              [
-                "nn̄g"
-              ]
-            ],
-            [
-              "包",
-              "pau",
-              [
-                "pau"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "1.5",
-              "it-tiám-gōo",
-              [
-                "it",
-                "tiám",
-                "gōo"
-              ]
-            ],
-            [
-              " ",
-              "",
-              []
-            ],
-            [
-              "公里",
-              "kong-lí",
-              [
-                "kong",
-                "lí"
-              ]
-            ]
-          ]
-        },
-        {
-          "han": "走外送對我來講就親像桌頂拈柑，毋管幾張訂單，攏真簡單啦。",
-          "tailo": "Tsáu guā-sàng tuì guá lâi kóng tō tshin-tshiūnn toh-tíng ni kam, m̄-kuán kuí tiunn tīng-tuann, lóng tsin kán-tan--lah.",
-          "audio": "B3L4-p72-02.mp3",
-          "groups": [
-            [
-              "走",
-              "Tsáu",
-              [
-                "Tsáu"
-              ]
-            ],
-            [
-              "外送",
-              "guā-sàng",
-              [
-                "guā",
-                "sàng"
-              ]
-            ],
-            [
-              "對",
-              "tuì",
-              [
-                "tuì"
-              ]
-            ],
-            [
-              "我",
-              "guá",
-              [
-                "guá"
-              ]
-            ],
-            [
-              "來",
-              "lâi",
-              [
-                "lâi"
-              ]
-            ],
-            [
-              "講",
-              "kóng",
-              [
-                "kóng"
-              ]
-            ],
-            [
-              "就",
-              "tō",
-              [
-                "tō"
-              ]
-            ],
-            [
-              "親像",
-              "tshin-tshiūnn",
-              [
-                "tshin",
-                "tshiūnn"
-              ]
-            ],
-            [
-              "桌頂",
-              "toh-tíng",
-              [
-                "toh",
-                "tíng"
-              ]
-            ],
-            [
-              "拈",
-              "ni",
-              [
-                "ni"
-              ]
-            ],
-            [
-              "柑",
-              "kam",
-              [
-                "kam"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "毋管",
-              "m̄-kuán",
-              [
-                "m̄",
-                "kuán"
-              ]
-            ],
-            [
-              "幾",
-              "kuí",
-              [
-                "kuí"
-              ]
-            ],
-            [
-              "張",
-              "tiunn",
-              [
-                "tiunn"
-              ]
-            ],
-            [
-              "訂單",
-              "tīng-tuann",
-              [
-                "tīng",
-                "tuann"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "攏",
-              "lóng",
-              [
-                "lóng"
-              ]
-            ],
-            [
-              "真",
-              "tsin",
-              [
-                "tsin"
-              ]
-            ],
-            [
-              "簡單啦",
-              "kán-tan--lah",
-              [
-                "kán",
-                "tan",
-                "lah"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 2.40, "end": 7.53 },
+        { "start": 9.16, "end": 18.46 }
       ],
       "73": [
-        {
-          "han": "修理紗窗——修理紗門——，換玻璃——",
-          "tailo": "Siu-lí sua-thang——siu-lí sua-mn̂g——, uānn po-lê——",
-          "audio": "B3L4-p73-01.mp3",
-          "groups": [
-            [
-              "修理",
-              "Siu-lí",
-              [
-                "Siu",
-                "lí"
-              ]
-            ],
-            [
-              "紗窗",
-              "sua-thang",
-              [
-                "sua",
-                "thang"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ],
-            [
-              "修理",
-              "siu-lí",
-              [
-                "siu",
-                "lí"
-              ]
-            ],
-            [
-              "紗門",
-              "sua-mn̂g",
-              [
-                "sua",
-                "mn̂g"
-              ]
-            ],
-            [
-              "——，",
-              "",
-              []
-            ],
-            [
-              "換",
-              "uānn",
-              [
-                "uānn"
-              ]
-            ],
-            [
-              "玻璃",
-              "po-lê",
-              [
-                "po",
-                "lê"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "來喔！算到三，欲磅矣喔，一、兩、三、磅！",
-          "tailo": "Lâi--ooh! Sǹg kàu sann, beh pōng--ah--ooh, tsi̍t, nn̄g, sann, pōng!",
-          "audio": "B3L4-p73-02.mp3",
-          "groups": [
-            [
-              "來喔",
-              "Lâi--ooh",
-              [
-                "Lâi",
-                "ooh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "算",
-              "Sǹg",
-              [
-                "Sǹg"
-              ]
-            ],
-            [
-              "到",
-              "kàu",
-              [
-                "kàu"
-              ]
-            ],
-            [
-              "三",
-              "sann",
-              [
-                "sann"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "欲",
-              "beh",
-              [
-                "beh"
-              ]
-            ],
-            [
-              "磅矣喔",
-              "pōng--ah--ooh",
-              [
-                "pōng",
-                "ah",
-                "ooh"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "一",
-              "tsi̍t",
-              [
-                "tsi̍t"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "兩",
-              "nn̄g",
-              [
-                "nn̄g"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "三",
-              "sann",
-              [
-                "sann"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "磅",
-              "pōng",
-              [
-                "pōng"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "尚伯，我來囉！王先生的訂單敢好矣？",
-          "tailo": "Siōng-peh, guá lâi--looh! Ông--sian-sinn ê tīng-tuann kám hó--ah?",
-          "audio": "B3L4-p73-03.mp3",
-          "groups": [
-            [
-              "尚伯",
-              "Siōng-peh",
-              [
-                "Siōng",
-                "peh"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "我",
-              "guá",
-              [
-                "guá"
-              ]
-            ],
-            [
-              "來囉",
-              "lâi--looh",
-              [
-                "lâi",
-                "looh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "王先生",
-              "Ông--sian-sinn",
-              [
-                "Ông",
-                "sian",
-                "sinn"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "訂單",
-              "tīng-tuann",
-              [
-                "tīng",
-                "tuann"
-              ]
-            ],
-            [
-              "敢",
-              "kám",
-              [
-                "kám"
-              ]
-            ],
-            [
-              "好矣",
-              "hó--ah",
-              [
-                "hó",
-                "ah"
-              ]
-            ],
-            [
-              "？",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "䢢拄䢢拄磅好爾爾！這馬有恁鬥送，生理加誠好。",
-          "tailo": "Tshiāng-tú-tshiāng tú pōng hó niā-niā! Tsit-má ū lín tàu sàng, sing-lí ke tsiânn hó.",
-          "audio": "B3L4-p73-04.mp3",
-          "groups": [
-            [
-              "䢢拄䢢",
-              "Tshiāng-tú-tshiāng",
-              [
-                "Tshiāng",
-                "tú",
-                "tshiāng"
-              ]
-            ],
-            [
-              "拄",
-              "tú",
-              [
-                "tú"
-              ]
-            ],
-            [
-              "磅",
-              "pōng",
-              [
-                "pōng"
-              ]
-            ],
-            [
-              "好",
-              "hó",
-              [
-                "hó"
-              ]
-            ],
-            [
-              "爾爾",
-              "niā-niā",
-              [
-                "niā",
-                "niā"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "這馬",
-              "Tsit-má",
-              [
-                "Tsit",
-                "má"
-              ]
-            ],
-            [
-              "有",
-              "ū",
-              [
-                "ū"
-              ]
-            ],
-            [
-              "恁",
-              "lín",
-              [
-                "lín"
-              ]
-            ],
-            [
-              "鬥",
-              "tàu",
-              [
-                "tàu"
-              ]
-            ],
-            [
-              "送",
-              "sàng",
-              [
-                "sàng"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "生理",
-              "sing-lí",
-              [
-                "sing",
-                "lí"
-              ]
-            ],
-            [
-              "加",
-              "ke",
-              [
-                "ke"
-              ]
-            ],
-            [
-              "誠",
-              "tsiânn",
-              [
-                "tsiânn"
-              ]
-            ],
-            [
-              "好",
-              "hó",
-              [
-                "hó"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 19.71, "end": 24.86 },
+        { "start": 25.72, "end": 26.56 },
+        { "start": 26.73, "end": 34.79 },
+        { "start": 36.04, "end": 38.35 },
+        { "start": 39.01, "end": 41.54 },
+        { "start": 42.80, "end": 45.81 },
+        { "start": 46.38, "end": 50.18 }
       ],
       "74": [
-        {
-          "han": "Pā-pu! Pā-pu! 來喔！枝仔冰——芋冰——紅豆冰——",
-          "tailo": "Pā-Pu! Pā-Pu! Lâi--ooh! Ki-á-ping—— ōo-ping——âng-tāu-ping——.",
-          "audio": "B3L4-p74-01.mp3",
-          "groups": [
-            [
-              "Pā-pu",
-              "Pā-Pu",
-              [
-                "Pā",
-                "Pu"
-              ]
-            ],
-            [
-              "! ",
-              "",
-              []
-            ],
-            [
-              "Pā-pu",
-              "Pā-Pu",
-              [
-                "Pā",
-                "Pu"
-              ]
-            ],
-            [
-              "! ",
-              "",
-              []
-            ],
-            [
-              "來喔",
-              "Lâi--ooh",
-              [
-                "Lâi",
-                "ooh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "枝仔冰",
-              "Ki-á-ping",
-              [
-                "Ki",
-                "á",
-                "ping"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ],
-            [
-              "芋冰",
-              "ōo-ping",
-              [
-                "ōo",
-                "ping"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ],
-            [
-              "紅豆冰",
-              "âng-tāu-ping",
-              [
-                "âng",
-                "tāu",
-                "ping"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "阿華，仝款一枝芋冰乎？",
-          "tailo": "A-huâ, kāng-khuán tsi̍t ki ōo-ping--honnh?",
-          "audio": "B3L4-p74-02.mp3",
-          "groups": [
-            [
-              "阿華",
-              "A-huâ",
-              [
-                "A",
-                "huâ"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "仝款",
-              "kāng-khuán",
-              [
-                "kāng",
-                "khuán"
-              ]
-            ],
-            [
-              "一",
-              "tsi̍t",
-              [
-                "tsi̍t"
-              ]
-            ],
-            [
-              "枝",
-              "ki",
-              [
-                "ki"
-              ]
-            ],
-            [
-              "芋冰乎",
-              "ōo-ping--honnh",
-              [
-                "ōo",
-                "ping",
-                "honnh"
-              ]
-            ],
-            [
-              "？",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "冰哥你的記持誠好呢！",
-          "tailo": "Ping--ko lí ê kì-tî tsiânn hó--neh!",
-          "audio": "B3L4-p74-03.mp3",
-          "groups": [
-            [
-              "冰哥",
-              "Ping--ko",
-              [
-                "Ping",
-                "ko"
-              ]
-            ],
-            [
-              "你",
-              "lí",
-              [
-                "lí"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "記持",
-              "kì-tî",
-              [
-                "kì",
-                "tî"
-              ]
-            ],
-            [
-              "誠",
-              "tsiânn",
-              [
-                "tsiânn"
-              ]
-            ],
-            [
-              "好呢",
-              "hó--neh",
-              [
-                "hó",
-                "neh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "你是老主顧矣，當然嘛會記得！",
-          "tailo": "Lí sī lāu-tsú-kòo--ah, tong-jiân mā ē-kì-tit!",
-          "audio": "B3L4-p74-04.mp3",
-          "groups": [
-            [
-              "你",
-              "Lí",
-              [
-                "Lí"
-              ]
-            ],
-            [
-              "是",
-              "sī",
-              [
-                "sī"
-              ]
-            ],
-            [
-              "老主顧矣",
-              "lāu-tsú-kòo--ah",
-              [
-                "lāu",
-                "tsú",
-                "kòo",
-                "ah"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "當然",
-              "tong-jiân",
-              [
-                "tong",
-                "jiân"
-              ]
-            ],
-            [
-              "嘛",
-              "mā",
-              [
-                "mā"
-              ]
-            ],
-            [
-              "會記得",
-              "ē-kì-tit",
-              [
-                "ē",
-                "kì",
-                "tit"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 51.91, "end": 54.75 },
+        { "start": 55.19, "end": 58.96 },
+        { "start": 60.14, "end": 63.10 },
+        { "start": 64.90, "end": 68.09 },
+        { "start": 69.11, "end": 73.33 }
       ],
       "75": [
-        {
-          "han": "來喔！燒燙燙、芳貢貢的塗窯雞來囉！有四物仔雞、茄苳蒜頭雞！",
-          "tailo": "Lâi--ooh! Sio-thǹg-thǹg, phang-kòng-kòng ê thóo-iô-ke lâi- - looh! Ū sù-bu̍t-á-ke, ka-tang suàn-thâu-ke!",
-          "audio": "B3L4-p75-01.mp3",
-          "groups": [
-            [
-              "來喔",
-              "Lâi--ooh",
-              [
-                "Lâi",
-                "ooh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "燒燙燙",
-              "Sio-thǹg-thǹg",
-              [
-                "Sio",
-                "thǹg",
-                "thǹg"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "芳貢貢",
-              "phang-kòng-kòng",
-              [
-                "phang",
-                "kòng",
-                "kòng"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "塗窯雞",
-              "thóo-iô-ke",
-              [
-                "thóo",
-                "iô",
-                "ke"
-              ]
-            ],
-            [
-              "來",
-              "lâi-",
-              [
-                "lâi"
-              ]
-            ],
-            [
-              "囉",
-              "looh",
-              [
-                "looh"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "有",
-              "Ū",
-              [
-                "Ū"
-              ]
-            ],
-            [
-              "四物仔雞",
-              "sù-bu̍t-á-ke",
-              [
-                "sù",
-                "bu̍t",
-                "á",
-                "ke"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "茄苳",
-              "ka-tang",
-              [
-                "ka",
-                "tang"
-              ]
-            ],
-            [
-              "蒜頭雞",
-              "suàn-thâu-ke",
-              [
-                "suàn",
-                "thâu",
-                "ke"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "看著阿滿姨就知影這陣下晡兩點矣。",
-          "tailo": "Khuànn-tio̍h A-buán-î tō tsai-iánn tsit-tsūn ē-poo nn̄g tiám--ah.",
-          "audio": "B3L4-p75-02.mp3",
-          "groups": [
-            [
-              "看著",
-              "Khuànn-tio̍h",
-              [
-                "Khuànn",
-                "tio̍h"
-              ]
-            ],
-            [
-              "阿滿姨",
-              "A-buán-î",
-              [
-                "A",
-                "buán",
-                "î"
-              ]
-            ],
-            [
-              "就",
-              "tō",
-              [
-                "tō"
-              ]
-            ],
-            [
-              "知影",
-              "tsai-iánn",
-              [
-                "tsai",
-                "iánn"
-              ]
-            ],
-            [
-              "這陣",
-              "tsit-tsūn",
-              [
-                "tsit",
-                "tsūn"
-              ]
-            ],
-            [
-              "下晡",
-              "ē-poo",
-              [
-                "ē",
-                "poo"
-              ]
-            ],
-            [
-              "兩",
-              "nn̄g",
-              [
-                "nn̄g"
-              ]
-            ],
-            [
-              "點矣",
-              "tiám--ah",
-              [
-                "tiám",
-                "ah"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 75.83, "end": 77.24 },
+        { "start": 77.89, "end": 82.23 },
+        { "start": 83.17, "end": 87.87 },
+        { "start": 89.40, "end": 94.04 }
       ],
       "76": [
-        {
-          "han": "高級的衛生紙、高級的衛生紙，一捾賣你五十箍。",
-          "tailo": "Ko-kip ê uē-sing-tsuá, ko-kip ê uē-sing-tsuá, tsi̍t kuānn bē lí gōo-tsa̍p khoo.",
-          "audio": "B3L4-p76-01.mp3",
-          "groups": [
-            [
-              "高級",
-              "Ko-kip",
-              [
-                "Ko",
-                "kip"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "衛生紙",
-              "uē-sing-tsuá",
-              [
-                "uē",
-                "sing",
-                "tsuá"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "高級",
-              "ko-kip",
-              [
-                "ko",
-                "kip"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "衛生紙",
-              "uē-sing-tsuá",
-              [
-                "uē",
-                "sing",
-                "tsuá"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "一",
-              "tsi̍t",
-              [
-                "tsi̍t"
-              ]
-            ],
-            [
-              "捾",
-              "kuānn",
-              [
-                "kuānn"
-              ]
-            ],
-            [
-              "賣",
-              "bē",
-              [
-                "bē"
-              ]
-            ],
-            [
-              "你",
-              "lí",
-              [
-                "lí"
-              ]
-            ],
-            [
-              "五十",
-              "gōo-tsa̍p",
-              [
-                "gōo",
-                "tsa̍p"
-              ]
-            ],
-            [
-              "箍",
-              "khoo",
-              [
-                "khoo"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "頭家，你的米芳我替你送來矣。",
-          "tailo": "Thâu-ke, lí ê bí-phang guá thè lí sàng--lâi--ah.",
-          "audio": "B3L4-p76-02.mp3",
-          "groups": [
-            [
-              "頭家",
-              "Thâu-ke",
-              [
-                "Thâu",
-                "ke"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "你",
-              "lí",
-              [
-                "lí"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "米芳",
-              "bí-phang",
-              [
-                "bí",
-                "phang"
-              ]
-            ],
-            [
-              "我",
-              "guá",
-              [
-                "guá"
-              ]
-            ],
-            [
-              "替",
-              "thè",
-              [
-                "thè"
-              ]
-            ],
-            [
-              "你",
-              "lí",
-              [
-                "lí"
-              ]
-            ],
-            [
-              "送來矣",
-              "sàng--lâi--ah",
-              [
-                "sàng",
-                "lâi",
-                "ah"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "多謝你！喝賣配這味上著味。",
-          "tailo": "To-siā--lí! Huah-bē phuè tsit bī siōng tio̍h-bī.",
-          "audio": "B3L4-p76-03.mp3",
-          "groups": [
-            [
-              "多謝你",
-              "To-siā--lí",
-              [
-                "To",
-                "siā",
-                "lí"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ],
-            [
-              "喝賣",
-              "Huah-bē",
-              [
-                "Huah",
-                "bē"
-              ]
-            ],
-            [
-              "配",
-              "phuè",
-              [
-                "phuè"
-              ]
-            ],
-            [
-              "這",
-              "tsit",
-              [
-                "tsit"
-              ]
-            ],
-            [
-              "味",
-              "bī",
-              [
-                "bī"
-              ]
-            ],
-            [
-              "上",
-              "siōng",
-              [
-                "siōng"
-              ]
-            ],
-            [
-              "著味",
-              "tio̍h-bī",
-              [
-                "tio̍h",
-                "bī"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 96.03, "end": 103.16 },
+        { "start": 105.26, "end": 108.56 },
+        { "start": 109.30, "end": 110.22 },
+        { "start": 110.66, "end": 113.34 }
       ],
       "77": [
-        {
-          "han": "肉粽、燒——肉粽，好食的燒肉粽，燒唿唿的燒——肉粽。",
-          "tailo": "Bah-tsàng, sio——bah-tsàng, hó-tsia̍h ê sio bah-tsàng, sio-hut-hut ê sio——bah-tsàng.",
-          "audio": "B3L4-p77-01.mp3",
-          "groups": [
-            [
-              "肉粽",
-              "Bah-tsàng",
-              [
-                "Bah",
-                "tsàng"
-              ]
-            ],
-            [
-              "、",
-              "",
-              []
-            ],
-            [
-              "燒",
-              "sio",
-              [
-                "sio"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ],
-            [
-              "肉粽",
-              "bah-tsàng",
-              [
-                "bah",
-                "tsàng"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "好食",
-              "hó-tsia̍h",
-              [
-                "hó",
-                "tsia̍h"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "燒",
-              "sio",
-              [
-                "sio"
-              ]
-            ],
-            [
-              "肉粽",
-              "bah-tsàng",
-              [
-                "bah",
-                "tsàng"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "燒唿唿",
-              "sio-hut-hut",
-              [
-                "sio",
-                "hut",
-                "hut"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "燒",
-              "sio",
-              [
-                "sio"
-              ]
-            ],
-            [
-              "——",
-              "",
-              []
-            ],
-            [
-              "肉粽",
-              "bah-tsàng",
-              [
-                "bah",
-                "tsàng"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "三叔公我欲買一捾，紮轉去下港予阮爸母食。",
-          "tailo": "Sann-tsik-kong guá beh bé tsi̍t kuānn, tsah tńg-khì ē-káng hōo guán pē-bú tsia̍h.",
-          "audio": "B3L4-p77-02.mp3",
-          "groups": [
-            [
-              "三叔公",
-              "Sann-tsik-kong",
-              [
-                "Sann",
-                "tsik",
-                "kong"
-              ]
-            ],
-            [
-              "我",
-              "guá",
-              [
-                "guá"
-              ]
-            ],
-            [
-              "欲",
-              "beh",
-              [
-                "beh"
-              ]
-            ],
-            [
-              "買",
-              "bé",
-              [
-                "bé"
-              ]
-            ],
-            [
-              "一",
-              "tsi̍t",
-              [
-                "tsi̍t"
-              ]
-            ],
-            [
-              "捾",
-              "kuānn",
-              [
-                "kuānn"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "紮",
-              "tsah",
-              [
-                "tsah"
-              ]
-            ],
-            [
-              "轉去",
-              "tńg-khì",
-              [
-                "tńg",
-                "khì"
-              ]
-            ],
-            [
-              "下港",
-              "ē-káng",
-              [
-                "ē",
-                "káng"
-              ]
-            ],
-            [
-              "予",
-              "hōo",
-              [
-                "hōo"
-              ]
-            ],
-            [
-              "阮",
-              "guán",
-              [
-                "guán"
-              ]
-            ],
-            [
-              "爸母",
-              "pē-bú",
-              [
-                "pē",
-                "bú"
-              ]
-            ],
-            [
-              "食",
-              "tsia̍h",
-              [
-                "tsia̍h"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "你閣誠分張呢。",
-          "tailo": "Lí koh tsiânn pun-tiunn--neh.",
-          "audio": "B3L4-p77-03.mp3",
-          "groups": [
-            [
-              "你",
-              "Lí",
-              [
-                "Lí"
-              ]
-            ],
-            [
-              "閣",
-              "koh",
-              [
-                "koh"
-              ]
-            ],
-            [
-              "誠",
-              "tsiânn",
-              [
-                "tsiânn"
-              ]
-            ],
-            [
-              "分張呢",
-              "pun-tiunn--neh",
-              [
-                "pun",
-                "tiunn",
-                "neh"
-              ]
-            ],
-            [
-              "。",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 114.31, "end": 123.03 },
+        { "start": 124.32, "end": 130.21 },
+        { "start": 131.24, "end": 132.97 }
       ],
       "78": [
-        {
-          "han": "有一張新的訂單！",
-          "tailo": "Ū tsi̍t tiunn sin ê tīng-tuann!",
-          "audio": "B3L4-p78-01.mp3",
-          "groups": [
-            [
-              "有",
-              "Ū",
-              [
-                "Ū"
-              ]
-            ],
-            [
-              "一",
-              "tsi̍t",
-              [
-                "tsi̍t"
-              ]
-            ],
-            [
-              "張",
-              "tiunn",
-              [
-                "tiunn"
-              ]
-            ],
-            [
-              "新",
-              "sin",
-              [
-                "sin"
-              ]
-            ],
-            [
-              "的",
-              "ê",
-              [
-                "ê"
-              ]
-            ],
-            [
-              "訂單",
-              "tīng-tuann",
-              [
-                "tīng",
-                "tuann"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        },
-        {
-          "han": "這聲真正欲袂赴市矣，愛拚才會贏啦！",
-          "tailo": "Tsit-siann tsin-tsiànn beh bē-hù-tshī--ah, ài piànn tsiah ē iânn--lah!",
-          "audio": "B3L4-p78-02.mp3",
-          "groups": [
-            [
-              "這聲",
-              "Tsit-siann",
-              [
-                "Tsit",
-                "siann"
-              ]
-            ],
-            [
-              "真正",
-              "tsin-tsiànn",
-              [
-                "tsin",
-                "tsiànn"
-              ]
-            ],
-            [
-              "欲",
-              "beh",
-              [
-                "beh"
-              ]
-            ],
-            [
-              "袂赴市矣",
-              "bē-hù-tshī--ah",
-              [
-                "bē",
-                "hù",
-                "tshī",
-                "ah"
-              ]
-            ],
-            [
-              "，",
-              "",
-              []
-            ],
-            [
-              "愛",
-              "ài",
-              [
-                "ài"
-              ]
-            ],
-            [
-              "拚",
-              "piànn",
-              [
-                "piànn"
-              ]
-            ],
-            [
-              "才",
-              "tsiah",
-              [
-                "tsiah"
-              ]
-            ],
-            [
-              "會",
-              "ē",
-              [
-                "ē"
-              ]
-            ],
-            [
-              "贏啦",
-              "iânn--lah",
-              [
-                "iânn",
-                "lah"
-              ]
-            ],
-            [
-              "！",
-              "",
-              []
-            ]
-          ]
-        }
+        { "start": 134.75, "end": 136.50 },
+        { "start": 137.28, "end": 142.27 }
       ]
+    };
+    /* ======================================================= */
+
+    /* 逐詞臺羅（依全華第三冊附錄二「台羅課文」）：[漢字, 臺羅, [音節…]]，順序＝該頁課文的漢字順序 */
+    const tailo = {
+      "72": [["王先生", "Ông-sian-sinn", ["Ông", "sian", "sinn"]], ["注文", "tsù-bûn", ["tsù", "bûn"]], ["米芳", "bí-phang", ["bí", "phang"]], ["兩", "nn̄g", ["nn̄g"]], ["包", "pau", ["pau"]], ["公里", "kong-lí", ["kong", "lí"]], ["走", "Tsáu", ["Tsáu"]], ["外送", "guā-sàng", ["guā", "sàng"]], ["對", "tuì", ["tuì"]], ["我", "guá", ["guá"]], ["來", "lâi", ["lâi"]], ["講", "kóng", ["kóng"]], ["就", "tō", ["tō"]], ["親像", "tshin-tshiūnn", ["tshin", "tshiūnn"]], ["桌頂", "toh-tíng", ["toh", "tíng"]], ["拈", "ni", ["ni"]], ["柑", "kam", ["kam"]], ["毋管", "m̄-kuán", ["m̄", "kuán"]], ["幾", "kuí", ["kuí"]], ["張", "tiunn", ["tiunn"]], ["訂單", "tīng-tuann", ["tīng", "tuann"]], ["攏", "lóng", ["lóng"]], ["真", "tsin", ["tsin"]], ["簡單啦", "kán-tan-lah", ["kán", "tan", "lah"]]],
+      "73": [["修理", "Siu-lí", ["Siu", "lí"]], ["紗窗", "sua-thang", ["sua", "thang"]], ["修理", "siu-lí", ["siu", "lí"]], ["紗門", "sua-mn̂g", ["sua", "mn̂g"]], ["換", "uānn", ["uānn"]], ["玻璃", "po-lê", ["po", "lê"]], ["來喔", "Lâi-ooh", ["Lâi", "ooh"]], ["算", "Sǹg", ["Sǹg"]], ["到", "kàu", ["kàu"]], ["三", "sann", ["sann"]], ["欲", "beh", ["beh"]], ["磅矣喔", "pōng-ah-ooh", ["pōng", "ah", "ooh"]], ["一", "tsi̍t", ["tsi̍t"]], ["兩", "nn̄g", ["nn̄g"]], ["三", "sann", ["sann"]], ["磅", "pōng", ["pōng"]], ["尚伯", "Siōng-peh", ["Siōng", "peh"]], ["我", "guá", ["guá"]], ["來囉", "lâi-looh", ["lâi", "looh"]], ["王先生", "Ông-sian-sinn", ["Ông", "sian", "sinn"]], ["的", "ê", ["ê"]], ["訂單", "tīng-tuann", ["tīng", "tuann"]], ["敢", "kám", ["kám"]], ["好矣", "hó-ah", ["hó", "ah"]], ["䢢拄䢢", "Tshiāng-tú-tshiāng", ["Tshiāng", "tú", "tshiāng"]], ["拄", "tú", ["tú"]], ["磅", "pōng", ["pōng"]], ["好", "hó", ["hó"]], ["爾爾", "niā-niā", ["niā", "niā"]], ["這馬", "Tsit-má", ["Tsit", "má"]], ["有", "ū", ["ū"]], ["恁", "lín", ["lín"]], ["鬥", "tàu", ["tàu"]], ["送", "sàng", ["sàng"]], ["生理", "sing-lí", ["sing", "lí"]], ["加", "ke", ["ke"]], ["誠", "tsiânn", ["tsiânn"]], ["好", "hó", ["hó"]]],
+      "74": [["來喔", "Lâi-ooh", ["Lâi", "ooh"]], ["枝仔冰", "Ki-á-ping", ["Ki", "á", "ping"]], ["芋冰", "ōo-ping", ["ōo", "ping"]], ["紅豆冰", "âng-tāu-ping", ["âng", "tāu", "ping"]], ["阿華", "A-huâ", ["A", "huâ"]], ["仝款", "kāng-khuán", ["kāng", "khuán"]], ["一", "tsi̍t", ["tsi̍t"]], ["枝", "ki", ["ki"]], ["芋冰乎", "ōo-ping-honnh", ["ōo", "ping", "honnh"]], ["冰哥", "Ping-ko", ["Ping", "ko"]], ["你", "lí", ["lí"]], ["的", "ê", ["ê"]], ["記持", "kì-tî", ["kì", "tî"]], ["誠", "tsiânn", ["tsiânn"]], ["好呢", "hó-neh", ["hó", "neh"]], ["你", "Lí", ["Lí"]], ["是", "sī", ["sī"]], ["老主顧矣", "lāu-tsú-kòo-ah", ["lāu", "tsú", "kòo", "ah"]], ["當然", "tong-jiân", ["tong", "jiân"]], ["嘛", "mā", ["mā"]], ["會記得", "ē-kì-tit", ["ē", "kì", "tit"]]],
+      "75": [["來喔", "Lâi-ooh", ["Lâi", "ooh"]], ["燒燙燙", "Sio-thǹg-thǹg", ["Sio", "thǹg", "thǹg"]], ["芳貢貢", "phang-kòng-kòng", ["phang", "kòng", "kòng"]], ["的", "ê", ["ê"]], ["塗窯雞", "thóo-iô-ke", ["thóo", "iô", "ke"]], ["來", "lâi", ["lâi"]], ["囉", "looh", ["looh"]], ["有", "Ū", ["Ū"]], ["四物仔雞", "sù-bu̍t-á-ke", ["sù", "bu̍t", "á", "ke"]], ["茄苳", "ka-tang", ["ka", "tang"]], ["蒜頭雞", "suàn-thâu-ke", ["suàn", "thâu", "ke"]], ["看著", "Khuànn-tio̍h", ["Khuànn", "tio̍h"]], ["阿滿姨", "A-buán-î", ["A", "buán", "î"]], ["就", "tō", ["tō"]], ["知影", "tsai-iánn", ["tsai", "iánn"]], ["這陣", "tsit-tsūn", ["tsit", "tsūn"]], ["下晡", "ē-poo", ["ē", "poo"]], ["兩", "nn̄g", ["nn̄g"]], ["點矣", "tiám-ah", ["tiám", "ah"]]],
+      "76": [["高級", "Ko-kip", ["Ko", "kip"]], ["的", "ê", ["ê"]], ["衛生紙", "uē-sing-tsuá", ["uē", "sing", "tsuá"]], ["高級", "ko-kip", ["ko", "kip"]], ["的", "ê", ["ê"]], ["衛生紙", "uē-sing-tsuá", ["uē", "sing", "tsuá"]], ["一", "tsi̍t", ["tsi̍t"]], ["捾", "kuānn", ["kuānn"]], ["賣", "bē", ["bē"]], ["你", "lí", ["lí"]], ["五十", "gōo-tsa̍p", ["gōo", "tsa̍p"]], ["箍", "khoo", ["khoo"]], ["頭家", "Thâu-ke", ["Thâu", "ke"]], ["你", "lí", ["lí"]], ["的", "ê", ["ê"]], ["米芳", "bí-phang", ["bí", "phang"]], ["我", "guá", ["guá"]], ["替", "thè", ["thè"]], ["你", "lí", ["lí"]], ["送來矣", "sàng-lâi-ah", ["sàng", "lâi", "ah"]], ["多謝你", "To-siā-lí", ["To", "siā", "lí"]], ["喝賣", "Huah-bē", ["Huah", "bē"]], ["配", "phuè", ["phuè"]], ["這", "tsit", ["tsit"]], ["味", "bī", ["bī"]], ["上", "siōng", ["siōng"]], ["著味", "tio̍h-bī", ["tio̍h", "bī"]]],
+      "77": [["肉粽", "Bah-tsàng", ["Bah", "tsàng"]], ["燒", "sio", ["sio"]], ["肉粽", "bah-tsàng", ["bah", "tsàng"]], ["好食", "hó-tsia̍h", ["hó", "tsia̍h"]], ["的", "ê", ["ê"]], ["燒", "sio", ["sio"]], ["肉粽", "bah-tsàng", ["bah", "tsàng"]], ["燒唿唿", "sio-hut-hut", ["sio", "hut", "hut"]], ["的", "ê", ["ê"]], ["燒", "sio", ["sio"]], ["肉粽", "bah-tsàng", ["bah", "tsàng"]], ["三叔公", "Sann-tsik-kong", ["Sann", "tsik", "kong"]], ["我", "guá", ["guá"]], ["欲", "beh", ["beh"]], ["買", "bé", ["bé"]], ["一", "tsi̍t", ["tsi̍t"]], ["捾", "kuānn", ["kuānn"]], ["紮", "tsah", ["tsah"]], ["轉去", "tńg-khì", ["tńg", "khì"]], ["下港", "ē-káng", ["ē", "káng"]], ["予", "hōo", ["hōo"]], ["阮", "guán", ["guán"]], ["爸母", "pē-bú", ["pē", "bú"]], ["食", "tsia̍h", ["tsia̍h"]], ["你", "Lí", ["Lí"]], ["閣", "koh", ["koh"]], ["誠", "tsiânn", ["tsiânn"]], ["分張呢", "pun-tiunn-neh", ["pun", "tiunn", "neh"]]],
+      "78": [["有", "Ū", ["Ū"]], ["一", "tsi̍t", ["tsi̍t"]], ["張", "tiunn", ["tiunn"]], ["新", "sin", ["sin"]], ["的", "ê", ["ê"]], ["訂單", "tīng-tuann", ["tīng", "tuann"]], ["這聲", "Tsit-siann", ["Tsit", "siann"]], ["真正", "tsin-tsiànn", ["tsin", "tsiànn"]], ["欲", "beh", ["beh"]], ["袂赴市矣", "bē-hù-tshī-ah", ["bē", "hù", "tshī", "ah"]], ["愛", "ài", ["ài"]], ["拚", "piànn", ["piànn"]], ["才", "tsiah", ["tsiah"]], ["會", "ē", ["ē"]], ["贏啦", "iânn-lah", ["iânn", "lah"]]]
     };
 
     const database = {
       "72": [
-        {
-          "word": "注文",
-          "roman": "tsù-bûn",
-          "order": 1,
-          "chinese": "預訂、預約。事先訂購。源自日語「注文（ちゅうもん）」"
-        },
-        {
-          "word": "米芳",
-          "roman": "bí-phang",
-          "order": 2,
-          "chinese": "爆米花。塊狀食用的傳統食品"
-        },
-        {
-          "word": "走",
-          "roman": "tsáu",
-          "order": 3,
-          "chinese": "跑。 離開。 逃。 走動。 偏離"
-        },
-        {
-          "word": "親像",
-          "roman": "tshin-tshiūnn / tshan-tshiūnn",
-          "order": 4,
-          "chinese": "好像、好比"
-        },
-        {
-          "word": "桌頂拈柑",
-          "roman": "toh-tíng ni-kam",
-          "order": 5,
-          "chinese": "輕而易舉"
-        },
-        {
-          "word": "毋管",
-          "roman": "m̄-kuán",
-          "order": 6,
-          "chinese": "不論、無論"
-        },
-        {
-          "word": "攏",
-          "roman": "lóng",
-          "order": 7,
-          "chinese": "都、皆、全部"
-        }
+        { word: "注文", roman: "tsù-bûn", order: 1, chinese: "預訂、預約。事先訂購。源自日語「注文（ちゅうもん）」", page: "72" },
+        { word: "米芳", roman: "bí-phang", order: 2, chinese: "爆米花。塊狀食用的傳統食品", page: "72" },
+        { word: "走", roman: "tsáu", order: 3, chinese: "跑。 離開。 逃。 走動。 偏離", page: "72" },
+        { word: "親像", roman: "tshin-tshiūnn / tshan-tshiūnn", order: 4, chinese: "好像、好比", page: "72" },
+        { word: "桌頂拈柑", roman: "toh-tíng ni-kam", order: 5, chinese: "輕而易舉", page: "72" },
+        { word: "毋管", roman: "m̄-kuán", order: 6, chinese: "不論、無論", page: "72" },
+        { word: "攏", roman: "lóng", order: 7, chinese: "都、皆、全部", page: "72" }
       ],
       "73": [
-        {
-          "word": "磅",
-          "roman": "pōng",
-          "order": 8,
-          "chinese": "度量輕重。 炸開。 重量的單位。1磅=0.454公斤。量測體溫"
-        },
-        {
-          "word": "敢",
-          "roman": "kám",
-          "order": 9,
-          "chinese": "有膽識，毫不畏懼的。 表疑問。豈，難道"
-        },
-        {
-          "word": "䢢拄䢢",
-          "roman": "tshiāng-tú-tshiāng",
-          "order": 10,
-          "chinese": "正巧、碰巧、剛剛好"
-        },
-        {
-          "word": "拄",
-          "roman": "tú",
-          "order": 11,
-          "chinese": "抵。互換。剛才。遇見。頂撞。連接兩個相同形容詞，來反駁對方"
-        },
-        {
-          "word": "爾爾",
-          "roman": "niā-niā",
-          "order": 12,
-          "chinese": "而已"
-        },
-        {
-          "word": "這馬",
-          "roman": "tsit-má",
-          "order": 13,
-          "chinese": "現在"
-        },
-        {
-          "word": "恁",
-          "roman": "lín",
-          "order": 14,
-          "chinese": "你們。你的。你們的"
-        },
-        {
-          "word": "生理",
-          "roman": "sing-lí",
-          "order": 15,
-          "chinese": "生意、買賣"
-        },
-        {
-          "word": "加",
-          "roman": "ke",
-          "order": 16,
-          "chinese": "添加。 比原來的數量多。 多餘"
-        }
+        { word: "磅", roman: "pōng", order: 8, chinese: "度量輕重。 炸開。 重量的單位。1磅=0.454公斤。量測體溫", page: "73" },
+        { word: "敢", roman: "kám", order: 9, chinese: "有膽識，毫不畏懼的。 表疑問。豈，難道", page: "73" },
+        { word: "䢢拄䢢", roman: "tshiāng-tú-tshiāng", order: 10, chinese: "正巧、碰巧、剛剛好", page: "73" },
+        { word: "拄", roman: "tú", order: 11, chinese: "抵。互換。剛才。遇見。頂撞。連接兩個相同形容詞，來反駁對方", page: "73" },
+        { word: "爾爾", roman: "niā-niā", order: 12, chinese: "而已", page: "73" },
+        { word: "這馬", roman: "tsit-má", order: 13, chinese: "現在", page: "73" },
+        { word: "恁", roman: "lín", order: 14, chinese: "你們。你的。你們的", page: "73" },
+        { word: "生理", roman: "sing-lí", order: 15, chinese: "生意、買賣", page: "73" },
+        { word: "加", roman: "ke", order: 16, chinese: "添加。 比原來的數量多。 多餘", page: "73" }
       ],
       "74": [
-        {
-          "word": "仝款",
-          "roman": "kāng-khuán",
-          "order": 17,
-          "chinese": "同樣、相像。一樣，沒有差別"
-        },
-        {
-          "word": "乎",
-          "roman": "--honnh",
-          "order": 18,
-          "chinese": "反問語助詞，表示與問話者確認的語氣。 反問語助詞，帶有調侃的意味"
-        },
-        {
-          "word": "記持",
-          "roman": "kì-tî",
-          "order": 19,
-          "chinese": "記憶、記性"
-        },
-        {
-          "word": "老主顧",
-          "roman": "lāu-tsú-kòo",
-          "order": 20,
-          "chinese": "熟客"
-        },
-        {
-          "word": "會記得",
-          "roman": "ē-kì--tit",
-          "order": 21,
-          "chinese": "記得(又唸作ē-kì--tsitē-kì--litē-kì--lihē-kì--eh)"
-        }
+        { word: "仝款", roman: "kāng-khuán", order: 17, chinese: "同樣、相像。一樣，沒有差別", page: "74" },
+        { word: "乎", roman: "--honnh", order: 18, chinese: "反問語助詞，表示與問話者確認的語氣。 反問語助詞，帶有調侃的意味", page: "74" },
+        { word: "記持", roman: "kì-tî", order: 19, chinese: "記憶、記性", page: "74" },
+        { word: "老主顧", roman: "lāu-tsú-kòo", order: 20, chinese: "熟客", page: "74" },
+        { word: "會記得", roman: "ē-kì--tit", order: 21, chinese: "記得(又唸作ē-kì--tsitē-kì--litē-kì--lihē-kì--eh)", page: "74" }
       ],
       "75": [
-        {
-          "word": "燒燙燙",
-          "roman": "sio-thǹg-thǹg",
-          "order": 22,
-          "chinese": "溫度很高會燙人"
-        },
-        {
-          "word": "芳貢貢",
-          "roman": "phang-kòng-kòng",
-          "order": 23,
-          "chinese": "形容香氣很盛"
-        },
-        {
-          "word": "知影",
-          "roman": "tsai-iánn",
-          "order": 24,
-          "chinese": "知道、懂得"
-        },
-        {
-          "word": "這陣",
-          "roman": "tsit-tsūn",
-          "order": 25,
-          "chinese": "現在。當下這個時刻"
-        },
-        {
-          "word": "下晡",
-          "roman": "ē-poo",
-          "order": 26,
-          "chinese": "下午"
-        }
+        { word: "燒燙燙", roman: "sio-thǹg-thǹg", order: 22, chinese: "溫度很高會燙人", page: "75" },
+        { word: "芳貢貢", roman: "phang-kòng-kòng", order: 23, chinese: "形容香氣很盛", page: "75" },
+        { word: "知影", roman: "tsai-iánn", order: 24, chinese: "知道、懂得", page: "75" },
+        { word: "這陣", roman: "tsit-tsūn", order: 25, chinese: "現在。當下這個時刻", page: "75" },
+        { word: "下晡", roman: "ē-poo", order: 26, chinese: "下午", page: "75" }
       ],
       "76": [
-        {
-          "word": "捾",
-          "roman": "kuānn",
-          "order": 27,
-          "chinese": "提。用手下垂提取東西。提把。計算成串的東西。富含"
-        },
-        {
-          "word": "喝",
-          "roman": "huah",
-          "order": 28,
-          "chinese": "大聲喊叫。 喝叱"
-        },
-        {
-          "word": "上",
-          "roman": "siōng",
-          "order": 29,
-          "chinese": "指空間位置。最…地，有些地區音變為thōng"
-        }
+        { word: "捾", roman: "kuānn", order: 27, chinese: "提。用手下垂提取東西。提把。計算成串的東西。富含", page: "76" },
+        { word: "喝", roman: "huah", order: 28, chinese: "大聲喊叫。 喝叱", page: "76" },
+        { word: "上", roman: "siōng", order: 29, chinese: "指空間位置。最…地，有些地區音變為thōng", page: "76" }
       ],
       "77": [
-        {
-          "word": "燒唿唿",
-          "roman": "sio-hut-hut",
-          "order": 30,
-          "chinese": "熱呼呼、熱騰騰"
-        },
-        {
-          "word": "欲",
-          "roman": "beh / bueh",
-          "order": 31,
-          "chinese": "要、想，表示意願。 將要、快要。 若是、如果，表示假設"
-        },
-        {
-          "word": "下港",
-          "roman": "ē-káng",
-          "order": 32,
-          "chinese": "指臺灣南部地方"
-        },
-        {
-          "word": "予",
-          "roman": "hōo",
-          "order": 33,
-          "chinese": "給予。 被…。任由。 讓。 動詞後綴"
-        },
-        {
-          "word": "阮",
-          "roman": "guán / gún",
-          "order": 34,
-          "chinese": "我們。我。我的"
-        },
-        {
-          "word": "分張",
-          "roman": "pun-tiunn",
-          "order": 35,
-          "chinese": "通常指小孩子慷慨大方願意將食物分給他人"
-        }
+        { word: "燒唿唿", roman: "sio-hut-hut", order: 30, chinese: "熱呼呼、熱騰騰", page: "77" },
+        { word: "欲", roman: "beh / bueh", order: 31, chinese: "要、想，表示意願。 將要、快要。 若是、如果，表示假設", page: "77" },
+        { word: "下港", roman: "ē-káng", order: 32, chinese: "指臺灣南部地方", page: "77" },
+        { word: "予", roman: "hōo", order: 33, chinese: "給予。 被…。任由。 讓。 動詞後綴", page: "77" },
+        { word: "阮", roman: "guán / gún", order: 34, chinese: "我們。我。我的", page: "77" },
+        { word: "分張", roman: "pun-tiunn", order: 35, chinese: "通常指小孩子慷慨大方願意將食物分給他人", page: "77" }
       ],
       "78": [
-        {
-          "word": "這聲",
-          "roman": "tsit-siann",
-          "order": 36,
-          "chinese": "這下子、這回。這一次、就在這時候"
-        },
-        {
-          "word": "袂赴市",
-          "roman": "bē-hù-tshī / buē-hù-tshī",
-          "order": 37,
-          "chinese": "時間短暫，無法趕上或顧及"
-        }
+        { word: "這聲", roman: "tsit-siann", order: 36, chinese: "這下子、這回。這一次、就在這時候", page: "78" },
+        { word: "袂赴市", roman: "bē-hù-tshī / buē-hù-tshī", order: 37, chinese: "時間短暫，無法趕上或顧及", page: "78" }
       ]
     };
 
+    const pages = {
+      "72": `王先生注文米芳兩包，1.5 公里
+走外送對我來講就親像桌頂拈柑，毋管幾張訂單，攏真簡單啦。`,
+      "73": `修理紗窗——修理紗門——，換玻璃——
+來喔！算到三，欲磅矣喔，一、兩、三、磅！
+尚伯，我來囉！王先生的訂單敢好矣？
+䢢拄䢢拄磅好爾爾！這馬有恁鬥送，生理加誠好。`,
+      "74": `Pā-pu! Pā-pu! 來喔！枝仔冰——芋冰——紅豆冰——
+阿華，仝款一枝芋冰乎？
+冰哥你的記持誠好呢！
+你是老主顧矣，當然嘛會記得！`,
+      "75": `來喔！燒燙燙、芳貢貢的塗窯雞來囉！有四物仔雞、茄苳蒜頭雞！
+看著阿滿姨就知影這陣下晡兩點矣。`,
+      "76": `高級的衛生紙、高級的衛生紙，一捾賣你五十箍。
+頭家，你的米芳我替你送來矣。
+多謝你！喝賣配這味上著味。`,
+      "77": `肉粽、燒——肉粽，好食的燒肉粽，燒唿唿的燒——肉粽。
+三叔公我欲買一捾，紮轉去下港予阮爸母食。
+你閣誠分張呢。`,
+      "78": `有一張新的訂單！
+這聲真正欲袂赴市矣，愛拚才會贏啦！`
+    };
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.textContent = text;
       return div.innerHTML;
     }
 
-    /* ===================== 生詞提示泡泡 ===================== */
+    /**
+     * 把一頁課文切成句子。先以換行切段落，段落內以「。！？」為界斷句。
+     * 回傳 [{para, text}]，順序即 sentenceTimes[頁碼] 的索引。
+     */
+    function splitSentences(text) {
+      const result = [];
+      // 有沒有「實字」（漢字／英數）；只有標點的片段不算一句
+      const hasWord = s => /[\u3400-\u9fff\uf900-\ufaffA-Za-z0-9]/.test(s);
+      text.split('\n').forEach((paragraph, paraIndex) => {
+        paragraph
+          .split(/(?<=[。！？])/)
+          .map(s => s.trim())
+          .filter(s => s.length > 0)
+          .forEach(s => {
+            // 斷句點在「？」「！」後面時，像「…啥？」、「…」的「」、」會落到下一句句首；
+            // 每句各自換行後會孤零零掛在行首，所以接回上一句結尾
+            const lead = s.match(/^[」』）)》〉】”’、，,；;：:]+/);
+            if (result.length && lead) {
+              result[result.length - 1].text += lead[0];
+              s = s.slice(lead[0].length).trim();
+              if (!s) return;
+            }
+            // 例如自成一行的收尾引號「」」，併回上一句，不另給一顆 ▶
+            if (result.length && !hasWord(s)) {
+              result[result.length - 1].text += s;
+              return;
+            }
+            result.push({ para: paraIndex, text: s });
+          });
+      });
+      return result;
+    }
+
+    function highlightVocabulary(text, pageNum) {
+      const vocabList = database[pageNum] || [];
+      let result = escapeHtml(text);
+
+      vocabList.sort((a, b) => b.word.length - a.word.length);
+
+      const placeholder = '###VOCAB###';
+      const replacements = [];
+
+      vocabList.forEach(vocab => {
+        const escapedWord = escapeHtml(vocab.word);
+        const escapedRoman = escapeHtml(vocab.roman);
+        const escapedChinese = escapeHtml(vocab.chinese);
+
+        const regex = new RegExp(escapedWord.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+
+        let match;
+        let lastIndex = 0;
+        let newResult = '';
+
+        while ((match = regex.exec(result)) !== null) {
+          const beforeMatch = result.substring(0, match.index);
+          const openPlaceholders = (beforeMatch.match(new RegExp(placeholder, 'g')) || []).length;
+          const closePlaceholders = (beforeMatch.match(/###\/VOCAB###/g) || []).length;
+
+          if (openPlaceholders > closePlaceholders) {
+            continue;
+          }
+
+          newResult += result.substring(lastIndex, match.index);
+          const replacementIndex = replacements.length;
+          replacements.push(`<span class="vocabulary" data-word="${escapedWord}" data-roman="${escapedRoman}" data-chinese="${escapedChinese}" data-page="${pageNum}" data-order="${vocab.order}">${escapedWord}<span class="vocab-number">${vocab.order}</span></span>`);
+          newResult += `${placeholder}${replacementIndex}###/VOCAB###`;
+          lastIndex = match.index + match[0].length;
+        }
+
+        if (lastIndex > 0) {
+          newResult += result.substring(lastIndex);
+          result = newResult;
+        }
+      });
+
+      replacements.forEach((replacement, index) => {
+        result = result.replace(`${placeholder}${index}###/VOCAB###`, replacement);
+      });
+
+      return result;
+    }
 
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
-      if (existingTooltip) existingTooltip.remove();
+      if (existingTooltip) {
+        existingTooltip.remove();
+      }
 
       const tooltip = document.createElement('div');
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${escapeHtml(word)} <span class="speaker-icon">🔊</span></span>
+          <span>${word}</span>
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
-          <div><span class="tooltip-label">臺羅</span>${escapeHtml(roman)}</div>
-          <div><span class="tooltip-label">華語</span>${escapeHtml(chinese)}</div>
-          <div><span class="tooltip-label">出處</span>第 ${escapeHtml(String(page))} 頁　生詞 ${escapeHtml(String(order))}</div>
+          <div><span class="tooltip-label">項次：</span>${order}</div>
+          <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
+          <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
+          <div><span class="tooltip-label">華語：</span>${chinese}</div>
         </div>
       `;
+
       document.body.appendChild(tooltip);
 
       const closeBtn = tooltip.querySelector('.tooltip-close');
@@ -2789,42 +1493,207 @@
         e.stopPropagation();
         tooltip.remove();
       });
-      tooltip.addEventListener('click', function(e) {
-        e.stopPropagation();
+
+      tooltip.addEventListener('click', function() {
         tooltip.remove();
       });
 
       const rect = event.target.getBoundingClientRect();
-      tooltip.style.left = (rect.left + window.scrollX) + 'px';
-      tooltip.style.top = (rect.bottom + window.scrollY + 10) + 'px';
-      requestAnimationFrame(() => {
-        const tooltipRect = tooltip.getBoundingClientRect();
-        const isMobile = window.innerWidth <= 768;
-        if (!isMobile && tooltipRect.right > window.innerWidth - 10) {
-          tooltip.style.left = (window.innerWidth - tooltipRect.width - 10 + window.scrollX) + 'px';
-        }
-        if (tooltipRect.bottom > window.innerHeight + window.scrollY - 10) {
-          tooltip.style.top = (rect.top + window.scrollY - tooltipRect.height - 10) + 'px';
-        }
-      });
 
       setTimeout(() => {
-        document.addEventListener('click', function closeOnce() {
-          tooltip.remove();
-          document.removeEventListener('click', closeOnce);
-        }, { once: true });
+        const tooltipRect = tooltip.getBoundingClientRect();
+        const isMobile = window.innerWidth <= 768;
+
+        let left, top;
+
+        if (isMobile) {
+          left = (window.innerWidth - tooltipRect.width) / 2;
+          top = rect.bottom + window.scrollY + 10;
+
+          if (top + tooltipRect.height > document.documentElement.scrollHeight - 10) {
+            top = rect.top + window.scrollY - tooltipRect.height - 10;
+          }
+        } else {
+          left = rect.right + 15;
+          top = rect.top + window.scrollY;
+
+          if (left + tooltipRect.width > window.innerWidth - 20) {
+            left = rect.left - tooltipRect.width - 15;
+            if (left < 20) {
+              left = 20;
+            }
+          }
+
+          if (top + tooltipRect.height > document.documentElement.scrollHeight - 10) {
+            top = document.documentElement.scrollHeight - tooltipRect.height - 10;
+          }
+
+          if (top < window.scrollY + 10) {
+            top = window.scrollY + 10;
+          }
+        }
+
+        tooltip.style.left = left + 'px';
+        tooltip.style.top = top + 'px';
       }, 0);
     }
 
-    /* ===================== 播放（本地 mp3） ===================== */
+    /* ===================== 句子播放 =====================
+       平常直接播已依 sentenceTimes 切好的逐句音檔（REF_AUDIO_BASE/s{n}.mp3，跟跟讀評分
+       用的是同一批）。只有老師的校時模式（?edit=1）需要整課原音檔的連續時間軸，
+       才改載入整支課文音檔（LESSON_AUDIO.file）。
 
-    const allSentences = [];   // [{page, idx, han, audio, el}]，全篇連續順序
-    let player = new Audio();
-    let currentSeq = null;
+       兩種播放器（createClipPlayer／createFullPlayer）刻意做成同一組介面
+       （seekTo／playVideo／pauseVideo／getCurrentTime／getPlayerState／getDuration／
+       setPlaybackRate），時間一律用「原音檔秒數」：第 n 個逐句音檔＝sentenceTimes 攤平後第 n 句
+       的 start～end。所以下面的句子標示、時間軸、整頁連播邏輯都照舊，不用分兩套。 */
+
+    const allSentences = [];   // [{page, idx, text, el}]，全篇連續順序
+    const USE_FULL = new URLSearchParams(location.search).has('edit');
+    let player = null;
+    let playerReady = false;
+    let watchTimer = null;
+    let currentSeg = null;     // {start, end, el, seqIndex}
     let autoNext = false;
+    let followScroll = false;  // 播整頁／逐句連播時，畫面自動捲到正在唸的句子
     let playRate = 1;
-    let queue = [];            // 播整頁時待播的序號
-    let seeking = false;
+
+    /* 逐句音檔播放器。只用一個 <audio> 元素、換 src 接下一句：瀏覽器對「同一個元素、
+       使用者點過才開始播」的放行比較寬鬆，連播／整頁播換檔時才不會被擋。 */
+    function createClipPlayer(hooks) {
+      const list = Object.keys(sentenceTimes)
+        .flatMap(p => sentenceTimes[p])
+        .map((t, n) => (t && t.end > t.start) ? { start: t.start, end: t.end, url: `${REF_AUDIO_BASE}s${n}.mp3` } : null)
+        .filter(Boolean)
+        .sort((a, b) => a.start - b.start);
+      const aud = new Audio();
+      aud.preload = 'auto';
+      const preloader = new Audio();   // 先把下一句抓進快取，連播換檔時比較不會頓
+      preloader.preload = 'auto';
+      let cur = -1;               // 目前載入的是 list 第幾個
+      let pendingOffset = null;   // 剛換檔、還不能設定 currentTime 時先記著
+      let state = -1;             // 狀態碼沿用 YouTube 播放器的定義：-1 未開始 0 播完 1 播放中 2 暫停 3 緩衝；-2 讀不到音檔
+      let rate = 1;
+      let stopAt = Infinity;      // 播到這個原音檔秒數為止，不再往下一個音檔接
+
+      function load(i, offset) {
+        if (i !== cur) {
+          cur = i;
+          pendingOffset = offset;
+          aud.src = list[i].url;
+          aud.defaultPlaybackRate = rate;
+          aud.playbackRate = rate;
+          if (list[i + 1]) preloader.src = list[i + 1].url;
+        } else {
+          try { aud.currentTime = offset; pendingOffset = null; } catch (e) { pendingOffset = offset; }
+        }
+      }
+
+      // 落在某句裡 → 那一句；落在句與句之間的空檔 → 下一句開頭
+      function indexAt(t) {
+        for (let i = 0; i < list.length; i++) {
+          if (t < list[i].end - 0.02) return i;
+        }
+        return -1;
+      }
+
+      function tryPlay() {
+        state = 3;
+        aud.playbackRate = rate;
+        aud.play().catch(err => {
+          if (err && err.name === 'AbortError') return;   // 播放途中換檔，不算失敗
+          if (state !== -2) state = 2;                     // 被瀏覽器擋住 → 交給 markBlocked 引導
+        });
+      }
+
+      aud.addEventListener('loadedmetadata', () => {
+        if (pendingOffset !== null) {
+          try { aud.currentTime = pendingOffset; } catch (e) {}
+          pendingOffset = null;
+        }
+        aud.playbackRate = rate;
+      });
+      aud.addEventListener('playing', () => {
+        state = 1;
+        if (hooks && hooks.onPlaying) hooks.onPlaying();
+      });
+      aud.addEventListener('waiting', () => { if (state === 1) state = 3; });
+      aud.addEventListener('pause', () => { if (state === 1 || state === 3) state = 2; });
+      aud.addEventListener('ended', () => {
+        const next = cur + 1;
+        if (next < list.length && list[next].start < stopAt - 0.05) {
+          load(next, 0);
+          tryPlay();
+        } else {
+          state = 0;
+        }
+      });
+      aud.addEventListener('error', () => {
+        if (!aud.getAttribute('src')) return;
+        state = -2;
+        if (hooks && hooks.onError) hooks.onError(aud.src);
+      });
+
+      return {
+        seekTo(t) {
+          const i = indexAt(t);
+          if (i < 0) {
+            aud.pause();
+            state = 0;
+            return;
+          }
+          load(i, Math.max(0, t - list[i].start));
+        },
+        playVideo() {
+          if (!list.length) return;
+          if (cur < 0) load(0, 0);
+          tryPlay();
+        },
+        pauseVideo() {
+          aud.pause();
+          if (state !== 0 && state !== -2) state = 2;
+        },
+        getCurrentTime() {
+          if (cur < 0) return 0;
+          const off = pendingOffset !== null ? pendingOffset : aud.currentTime;
+          return Math.min(list[cur].start + off, list[cur].end);
+        },
+        getPlayerState() { return state; },
+        getDuration() { return LESSON_AUDIO.duration; },
+        setPlaybackRate(r) {
+          rate = r;
+          aud.defaultPlaybackRate = r;
+          aud.playbackRate = r;
+        },
+        setStopAt(t) { stopAt = t; }
+      };
+    }
+
+    /* 程式觸發的播放被瀏覽器擋住時（最常見：本頁被嵌在沒有 allow="autoplay"
+       的 iframe 裡，例如 Google Sites 的內嵌程式碼），提示再按一次 ▶（那一下算使用者手勢）。 */
+    let playbackUnlocked = false;
+    let blockedCheckTimer = null;
+
+    function markBlocked(seg) {
+      clearWatch();
+      const msg = document.getElementById('player-now');
+      msg.classList.add('warn');
+      msg.textContent = '⚠ 瀏覽器擋住了播放，請再按一次句子前的 ▶';
+    }
+
+    function clearBlocked() {
+      clearTimeout(blockedCheckTimer);
+      document.getElementById('player-now').classList.remove('warn');
+    }
+
+    function getTime(page, idx) {
+      const arr = sentenceTimes[page];
+      if (!arr) return null;
+      const t = arr[idx];
+      if (!t || typeof t.start !== 'number' || typeof t.end !== 'number') return null;
+      if (t.end <= t.start) return null;
+      return t;
+    }
 
     function toast(msg) {
       const old = document.querySelector('.toast');
@@ -2836,314 +1705,315 @@
       setTimeout(() => el.remove(), 2200);
     }
 
+    let trackedEl = null;   // 目前標示中的句子
+    let timedList = [];     // 全篇已校時的句子 [{el, start, end, label}]，供標示追蹤用
+
+    function buildTimedList() {
+      timedList = allSentences
+        .map(s => {
+          const t = getTime(s.page, s.idx);
+          return t ? {
+            el: s.el,
+            start: t.start,
+            end: t.end,
+            label: `第 ${s.page} 頁：${s.text.slice(0, 18)}…`
+          } : null;
+        })
+        .filter(Boolean);
+    }
+
+    /* 句子前的鈕：正在唸這一句時顯示暫停，其餘時候顯示播放 */
     function setBtnGlyph(el, playing) {
       if (!el) return;
       const b = el.querySelector('.play-btn');
-      if (b) b.textContent = playing ? '❚❚' : '▶';
+      if (b) b.textContent = playing ? '⏸' : '▶';
     }
 
-    function setPlayingEl(seqIndex) {
-      allSentences.forEach((s, i) => {
-        const on = i === seqIndex;
-        s.el.classList.toggle('playing', on);
-        setBtnGlyph(s.el, on);
-      });
+    /* 捲到讓句子落在「可視區」正中央：扣掉底部浮動播放列的高度，才不會被它蓋住 */
+    function scrollSentenceToCenter(el) {
+      const bar = document.getElementById('player-bar');
+      const barH = bar.classList.contains('collapsed') ? 0 : bar.offsetHeight;
+      const r = el.getBoundingClientRect();
+      const visibleH = window.innerHeight - barH;
+      const target = window.scrollY + r.top + r.height / 2 - visibleH / 2;
+      window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
     }
 
-    function fmtTime(sec) {
-      if (!isFinite(sec) || sec < 0) sec = 0;
-      const m = Math.floor(sec / 60);
-      const s = Math.floor(sec % 60);
-      return m + ':' + String(s).padStart(2, '0');
+    function setPlayingEl(el) {
+      if (trackedEl === el) return;
+      if (el && followScroll) scrollSentenceToCenter(el);
+      if (trackedEl) {
+        trackedEl.classList.remove('playing');
+        setBtnGlyph(trackedEl, false);
+      }
+      trackedEl = el;
+      if (el) {
+        el.classList.add('playing');
+        setBtnGlyph(el, true);
+      }
     }
 
-    function updateSeek() {
-      const bar = document.getElementById('seekbar');
-      const dur = isFinite(player.duration) ? player.duration : 0;
-      bar.max = dur || 100;
-      if (!seeking) bar.value = player.currentTime || 0;
-      document.getElementById('time-now').textContent = fmtTime(player.currentTime);
-      document.getElementById('time-dur').textContent = fmtTime(dur);
+    function highlightAtTime(now) {
+      const cur = timedList.find(s => now >= s.start - 0.05 && now < s.end);
+      if (cur && cur.el !== trackedEl) {
+        setPlayingEl(cur.el);
+        document.getElementById('player-now').textContent = cur.label;
+      }
+    }
+
+    function clearWatch() {
+      if (watchTimer) {
+        clearInterval(watchTimer);
+        watchTimer = null;
+      }
+      setPlayingEl(null);
     }
 
     function stopPlayback() {
-      queue = [];
-      player.pause();
-      player.currentTime = 0;
-      setPlayingEl(-1);
-      updateSeek();
-      document.getElementById('player-now').textContent = '已停止';
-      document.getElementById('player-now').classList.remove('warn');
+      clearWatch();
+      clearTimeout(blockedCheckTimer);
+      currentSeg = null;
+      if (playerReady && player) {
+        try { player.pauseVideo(); } catch (e) {}
+      }
+      document.getElementById('player-now').textContent = '點課文句子前的 ▶ 就會唸這一句';
     }
 
-    function playSeq(seqIndex) {
-      const s = allSentences[seqIndex];
-      if (!s) return;
-      currentSeq = seqIndex;
-      const now = document.getElementById('player-now');
-      now.classList.remove('warn');
-      now.textContent = `第 ${s.page} 頁：${s.han}`;
-      player.src = AUDIO_BASE + s.audio;
-      player.playbackRate = playRate;
-      setPlayingEl(seqIndex);
-      player.play().catch(err => {
-        console.error('播放失敗:', err);
-        now.classList.add('warn');
-        now.textContent = '⚠️ 播不出來：確認 mp3 資料夾跟這個網頁放在一起，或先點一下畫面再按播放。';
-        setPlayingEl(-1);
+    let pendingSegment = null;
+
+    function playSegment(start, end, el, seqIndex, label, follow) {
+      followScroll = !!follow;
+      if (!playerReady) {
+        pendingSegment = { start, end, el, seqIndex, label };
+        toast('播放器準備中，馬上就好…');
+        return;
+      }
+
+      clearWatch();
+      currentSeg = { start, end, el, seqIndex, label };
+
+      setPlayingEl(el || null);
+      document.getElementById('player-now').textContent = label || '播放中…';
+
+      try {
+        if (player.setStopAt) player.setStopAt(end);
+        player.seekTo(start, true);
+        player.setPlaybackRate(playRate);
+        player.playVideo();
+      } catch (e) {
+        toast('播放失敗，請確認網路或改用瀏覽器直接開啟');
+        return;
+      }
+
+      // 1.2 秒後仍沒真的開始播 → 判定被瀏覽器擋住，引導在播放器上點一下解鎖
+      // （解鎖過就不用再檢查；注意這裡不能 return，後面還要掛句尾監看）
+      clearTimeout(blockedCheckTimer);
+      if (!playbackUnlocked) {
+        blockedCheckTimer = setTimeout(() => {
+          let st;
+          try { st = player.getPlayerState(); } catch (e) { return; }
+          if (st !== 1 && st !== 3 && st !== -2) {   // 1=播放中 3=緩衝中 -2=讀不到音檔（另有提示）
+            markBlocked({ start, end, el, seqIndex, label });
+          }
+        }, 1200);
+      }
+
+      watchTimer = setInterval(() => {
+        let now, state;
+        try {
+          now = player.getCurrentTime();
+          state = player.getPlayerState();
+        } catch (e) { return; }
+        // 狀態 0＝播完：音檔自己播完（最後一句）也要收尾
+        if (now >= end - 0.05 || state === 0) {
+          clearWatch();
+          try { player.pauseVideo(); } catch (e) {}
+          if (autoNext && typeof seqIndex === 'number') {
+            playNextSentence(seqIndex);
+          } else {
+            currentSeg = null;
+          }
+        }
+      }, 80);
+    }
+
+    /* ---- 時間軸（自己做，逐句音檔本身沒有整課的連續時間軸） ---- */
+    let uiTimer = null;
+    let seeking = false;   // 使用者正在拖拉時，不要被自動更新蓋掉
+
+    function fmtTime(sec) {
+      sec = Math.max(0, Math.floor(sec || 0));
+      return Math.floor(sec / 60) + ':' + String(sec % 60).padStart(2, '0');
+    }
+
+    function startUiLoop() {
+      if (uiTimer) return;
+      uiTimer = setInterval(() => {
+        if (!playerReady || seeking) return;
+        let now, dur, st;
+        try {
+          now = player.getCurrentTime();
+          dur = player.getDuration() || LESSON_AUDIO.duration;
+          st = player.getPlayerState();
+        } catch (e) { return; }
+
+        const bar = document.getElementById('seekbar');
+        if (Math.abs(+bar.max - Math.floor(dur)) > 1) bar.max = Math.floor(dur);
+        bar.value = now;
+        document.getElementById('time-now').textContent = fmtTime(now);
+        document.getElementById('time-dur').textContent = fmtTime(dur);
+
+        if (st === 1) highlightAtTime(now);          // 播放中才跟著換句
+        if (trackedEl) setBtnGlyph(trackedEl, st === 1);   // 暫停時鈕變回 ▶
+      }, 200);
+    }
+
+    /* 拖拉時間軸＝自由播放：解除本句的句尾停止，讓它一路往下播 */
+    function seekToFree(seconds) {
+      clearWatch();
+      clearTimeout(blockedCheckTimer);
+      currentSeg = null;
+      followScroll = false;
+      if (!playerReady) return;
+      try {
+        if (player.setStopAt) player.setStopAt(Infinity);
+        player.seekTo(seconds, true);
+        player.setPlaybackRate(playRate);
+        player.playVideo();
+      } catch (e) {}
+      highlightAtTime(seconds);
+    }
+
+    function bindSeekbar() {
+      const bar = document.getElementById('seekbar');
+      const onStart = () => { seeking = true; };
+      bar.addEventListener('pointerdown', onStart);
+      bar.addEventListener('keydown', onStart);
+      bar.addEventListener('input', () => {
+        seeking = true;
+        document.getElementById('time-now').textContent = fmtTime(+bar.value);
+      });
+      bar.addEventListener('change', () => {
+        seeking = false;
+        seekToFree(+bar.value);
       });
     }
 
+    /* 點句子：正在唸這一句就暫停，暫停中就接著播，其餘從這句開頭播 */
     function onSentenceClick(seqIndex) {
-      if (currentSeq === seqIndex && !player.paused) {
-        player.pause();
-        setPlayingEl(-1);
+      const s = allSentences[seqIndex];
+      if (!s) return;
+      const t = getTime(s.page, s.idx);
+      let st = -1;
+      try { st = playerReady ? player.getPlayerState() : -1; } catch (e) {}
+
+      if (t && playerReady && trackedEl === s.el) {
+        if (st === 1) {                       // 正在唸 → 暫停
+          try { player.pauseVideo(); } catch (e) {}
+          setBtnGlyph(s.el, false);
+          return;
+        }
+        let now = 0;
+        try { now = player.getCurrentTime(); } catch (e) {}
+        if (st === 2 && now > t.start && now < t.end) {   // 暫停在這句中間 → 接著播
+          try { player.playVideo(); } catch (e) {}
+          setBtnGlyph(s.el, true);
+          return;
+        }
+      }
+      playSentenceBySeq(seqIndex);
+    }
+
+    function playSentenceBySeq(seqIndex, follow) {
+      const s = allSentences[seqIndex];
+      if (!s) return;
+      const t = getTime(s.page, s.idx);
+      if (!t) {
+        toast('本句尚未校時（老師可用 ?edit=1 校時）');
         return;
       }
-      queue = [];
-      playSeq(seqIndex);
+      playSegment(t.start, t.end, s.el, seqIndex, `第 ${s.page} 頁：${s.text.slice(0, 18)}…`, follow);
+    }
+
+    function playNextSentence(seqIndex) {
+      for (let i = seqIndex + 1; i < allSentences.length; i++) {
+        const s = allSentences[i];
+        if (getTime(s.page, s.idx)) {
+          playSentenceBySeq(i, true);
+          return;
+        }
+      }
+      currentSeg = null;
+      document.getElementById('player-now').textContent = '已播到最後一句';
     }
 
     function playPage(pageNum) {
-      const list = [];
-      allSentences.forEach((s, i) => { if (s.page === pageNum) list.push(i); });
-      if (!list.length) { toast('這一頁沒有可播的句子'); return; }
-      queue = list.slice(1);
-      playSeq(list[0]);
+      const list = allSentences
+        .map((s, i) => ({ s, i }))
+        .filter(o => o.s.page === pageNum && getTime(o.s.page, o.s.idx));
+      if (list.length === 0) {
+        toast('本頁尚未校時（老師可用 ?edit=1 校時）');
+        return;
+      }
+      // 整頁一次連續播（不逐句重新 seek，句與句之間才不會頓一下），
+      // 標示由 UI 迴圈依秒數自動移到正在唸的那一句
+      const first = getTime(list[0].s.page, list[0].s.idx);
+      const last = getTime(list[list.length - 1].s.page, list[list.length - 1].s.idx);
+      playSegment(first.start, last.end, null, null, `第 ${pageNum} 頁（整頁）`, true);
     }
 
-    player.addEventListener('timeupdate', updateSeek);
-    player.addEventListener('loadedmetadata', updateSeek);
-    player.addEventListener('ended', () => {
-      setPlayingEl(-1);
-      if (queue.length) {
-        playSeq(queue.shift());
-      } else if (autoNext && currentSeq !== null && currentSeq + 1 < allSentences.length) {
-        playSeq(currentSeq + 1);
-      }
-    });
-
-    function bindPlayerBar() {
-      document.getElementById('btn-replay').addEventListener('click', () => {
-        if (currentSeq === null) { toast('還沒播過任何句子'); return; }
-        queue = [];
-        playSeq(currentSeq);
+    /* 校時模式用：整支課文原音檔，一樣包成跟逐句播放器同一組介面。
+       先整支抓進記憶體再播：本機 python -m http.server 不支援分段讀取（Range），
+       直接用網址播的話跳到後面的秒數會被打回開頭；抓不到（例如 file:// 開啟）才直接用網址。 */
+    function createFullPlayer(hooks) {
+      const aud = new Audio();
+      aud.preload = 'auto';
+      fetch(LESSON_AUDIO.file)
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.blob();
+        })
+        .then(blob => { aud.src = URL.createObjectURL(blob); })
+        .catch(() => { aud.src = LESSON_AUDIO.file; });
+      let state = -1;
+      let rate = 1;
+      aud.addEventListener('playing', () => {
+        state = 1;
+        if (hooks && hooks.onPlaying) hooks.onPlaying();
       });
-
-      const btnAuto = document.getElementById('btn-auto');
-      btnAuto.addEventListener('click', () => {
-        autoNext = !autoNext;
-        btnAuto.classList.toggle('on', autoNext);
-        toast(autoNext ? '逐句連播：開' : '逐句連播：關');
+      aud.addEventListener('waiting', () => { if (state === 1) state = 3; });
+      aud.addEventListener('pause', () => { if (state === 1 || state === 3) state = 2; });
+      aud.addEventListener('ended', () => { state = 0; });
+      aud.addEventListener('error', () => {
+        state = -2;
+        if (hooks && hooks.onError) hooks.onError(aud.src);
       });
-
-      const btnRate = document.getElementById('btn-rate');
-      btnRate.addEventListener('click', () => {
-        playRate = playRate === 1 ? 0.75 : 1;
-        btnRate.textContent = playRate + 'x';
-        btnRate.classList.toggle('on', playRate !== 1);
-        player.playbackRate = playRate;
-        toast('播放速度 ' + playRate + 'x');
-      });
-
-      document.getElementById('btn-stop').addEventListener('click', stopPlayback);
-
-      const bar = document.getElementById('player-bar');
-      const handle = document.getElementById('bar-handle');
-      document.getElementById('btn-fold').addEventListener('click', () => {
-        bar.classList.add('collapsed');
-        handle.classList.remove('hidden');
-      });
-      handle.addEventListener('click', () => {
-        bar.classList.remove('collapsed');
-        handle.classList.add('hidden');
-      });
-
-      const seek = document.getElementById('seekbar');
-      const onStart = () => { seeking = true; };
-      const onEnd = () => {
-        seeking = false;
-        if (isFinite(player.duration)) player.currentTime = parseFloat(seek.value) || 0;
+      return {
+        seekTo(t) { try { aud.currentTime = Math.max(0, t); } catch (e) {} },
+        playVideo() {
+          state = 3;
+          aud.playbackRate = rate;
+          aud.play().catch(err => {
+            if (err && err.name === 'AbortError') return;
+            if (state !== -2) state = 2;
+          });
+        },
+        pauseVideo() {
+          aud.pause();
+          if (state !== 0 && state !== -2) state = 2;
+        },
+        getCurrentTime() { return aud.currentTime || 0; },
+        getPlayerState() { return state; },
+        getDuration() { return aud.duration || LESSON_AUDIO.duration; },
+        setPlaybackRate(r) {
+          rate = r;
+          aud.defaultPlaybackRate = r;
+          aud.playbackRate = r;
+        }
       };
-      seek.addEventListener('mousedown', onStart);
-      seek.addEventListener('touchstart', onStart, { passive: true });
-      seek.addEventListener('change', onEnd);
-      seek.addEventListener('mouseup', onEnd);
-      seek.addEventListener('touchend', onEnd);
     }
 
-    /* ===================== 課文渲染 ===================== */
-
-    /* 課文這個位置實際唸的臺羅（把涵蓋到的詞組音節接起來）。 */
-    function tailoAt(groups, start, end) {
-      let at = 0;
-      const syl = [];
-      groups.forEach(g => {
-        const s = at, e = at + g[0].length;
-        at = e;
-        if (s < end && e > start && g[1]) syl.push(g[1]);
-      });
-      return syl.join('-');
-    }
-
-    /* 比對臺羅時只看字母本身：去掉連字號、空白、斜線變體與大小寫差異。
-       聲調符號保留，不然「雨水 ú-suí／hōo-tsuí」這種才分得出來。 */
-    function normRoman(s) {
-      return (s || '').toLowerCase().replace(/[-\s.]/g, '');
-    }
-
-    /* 同形生詞挑出唸法對得上的那一條；都對不上就退回第一條。 */
-    function pickEntry(entries, actual) {
-      if (entries.length === 1) return entries[0];
-      const want = normRoman(actual);
-      let best = null, bestScore = -1;
-      entries.forEach(v => {
-        v.roman.split('/').forEach(variant => {
-          const got = normRoman(variant);
-          let score = 0;
-          if (got === want) score = 3;
-          else if (want && (got.indexOf(want) >= 0 || want.indexOf(got) >= 0)) score = 2;
-          if (score > bestScore) { bestScore = score; best = v; }
-        });
-      });
-      return bestScore > 0 ? best : entries[0];
-    }
-
-    /* 一句課文 → DOM：逐詞包成 <ruby>漢字<rt>臺羅</rt></ruby>，
-       再把落在生詞範圍內的詞整組加上 .vocabulary 螢光與編號。 */
-    function buildSentenceNodes(sentence, pageNum) {
-      const vocabList = database[pageNum] || [];
-      const flat = sentence.groups.map(g => g[0]).join('');
-
-      // 同一頁常出現同形不同音的生詞（第3課整課都是），所以先依「詞面」分組，
-      // 同一個詞面有好幾個詞條時，再用課文當場的臺羅去分辨是哪一條
-      const byWord = new Map();
-      vocabList.forEach(v => {
-        if (!byWord.has(v.word)) byWord.set(v.word, []);
-        byWord.get(v.word).push(v);
-      });
-      const words = Array.from(byWord.keys()).sort((a, b) => b.length - a.length);
-
-      // 找出生詞在整句裡的位置：長詞優先，位置不重疊
-      const hits = [];
-      const used = new Array(flat.length).fill(false);
-      words.forEach(word => {
-        const spots = [];
-        let from = 0;
-        for (;;) {
-          const at = flat.indexOf(word, from);
-          if (at < 0) break;
-          const end = at + word.length;
-          let free = true;
-          for (let i = at; i < end; i++) if (used[i]) free = false;
-          if (free) {
-            for (let i = at; i < end; i++) used[i] = true;
-            spots.push({ start: at, end: end });
-          }
-          from = at + 1;
-        }
-        const entries = byWord.get(word);
-        spots.forEach(spot => {
-          spot.v = pickEntry(entries, tailoAt(sentence.groups, spot.start, spot.end));
-          hits.push(spot);
-        });
-      });
-      hits.sort((a, b) => a.start - b.start);
-
-      // 生詞若只蓋到某個詞的一部分（例如「著愛」的「著」），就把那個詞拆開，
-      // 螢光筆才會剛好落在生詞上，而不是整個詞都被畫到
-      const cuts = new Set();
-      hits.forEach(h => { cuts.add(h.start); cuts.add(h.end); });
-      const groups = splitGroupsAt(sentence.groups, cuts);
-
-      const offsets = [];
-      let at = 0;
-      groups.forEach(g => {
-        offsets.push([at, at + g[0].length]);
-        at += g[0].length;
-      });
-
-      // 每一組屬於哪一個生詞（同一個生詞可能橫跨數組）
-      const mark = new Array(groups.length).fill(null);
-      hits.forEach(h => {
-        groups.forEach((g, gi) => {
-          const [s, e] = offsets[gi];
-          if (s < h.end && e > h.start && mark[gi] === null) mark[gi] = h.v;
-        });
-      });
-
-      const frag = document.createDocumentFragment();
-      let gi = 0;
-      while (gi < groups.length) {
-        const v = mark[gi];
-        if (!v) {
-          frag.appendChild(renderGroup(groups[gi]));
-          gi++;
-          continue;
-        }
-        // 同一個生詞的連續詞組包成一個 .vocabulary
-        const box = document.createElement('span');
-        box.className = 'vocabulary';
-        box.dataset.word = v.word;
-        box.dataset.roman = v.roman;
-        box.dataset.chinese = v.chinese;
-        box.dataset.page = pageNum;
-        box.dataset.order = v.order;
-        while (gi < groups.length && mark[gi] === v) {
-          box.appendChild(renderGroup(groups[gi]));
-          gi++;
-        }
-        const num = document.createElement('span');
-        num.className = 'vocab-number';
-        num.textContent = v.order;
-        frag.appendChild(box);
-        frag.appendChild(num);
-      }
-      return frag;
-    }
-
-    /* 在指定的整句字元位置把詞組切開，音節跟著分。
-       只有「漢字數＝音節數」的詞組才切得開；課文裡直接寫羅馬字的詞組
-       （像「--looh」「Pā-pu」一個片段就是好幾個音節）對不出切點，整組保留。 */
-    function splitGroupsAt(groups, cuts) {
-      const out = [];
-      let at = 0;
-      groups.forEach(g => {
-        const [text, rom, syl] = g;
-        const start = at;
-        at += text.length;
-        const chars = Array.from(text);
-        if (!rom || chars.length !== text.length || chars.length !== (syl || []).length) {
-          out.push(g);
-          return;
-        }
-        const points = [];
-        for (let i = 1; i < chars.length; i++) if (cuts.has(start + i)) points.push(i);
-        if (!points.length) { out.push(g); return; }
-        let from = 0;
-        points.concat([chars.length]).forEach(to => {
-          const part = chars.slice(from, to);
-          const parts = syl.slice(from, to);
-          out.push([part.join(''), parts.join('-'), parts]);
-          from = to;
-        });
-      });
-      return out;
-    }
-
-    function renderGroup(g) {
-      const [text, rom, syl] = g;
-      if (!rom) return document.createTextNode(text);
-      const ruby = document.createElement('ruby');
-      const rb = document.createElement('span');
-      rb.className = 'rb';
-      rb.textContent = text;
-      const rt = document.createElement('rt');
-      rt.textContent = (syl && syl.length) ? syl.join('-') : rom;
-      ruby.appendChild(rb);
-      ruby.appendChild(rt);
-      return ruby;
-    }
+    /* ===================== 渲染 ===================== */
 
     function renderContent() {
       const contentArea = document.getElementById('content-area');
@@ -3172,7 +2042,8 @@
         const content = document.createElement('div');
         content.className = 'content';
 
-        pages[pageNum].forEach((sentence, idx) => {
+        const sentences = splitSentences(pages[pageNum]);
+        sentences.forEach((sentence, idx) => {
           const seqIndex = allSentences.length;
 
           const span = document.createElement('span');
@@ -3180,28 +2051,19 @@
           span.dataset.page = pageNum;
           span.dataset.idx = idx;
 
-          const play = document.createElement('button');
-          play.className = 'play-btn';
-          play.title = '播放這一句';
-          play.textContent = '▶';
-          span.appendChild(play);
+          const timed = !!getTime(pageNum, idx);
+          span.innerHTML =
+            `<button class="play-btn${timed ? '' : ' untimed'}" title="${timed ? '播放這一句' : '本句尚未校時'}">▶</button>` +
+            `<button class="mic-btn" id="mic-S-${seqIndex}" title="錄音跟讀練習這一句">🎤</button>` +
+            highlightVocabulary(sentence.text, pageNum);
 
-          const mic = document.createElement('button');
-          mic.className = 'mic-btn';
-          mic.id = 'mic-S-' + seqIndex;
-          mic.title = '錄音跟讀練習這一句';
-          mic.textContent = '🎤';
-          span.appendChild(mic);
-
-          span.appendChild(buildSentenceNodes(sentence, pageNum));
           content.appendChild(span);
 
-          allSentences.push({
-            page: pageNum, idx: idx, han: sentence.han,
-            audio: sentence.audio, el: span
-          });
+          allSentences.push({ page: pageNum, idx: idx, text: sentence.text, el: span });
 
-          span.addEventListener('click', function() { onSentenceClick(seqIndex); });
+          span.addEventListener('click', function() {
+            onSentenceClick(seqIndex);
+          });
 
           const statusDiv = document.createElement('div');
           statusDiv.className = 'speak-status';
@@ -3213,7 +2075,9 @@
           resultDiv.id = 'result-S-' + seqIndex;
           content.appendChild(resultDiv);
 
-          mic.addEventListener('click', function(e) { toggleRecording(e, seqIndex); });
+          span.querySelector('.mic-btn').addEventListener('click', function(e) {
+            toggleRecording(e, seqIndex);
+          });
         });
 
         section.appendChild(head);
@@ -3221,78 +2085,171 @@
         contentArea.appendChild(section);
       });
 
+      applyTailo();
+      // 臺羅標完才算得出每一句應有幾個音節（給跟讀評分的「音節數量」用）
+      allSentences.forEach(s => { s.sylCount = countExpectedSyllables(s.el); });
       glueBreakingPunctuation(contentArea);
 
-      document.querySelectorAll('.vocabulary').forEach(elem => {
+      // 保險：若課文改動使句數與時間戳陣列長度不符，補 null 對齊，避免陣列越界
+      Object.keys(pages).forEach(p => {
+        const need = allSentences.filter(s => s.page === p).length;
+        if (!Array.isArray(sentenceTimes[p])) sentenceTimes[p] = [];
+        while (sentenceTimes[p].length < need) sentenceTimes[p].push(null);
+        sentenceTimes[p].length = need;
+      });
+
+      const vocabElements = document.querySelectorAll('.vocabulary');
+      vocabElements.forEach(elem => {
         elem.addEventListener('click', function(e) {
           e.stopPropagation();
-          const word = this.dataset.word;
-          const roman = this.dataset.roman;
+          const word = this.getAttribute('data-word');
+          const roman = this.getAttribute('data-roman');
+          const chinese = this.getAttribute('data-chinese');
+          const page = this.getAttribute('data-page');
+          const order = this.getAttribute('data-order');
+
           const audioRoman = roman.split('/')[0].trim();
           if (DICT_AUDIO[audioRoman]) {
+            // 指定詞改播教育部辭典的真人錄音，不用合成音
             if (currentAudioObj) {
               currentAudioObj.pause();
               currentAudioObj.currentTime = 0;
             }
             currentAudioObj = new Audio(DICT_AUDIO[audioRoman]);
-            currentAudioObj.play().catch(err => console.error('Audio play error:', err));
+            currentAudioObj.play().catch(err => console.error("Audio play error:", err));
           } else if (typeof holo === 'function') {
             holo(this, roman);
           }
-          showTooltip(e, word, roman, this.dataset.chinese, this.dataset.page, this.dataset.order);
+
+          showTooltip(e, word, roman, chinese, page, order);
         });
       });
     }
 
-    /* 臺羅標音把每個詞包成 ruby，標點變成夾在中間的獨立文字，瀏覽器的中文避頭尾
-       規則在這裡失效，會出現「。」落在行首、「「」掛在行尾。
-       把收尾標點跟前一個詞、開頭標點跟後一個詞包進不換行的 span。 */
-    const CLOSE_PUNCT = /^\s*[。，、；：？！」』）》〉】”’…,.;:?!)]+/;
-    const OPEN_PUNCT = /[「『（《〈【“‘(]+\s*$/;
 
-    function glueBreakingPunctuation(root) {
-      const isWord = el => el && el.nodeType === 1 &&
-        (el.tagName === 'RUBY' || el.classList.contains('vocabulary') || el.classList.contains('nobr'));
-      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-      const nodes = [];
-      while (walker.nextNode()) nodes.push(walker.currentNode);
+    /* 臺羅標音：渲染完成後把漢字包成 <ruby>詞<rt>臺羅</rt></ruby>。
+       tailo[頁碼] 是該頁依序的詞組，走訪文字節點時逐一取用；
+       若一個詞被生詞標記切開（例如生詞只涵蓋詞的一半），就只標到切點為止。 */
+    const HANZI = /[\u3400-\u9fff\uf900-\ufaff]|[\ud840-\udbff][\udc00-\udfff]/;
 
-      nodes.forEach(node => {
-        const close = node.nodeValue.match(CLOSE_PUNCT);
-        const prev = node.previousSibling;
-        if (close && isWord(prev)) {
-          const wrap = document.createElement('span');
-          wrap.className = 'nobr';
-          prev.parentNode.insertBefore(wrap, prev);
-          wrap.appendChild(prev);
-          wrap.appendChild(document.createTextNode(close[0]));
-          node.nodeValue = node.nodeValue.slice(close[0].length);
+    function applyTailo() {
+      if (typeof tailo === 'undefined') return;
+      document.querySelectorAll('.page-section').forEach(section => {
+        const pageNum = (section.querySelector('.page-number').textContent.match(/\d+/) || [])[0];
+        const groups = tailo[pageNum];
+        if (!groups) return;
+
+        // 攤平成「每個漢字 → (第幾組, 組內第幾字)」
+        const flat = [];
+        groups.forEach((g, gi) => {
+          Array.from(g[0]).forEach((ch, ci) => flat.push({ gi: gi, ci: ci }));
+        });
+
+        let k = 0;
+        const content = section.querySelector('.content');
+        const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+        const nodes = [];
+        while (walker.nextNode()) {
+          if (!walker.currentNode.parentElement.closest('.vocab-number')) {
+            nodes.push(walker.currentNode);
+          }
         }
-        const open = node.nodeValue.match(OPEN_PUNCT);
-        const next = node.nextSibling;
-        if (open && isWord(next)) {
-          const wrap = document.createElement('span');
-          wrap.className = 'nobr';
-          next.parentNode.insertBefore(wrap, next);
-          wrap.appendChild(document.createTextNode(open[0]));
-          wrap.appendChild(next);
-          node.nodeValue = node.nodeValue.slice(0, node.nodeValue.length - open[0].length);
-        }
+
+        nodes.forEach(node => {
+          const chars = Array.from(node.nodeValue);
+          if (!chars.some(c => HANZI.test(c))) return;
+          const frag = document.createDocumentFragment();
+          let buf = '';
+          let run = null;   // 目前累積中的詞組
+
+          const flushRun = () => {
+            if (!run) return;
+            const ruby = document.createElement('ruby');
+            const rb = document.createElement('span');
+            rb.className = 'rb';
+            rb.textContent = run.text;
+            const rt = document.createElement('rt');
+            rt.textContent = run.syl.join('-');
+            ruby.appendChild(rb);
+            ruby.appendChild(rt);
+            frag.appendChild(ruby);
+            run = null;
+          };
+
+          chars.forEach(c => {
+            if (!HANZI.test(c)) {
+              flushRun();
+              buf += c;
+              return;
+            }
+            if (buf) { frag.appendChild(document.createTextNode(buf)); buf = ''; }
+            const info = flat[k++];
+            if (!info) { frag.appendChild(document.createTextNode(c)); return; }
+            const g = groups[info.gi];
+            if (run && run.gi === info.gi) {
+              run.text += c;
+              run.syl.push((g[2] || [])[info.ci] || '');
+            } else {
+              flushRun();
+              run = { gi: info.gi, text: c, syl: [(g[2] || [])[info.ci] || ''] };
+            }
+          });
+          flushRun();
+          if (buf) frag.appendChild(document.createTextNode(buf));
+          node.parentNode.replaceChild(frag, node);
+        });
       });
+    }
+
+    /* 逐句「應有音節數」：臺羅標音標完後，每個詞都是 <ruby><rt>tsi̍t-ê</rt></ruby>，
+       rt 裡用「-」分隔的段數就是音節數。課文裡本來就用羅馬字寫的詞
+       （oo-tóo-bái、冷sih-sih）沒有 ruby，另外掃羅馬字 token 補算；
+       括號裡的注音附註（例：新冠肺炎 (sin kuan hì-iām)）是註解不是課文，不計。 */
+    const LATIN_CH = 'A-Za-z\\u00c0-\\u024f\\u1e00-\\u1eff';
+    const LATIN_TOKEN = new RegExp(
+      `[${LATIN_CH}][${LATIN_CH}\\u0300-\\u036f]*(?:-[${LATIN_CH}][${LATIN_CH}\\u0300-\\u036f]*)*`, 'g');
+
+    function countExpectedSyllables(el) {
+      let n = 0;
+      el.querySelectorAll('rt').forEach(rt => {
+        n += rt.textContent.split('-').filter(s => s.trim()).length;
+      });
+
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+      let plain = '';
+      while (walker.nextNode()) {
+        const node = walker.currentNode;
+        if (node.parentElement && node.parentElement.closest('ruby, .vocab-number, button')) continue;
+        // 加換行分隔：不然「bùn來bùn去」的 來／去 被 ruby 帶走後，
+        // 兩個 bùn 會黏成一個 token 而少算一個音節
+        plain += node.nodeValue + '\n';
+      }
+      plain = plain.replace(/[(（][^)）]*[)）]/g, ' ');
+      (plain.match(LATIN_TOKEN) || []).forEach(tok => {
+        n += tok.split('-').filter(s => s.trim()).length;
+      });
+      return n;
     }
 
     /* ===================== 跟讀錄音與聲音相似度評分 =====================
        不用語音辨識（不管本機 whisper 或瀏覽器內建，對台語都只能辨識出「近似音」的
        華語字），改成直接比對「錄音」跟「範例音檔」兩段聲音本身的相似度：
-       範例音檔就是這一句的意傳媠聲 mp3（跟播放用的是同一個檔）。
+       範例音檔是全華圖書《國中閩南語》第三冊官方課文朗讀音檔（經授權使用），
+       依 sentenceTimes 逐句切出的 mp3，放在 REF_AUDIO_BASE。
 
        比對方式：兩段音檔都用 Web Audio API 解碼、重取樣到同一個取樣率，
        切成一小段一小段（frame）算「音量（RMS）」和「過零率（ZCR，粗略反映音色明亮度）」
        兩個特徵，再用動態時間規整（DTW）把長短不一定的兩段特徵序列對齊、算出平均差距，
        轉成 0～100 分。
 
-       ⚠️ 這只是「聲音的節奏／音量走勢像不像」，沒有語意內容，沒辦法像文字辨識那樣
-       標出「哪個字唸錯」，分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
+       檢核項目共三項，加權合成總分：
+         1. 節奏音量走勢（50%）：上面說的 DTW 相似度。
+         2. 音節數量（30%）：把音量包絡平滑後數「母音核心」的峰數當作唸了幾個音節，
+            跟課文臺羅算出來的應有音節數比；可抓出漏字、吞字、多唸字。
+         3. 聲音長度（20%）：錄音與範例音（都已裁掉頭尾靜音）的時長比，抓唸太快／太拖。
+
+       ⚠️ 三項都是「聲音層面」的指標，沒有語意內容，沒辦法像文字辨識那樣標出「哪個字唸錯」，
+       分數也不等於「有沒有唸對」，純粹是練習參考用的整體印象分數。 */
 
     let mediaRecorder = null;
     let audioChunks = [];
@@ -3431,7 +2388,8 @@
     const AUDIO_TARGET_SR = 16000;
     const AUDIO_FRAME_SIZE = 400;   // 25ms
     const AUDIO_HOP_SIZE = 160;     // 10ms
-    const AUDIO_MAX_SECONDS = 20;   // 超過就截斷，避免誤按錄很久導致 DTW 算太久
+    const AUDIO_MAX_SECONDS = 60;   // 超過就截斷，避免誤按錄很久（課文最長一句約 36 秒，唸慢一點也在範圍內）
+    const DTW_MAX_FRAMES = 2000;    // 約 20 秒；超過就先把相鄰幀平均合併再比對，DTW 矩陣才不會太大
 
     function extractFeatures(samples, sampleRate) {
       const resampled = resampleLinear(samples, sampleRate, AUDIO_TARGET_SR);
@@ -3477,7 +2435,25 @@
 
     /* 動態時間規整（DTW）：featA/featB 是 {rms:[...], zcr:[...]}，長度不用一樣。
        回傳依實際規整路徑長度正規化過的平均差距，轉成的 0~100 分數。 */
+    function poolFeatures(feat, factor) {
+      const pool = arr => {
+        const out = [];
+        for (let i = 0; i < arr.length; i += factor) {
+          const seg = arr.slice(i, i + factor);
+          out.push(seg.reduce((a, b) => a + b, 0) / seg.length);
+        }
+        return out;
+      };
+      return { rms: pool(feat.rms), zcr: pool(feat.zcr) };
+    }
+
     function dtwSimilarity(featA, featB) {
+      // 長句（超過約 20 秒）兩邊用同一個倍數合併幀；20 秒內的句子維持原本的解析度與分數
+      const factor = Math.ceil(Math.max(featA.rms.length, featB.rms.length) / DTW_MAX_FRAMES);
+      if (factor > 1) {
+        featA = poolFeatures(featA, factor);
+        featB = poolFeatures(featB, factor);
+      }
       const n = featA.rms.length;
       const m = featB.rms.length;
       if (n < 2 || m < 2) return { score: 0, avgCost: Infinity };
@@ -3519,32 +2495,92 @@
       return { score, avgCost };
     }
 
-    /* ---------- 範例音檔載入（快取，同一句只抓一次） ----------
-       評估要拿到音檔的原始位元組來解碼，只能用 fetch／XHR；
-       用 file:// 直接開這支網頁時瀏覽器會擋跨檔案讀取（播放沒事、評估會失敗），
-       所以抓不到時給明確的提示：改用本機小伺服器或放到網站上開。 */
+    /* ---------- 檢核項目二：音節數量 ---------- */
 
+    function movingAverage(arr, win) {
+      const half = Math.floor(win / 2);
+      return arr.map((_, i) => {
+        let sum = 0, cnt = 0;
+        for (let j = Math.max(0, i - half); j <= Math.min(arr.length - 1, i + half); j++) {
+          sum += arr[j]; cnt++;
+        }
+        return sum / cnt;
+      });
+    }
+
+    /* 台語是單音節文字，一個音節＝一個母音核心＝音量包絡上的一個峰。
+       做法：包絡平滑到 ~50ms（壓掉單幀抖動與塞音爆破），找局部極大值，
+       再把「離太近」或「兩峰之間沒有明顯凹下去」的峰合併成同一個音節。
+       這是粗估：連讀（tsi̍t-ê）、入聲尾、鼻音容易少算，氣音與雜音容易多算。 */
+    const SYL_SMOOTH_FRAMES = 5;   // 50ms
+    const SYL_FLOOR = 0.15;        // 低於最大音量 15% 不算母音核心
+    const SYL_MIN_GAP = 9;         // 兩個音節峰至少相隔 90ms
+    const SYL_DIP_RATIO = 0.78;    // 兩峰間要凹到較小峰的 78% 以下才算兩個音節
+
+    function countSyllablePeaks(rms) {
+      if (!rms || rms.length < 3) return 0;
+      const env = movingAverage(rms, SYL_SMOOTH_FRAMES);
+      const max = Math.max(1e-6, ...env);
+      const norm = env.map(v => v / max);
+
+      const peaks = [];
+      for (let i = 1; i < norm.length - 1; i++) {
+        if (norm[i] >= norm[i - 1] && norm[i] > norm[i + 1] && norm[i] >= SYL_FLOOR) peaks.push(i);
+      }
+
+      const kept = [];
+      peaks.forEach(p => {
+        if (!kept.length) { kept.push(p); return; }
+        const q = kept[kept.length - 1];
+        let valley = Infinity;
+        for (let i = q; i <= p; i++) valley = Math.min(valley, norm[i]);
+        const smaller = Math.min(norm[p], norm[q]);
+        if (p - q < SYL_MIN_GAP || valley > smaller * SYL_DIP_RATIO) {
+          if (norm[p] > norm[q]) kept[kept.length - 1] = p;   // 同一個音節，留較強的那個峰
+          return;
+        }
+        kept.push(p);
+      });
+      return kept.length;
+    }
+
+    /* 音節數量給分：偵測本身就有誤差（拿範例音自己回測大約 ±10%），
+       所以先放寬「應有音節數的 12%、至少 1.2 個音節」不扣分，超過的部分才線性遞減到 0。
+       短句每個音節佔比大，用固定下限才不會一差一個字就掉很多分。 */
+    function syllableCountScore(detected, expected) {
+      if (!expected) return null;
+      const allowance = Math.max(1.2, expected * 0.12);
+      const err = Math.max(0, Math.abs(detected - expected) - allowance) / expected;
+      return Math.round(100 * Math.max(0, 1 - err / 0.4));
+    }
+
+    /* ---------- 檢核項目三：聲音長度 ---------- */
+
+    function framesToSeconds(frameCount) {
+      return frameCount * AUDIO_HOP_SIZE / AUDIO_TARGET_SR;
+    }
+
+    /* 長度給分：用時長比的對數（快一倍與慢一倍對稱），±16% 內不扣分。 */
+    function durationScore(recSec, refSec) {
+      if (!(recSec > 0) || !(refSec > 0)) return null;
+      const dev = Math.max(0, Math.abs(Math.log(recSec / refSec)) - 0.15);
+      return Math.round(100 * Math.max(0, 1 - dev / 0.55));
+    }
+
+    /* ---------- 範例音檔載入（快取，同一句只抓一次） ---------- */
+
+    /* 逐句範例音檔放在 GitHub Pages，一律用完整網址：這支 html 會被貼進 Google Sites 內嵌程式碼，
+       那裡相對路徑找不到檔案；GitHub Pages 有開 CORS，可以跨網域 fetch。 */
+    const REF_AUDIO_BASE = 'https://cyril-mingdao.github.io/pen/CHUANHWA-B3L4/';
     const refAudioCache = {};
-    function fetchArrayBuffer(url) {
-      return fetch(url)
+    function loadReferenceAudio(seqIndex) {
+      if (refAudioCache[seqIndex]) return refAudioCache[seqIndex];
+      const url = `${REF_AUDIO_BASE}s${seqIndex}.mp3`;
+      const p = fetch(url)
         .then(res => {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.arrayBuffer();
         })
-        .catch(() => new Promise((resolve, reject) => {
-          const xhr = new XMLHttpRequest();
-          xhr.open('GET', url);
-          xhr.responseType = 'arraybuffer';
-          xhr.onload = () => (xhr.response ? resolve(xhr.response) : reject(new Error('empty')));
-          xhr.onerror = () => reject(new Error('xhr failed'));
-          xhr.send();
-        }));
-    }
-
-    function loadReferenceAudio(seqIndex) {
-      if (refAudioCache[seqIndex]) return refAudioCache[seqIndex];
-      const url = AUDIO_BASE + allSentences[seqIndex].audio;
-      const p = fetchArrayBuffer(url)
         .then(buf => decodeAudioSamples(getAudioCtx(), buf))
         .catch(err => {
           delete refAudioCache[seqIndex];
@@ -3577,16 +2613,29 @@
           const featRefRaw = extractFeatures(ref.samples, ref.sampleRate);
           const featRec = trimSilence(featRecRaw.rms, featRecRaw.zcr, 0.08);
           const featRef = trimSilence(featRefRaw.rms, featRefRaw.zcr, 0.08);
-          const { score } = dtwSimilarity(featRec, featRef);
+
+          const contour = dtwSimilarity(featRec, featRef).score;
+
+          const expected = (allSentences[seqIndex] || {}).sylCount || 0;
+          const recSyl = countSyllablePeaks(featRec.rms);
+          const refSyl = countSyllablePeaks(featRef.rms);
+
+          const recSec = framesToSeconds(featRec.rms.length);
+          const refSec = framesToSeconds(featRef.rms.length);
+
           statusDiv.innerHTML = '✅ 分析完成';
-          showAudioEvaluationResult(seqIndex, score, featRef.rms, featRec.rms);
+          showAudioEvaluationResult(seqIndex, {
+            contour: contour,
+            syllable: { detected: recSyl, expected: expected, refDetected: refSyl },
+            duration: { recSec: recSec, refSec: refSec },
+            refRms: featRef.rms,
+            recRms: featRec.rms
+          });
         })
         .catch(err => {
           console.error('聲音比對失敗:', err);
           if (err && err.stage === 'ref') {
-            statusDiv.innerHTML = '⚠️ 讀不到這一句的範例音檔。若是用檔案總管直接開這個檔，' +
-              '瀏覽器會擋住評分用的音檔讀取（播放不受影響）——請把整個資料夾放到網站上，' +
-              '或在資料夾裡開一個本機小伺服器再從 http://localhost 開啟。';
+            statusDiv.innerHTML = '⚠️ 讀不到這一句的範例音檔，請確認網路連線；若持續發生，請老師確認逐句音檔已放到 REF_AUDIO_BASE。';
           } else if (err && err.stage === 'rec') {
             statusDiv.innerHTML = '⚠️ 這段錄音無法解析，可能太短或沒錄到聲音，請重新錄一次。';
           } else {
@@ -3616,43 +2665,461 @@
       `;
     }
 
-    function showAudioEvaluationResult(seqIndex, score, refRms, recRms) {
+    function itemScoreClass(score) {
+      if (score >= 70) return 'lv-ok';
+      if (score >= 40) return 'lv-mid';
+      return 'lv-low';
+    }
+
+    function renderEvalItem(name, detail, score) {
+      const scoreText = score === null ? '—' : `${score} 分`;
+      const cls = score === null ? '' : itemScoreClass(score);
+      return `
+        <div class="speak-eval-item">
+          <span class="item-name">${name}</span>
+          <span class="item-detail">${detail}</span>
+          <span class="item-score ${cls}">${scoreText}</span>
+        </div>
+      `;
+    }
+
+    function showAudioEvaluationResult(seqIndex, data) {
       const resultDiv = document.getElementById('result-S-' + seqIndex);
 
+      const contourScore = data.contour;
+      const syl = data.syllable;
+      const dur = data.duration;
+      const sylScore = syllableCountScore(syl.detected, syl.expected);
+      const durScore = durationScore(dur.recSec, dur.refSec);
+
+      /* 加權合成；某一項算不出來（例如這句沒有臺羅、或音檔長度為 0）就把它的權重
+         按比例分回其他項，避免整體分數被莫名拉低。 */
+      const parts = [
+        { score: contourScore, weight: 0.5 },
+        { score: sylScore, weight: 0.3 },
+        { score: durScore, weight: 0.2 }
+      ].filter(p => p.score !== null);
+      const weightSum = parts.reduce((a, p) => a + p.weight, 0) || 1;
+      const total = Math.round(parts.reduce((a, p) => a + p.score * p.weight, 0) / weightSum);
+
+      // 總分過關但有某一項明顯偏低時，不要講「三項都很接近」，直接指向最弱那一項
+      const weakest = parts.reduce((a, p) => (a === null || p.score < a.score ? p : a), null);
+
       let feedbackText, scoreClass;
-      if (score >= 70) {
-        feedbackText = '🌟 太棒了，節奏和音量走勢很接近範例！';
+      if (total >= 70 && weakest && weakest.score >= 70) {
+        feedbackText = '🌟 太棒了，三項都很接近範例！';
         scoreClass = 'score-excellent';
-      } else if (score >= 40) {
-        feedbackText = '👍 有點像了，再多聽幾次範例音、跟著練習！';
+      } else if (total >= 70) {
+        feedbackText = '🙂 整體不錯，但有一項還差一點，看下面明細補強！';
+        scoreClass = 'score-excellent';
+      } else if (total >= 40) {
+        feedbackText = '👍 有點像了，看下面哪一項分數較低再加強！';
         scoreClass = 'score-good';
       } else {
         feedbackText = '💡 落差還蠻大的，建議先聽範例音、跟著慢慢唸！';
         scoreClass = 'score-retry';
       }
 
+      // 音節數量的文字提示
+      let sylHint;
+      if (!syl.expected) {
+        sylHint = '這一句沒有逐詞臺羅資料，無法比對';
+      } else if (syl.detected < syl.expected * 0.9) {
+        sylHint = '偵測到的音節偏少，可能有字漏唸或連著吞過去';
+      } else if (syl.detected > syl.expected * 1.1) {
+        sylHint = '偵測到的音節偏多，可能多唸了字，或有雜音被當成音節';
+      } else {
+        sylHint = '音節數量對得上';
+      }
+      const sylDetail = syl.expected
+        ? `唸出 ${syl.detected}／應有 ${syl.expected} 音節（範例音偵測 ${syl.refDetected}）｜${sylHint}`
+        : sylHint;
+
+      // 聲音長度的文字提示
+      const ratio = dur.refSec > 0 ? dur.recSec / dur.refSec : 0;
+      let durHint;
+      if (!ratio) {
+        durHint = '長度算不出來';
+      } else if (ratio < 0.85) {
+        durHint = `比範例快 ${(1 / ratio).toFixed(2)} 倍，可能唸太趕`;
+      } else if (ratio > 1.18) {
+        durHint = `比範例慢 ${ratio.toFixed(2)} 倍，可能拖太久或有多餘停頓`;
+      } else {
+        durHint = '速度跟範例差不多';
+      }
+      const durDetail = `我的 ${dur.recSec.toFixed(1)} 秒／範例 ${dur.refSec.toFixed(1)} 秒｜${durHint}`;
+
+      const chartHtml = buildContourSvg(data.refRms, data.recRms);
+
       resultDiv.innerHTML = `
         <div class="speak-eval-card">
           <div class="speak-eval-score-row">
-            <span class="speak-eval-score ${scoreClass}">${score} 分</span>
+            <span class="speak-eval-score ${scoreClass}">${total} 分</span>
             <span class="speak-eval-feedback">${feedbackText}</span>
           </div>
+          <div class="speak-eval-items">
+            ${renderEvalItem('🎵 節奏音量走勢', '整句的抑揚頓挫與音量起伏跟範例像不像', contourScore)}
+            ${renderEvalItem('🔢 音節數量', sylDetail, sylScore)}
+            ${renderEvalItem('⏱️ 聲音長度', durDetail, durScore)}
+          </div>
           <div class="speak-contour-wrap">
-            ${buildContourSvg(refRms, recRms)}
+            ${chartHtml}
             <div class="speak-contour-legend">
               <span class="legend-ref">━ 範例音</span>
               <span class="legend-rec">━ 我的錄音</span>
             </div>
           </div>
-          <div class="speak-accuracy-note">⚠️ 這是「聲音節奏／音量走勢」的相似度，不是逐字發音辨識，不代表有沒有唸對每一個字，僅供練習參考，不是正式發音評量。</div>
+          <div class="speak-accuracy-note">⚠️ 這三項都是從「聲音本身」算出來的（節奏音量走勢、音節數量、聲音長度），不是逐字發音辨識，不代表有沒有唸對每一個字。音節數量用音量峰數粗估，連讀、入聲尾容易少算，氣音、雜音容易多算；僅供練習參考，不是正式發音評量。</div>
         </div>
       `;
     }
 
+    /* 臺羅標音把每個詞包成 ruby（加生詞的 inline-block），標點變成夾在中間的獨立文字，
+       瀏覽器的中文避頭尾規則在這裡失效，會出現「。」「」」落在行首、「「」掛在行尾。
+       把收尾標點跟前一個詞、開頭標點跟後一個詞包進不換行的 span。 */
+    const CLOSE_PUNCT = /^\s*[。，、；：？！」』）》〉】”’…,.;:?!)]+/;
+    const OPEN_PUNCT = /[「『（《〈【“‘(]+\s*$/;
+
+    function glueBreakingPunctuation(root) {
+      const isWord = el => el && el.nodeType === 1 &&
+        (el.tagName === 'RUBY' || el.classList.contains('vocabulary') || el.classList.contains('nobr'));
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+      const nodes = [];
+      while (walker.nextNode()) nodes.push(walker.currentNode);
+
+      nodes.forEach(node => {
+        const close = node.nodeValue.match(CLOSE_PUNCT);
+        const prev = node.previousSibling;
+        if (close && isWord(prev)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          prev.parentNode.insertBefore(wrap, prev);
+          wrap.appendChild(prev);
+          wrap.appendChild(document.createTextNode(close[0]));
+          node.nodeValue = node.nodeValue.slice(close[0].length);
+        }
+        const open = node.nodeValue.match(OPEN_PUNCT);
+        const next = node.nextSibling;
+        if (open && isWord(next)) {
+          const wrap = document.createElement('span');
+          wrap.className = 'nobr';
+          next.parentNode.insertBefore(wrap, next);
+          wrap.appendChild(document.createTextNode(open[0]));
+          wrap.appendChild(next);
+          node.nodeValue = node.nodeValue.slice(0, node.nodeValue.length - open[0].length);
+        }
+      });
+    }
+
+    function refreshSentenceButtons() {
+      buildTimedList();
+      allSentences.forEach(s => {
+        const btn = s.el.querySelector('.play-btn');
+        if (!btn) return;
+        const timed = !!getTime(s.page, s.idx);
+        btn.classList.toggle('untimed', !timed);
+        btn.title = timed ? '播放這一句' : '本句尚未校時';
+      });
+    }
+
+    /* ===================== 播放列控制 ===================== */
+
+    function bindPlayerBar() {
+      document.getElementById('btn-replay').addEventListener('click', () => {
+        if (!currentSeg) { toast('還沒播過任何句子'); return; }
+        playSegment(currentSeg.start, currentSeg.end, currentSeg.el, currentSeg.seqIndex, currentSeg.label);
+      });
+
+      const btnAuto = document.getElementById('btn-auto');
+      btnAuto.addEventListener('click', () => {
+        autoNext = !autoNext;
+        btnAuto.classList.toggle('on', autoNext);
+        toast(autoNext ? '逐句連播：開' : '逐句連播：關');
+      });
+
+      const btnRate = document.getElementById('btn-rate');
+      btnRate.addEventListener('change', () => {
+        playRate = parseFloat(btnRate.value) || 1;
+        btnRate.classList.toggle('on', playRate !== 1);
+        if (playerReady) { try { player.setPlaybackRate(playRate); } catch (e) {} }
+      });
+
+      document.getElementById('btn-stop').addEventListener('click', stopPlayback);
+
+      const bar = document.getElementById('player-bar');
+      const btnFold = document.getElementById('btn-fold');
+      const handle = document.getElementById('bar-handle');
+      btnFold.addEventListener('click', () => {
+        bar.classList.add('collapsed');
+        handle.classList.remove('hidden');
+      });
+      handle.addEventListener('click', () => {
+        bar.classList.remove('collapsed');
+        handle.classList.add('hidden');
+      });
+
+      bindSeekbar();
+    }
+
+    /* ===================== 校時模式（?edit=1） ===================== */
+
+    const CAL_KEY = 'taigi-diamtho-times-CHUANHWA-B3L4-speak-v1';
+    let calMode = false;
+    let calCursor = 0;      // 下一個要標記的句子（全篇連續索引）
+    let calClockTimer = null;
+
+    function calSave() {
+      try { localStorage.setItem(CAL_KEY, JSON.stringify(sentenceTimes)); } catch (e) {}
+    }
+
+    function calLoadDraft() {
+      let raw = null;
+      try { raw = localStorage.getItem(CAL_KEY); } catch (e) {}
+      if (!raw) return;
+      if (!confirm('偵測到上次未完成的校時草稿，要載入嗎？')) return;
+      try {
+        const draft = JSON.parse(raw);
+        Object.keys(draft).forEach(p => { sentenceTimes[p] = draft[p]; });
+        refreshSentenceButtons();
+      } catch (e) {}
+    }
+
+    function calRender() {
+      const list = document.getElementById('cal-list');
+      list.innerHTML = '';
+      allSentences.forEach((s, seq) => {
+        const t = (sentenceTimes[s.page] && sentenceTimes[s.page][s.idx]) || null;
+        const row = document.createElement('div');
+        row.className = 'cal-row' + (seq === calCursor ? ' active' : '');
+        row.innerHTML = `
+          <span class="cal-badge">${s.page}-${s.idx + 1}</span>
+          <span class="cal-text" title="${escapeHtml(s.text)}">${escapeHtml(s.text.slice(0, 12))}</span>
+          <button data-act="minus">−</button>
+          <input data-act="start" value="${t ? t.start.toFixed(2) : ''}" placeholder="start">
+          <button data-act="plus">＋</button>
+          <input data-act="end" value="${t ? t.end.toFixed(2) : ''}" placeholder="end">
+          <button data-act="try">🔊</button>
+        `;
+
+        row.addEventListener('click', function(e) {
+          const act = e.target.getAttribute('data-act');
+          if (!act) return;
+          const entry = sentenceTimes[s.page][s.idx] || { start: 0, end: 0 };
+          if (act === 'minus' || act === 'plus') {
+            const delta = act === 'plus' ? 0.2 : -0.2;
+            entry.start = Math.max(0, entry.start + delta);
+            sentenceTimes[s.page][s.idx] = entry;
+            calSave();
+            calRender();
+            refreshSentenceButtons();
+          } else if (act === 'try') {
+            playSentenceBySeq(seq);
+          }
+        });
+
+        row.querySelectorAll('input').forEach(inp => {
+          inp.addEventListener('change', function() {
+            const entry = sentenceTimes[s.page][s.idx] || { start: 0, end: 0 };
+            const v = parseFloat(this.value);
+            if (!isNaN(v)) {
+              entry[this.getAttribute('data-act')] = v;
+              sentenceTimes[s.page][s.idx] = entry;
+              calSave();
+              refreshSentenceButtons();
+            }
+          });
+        });
+
+        list.appendChild(row);
+      });
+    }
+
+    function calMark() {
+      if (!playerReady) { toast('播放器尚未就緒'); return; }
+      const now = player.getCurrentTime();
+      if (calCursor > 0) {
+        const prev = allSentences[calCursor - 1];
+        const prevEntry = sentenceTimes[prev.page][prev.idx];
+        if (prevEntry) prevEntry.end = Math.max(prevEntry.start + 0.3, now - 0.15);
+      }
+      const s = allSentences[calCursor];
+      if (!s) { toast('已經標到最後一句了，請按 Enter 收尾'); return; }
+      sentenceTimes[s.page][s.idx] = { start: Math.max(0, now - 0.1), end: LESSON_AUDIO.duration };
+      calCursor++;
+      calSave();
+      calRender();
+      refreshSentenceButtons();
+      const active = document.querySelector('.cal-row.active');
+      if (active) active.scrollIntoView({ block: 'center' });
+    }
+
+    function calFinish() {
+      if (!playerReady) return;
+      const now = player.getCurrentTime();
+      if (calCursor > 0) {
+        const prev = allSentences[calCursor - 1];
+        const prevEntry = sentenceTimes[prev.page][prev.idx];
+        if (prevEntry) prevEntry.end = Math.max(prevEntry.start + 0.3, now);
+      }
+      try { player.pauseVideo(); } catch (e) {}
+      calSave();
+      calRender();
+      refreshSentenceButtons();
+      toast('校時收尾完成，記得匯出 JSON');
+    }
+
+    function calExport() {
+      let out = 'const sentenceTimes = {\n';
+      const pageKeys = Object.keys(pages);
+      pageKeys.forEach((p, pi) => {
+        out += `  "${p}": [\n`;
+        const arr = sentenceTimes[p] || [];
+        arr.forEach((t, i) => {
+          const s = allSentences.find(x => x.page === p && x.idx === i);
+          const note = s ? s.text.slice(0, 12) : '';
+          const val = t ? `{ "start": ${t.start.toFixed(2)}, "end": ${t.end.toFixed(2)} }` : 'null';
+          out += `    ${val}${i < arr.length - 1 ? ',' : ''}  // ${note}\n`;
+        });
+        out += `  ]${pi < pageKeys.length - 1 ? ',' : ''}\n`;
+      });
+      out += '};\n';
+
+      const outBox = document.getElementById('cal-out');
+      outBox.classList.remove('hidden');
+      outBox.value = out;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(out).then(
+          () => toast('已複製到剪貼簿，貼回檔案即可'),
+          () => toast('複製失敗，請直接從下方文字框全選複製')
+        );
+      }
+      const blob = new Blob([out], { type: 'text/plain;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'sentenceTimes-CHUANHWA-B3L4.txt';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    }
+
+    function bindCalPanel() {
+      const panel = document.getElementById('cal-panel');
+      const handle = document.getElementById('cal-handle');
+      document.getElementById('cal-collapse').addEventListener('click', () => {
+        panel.classList.add('hidden');
+        handle.classList.remove('hidden');
+        document.body.classList.remove('cal-open');
+      });
+      handle.addEventListener('click', () => {
+        panel.classList.remove('hidden');
+        handle.classList.add('hidden');
+        document.body.classList.add('cal-open');
+      });
+    }
+
+    function initCalibration() {
+      calMode = true;
+      document.getElementById('cal-panel').classList.remove('hidden');
+      document.body.classList.add('cal-open');
+      bindCalPanel();
+      calLoadDraft();
+      calRender();
+
+      calClockTimer = setInterval(() => {
+        if (!playerReady) return;
+        try {
+          document.getElementById('cal-clock').textContent = player.getCurrentTime().toFixed(2) + 's';
+        } catch (e) {}
+      }, 100);
+
+      document.getElementById('cal-start').addEventListener('click', () => {
+        if (!playerReady) { toast('播放器尚未就緒'); return; }
+        clearWatch();
+        currentSeg = null;
+        calCursor = 0;
+        player.seekTo(0, true);
+        player.setPlaybackRate(playRate);
+        player.playVideo();
+        calRender();
+        toast('開始校時：每句開頭按一次空白鍵');
+      });
+
+      document.getElementById('cal-mark').addEventListener('click', calMark);
+      document.getElementById('cal-end').addEventListener('click', calFinish);
+      document.getElementById('cal-export').addEventListener('click', calExport);
+      document.getElementById('cal-clear').addEventListener('click', () => {
+        if (!confirm('確定清空所有時間戳？')) return;
+        Object.keys(sentenceTimes).forEach(p => {
+          sentenceTimes[p] = sentenceTimes[p].map(() => null);
+        });
+        calCursor = 0;
+        calSave();
+        calRender();
+        refreshSentenceButtons();
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.target.tagName === 'INPUT') return;
+        if (e.code === 'Space') {
+          e.preventDefault();
+          calMark();
+        } else if (e.code === 'Enter' || e.code === 'NumpadEnter') {
+          e.preventDefault();
+          calFinish();
+        }
+      });
+    }
+
     /* ===================== 啟動 ===================== */
 
+    async function onConfigChange(config) {
+      const titleElement = document.getElementById('page-title');
+      if (titleElement) {
+        titleElement.textContent = config.page_title || defaultConfig.page_title;
+      }
+      const subtitleElement = document.getElementById('page-subtitle');
+      if (subtitleElement) {
+        subtitleElement.textContent = config.page_subtitle || defaultConfig.page_subtitle;
+      }
+    }
+
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig: defaultConfig,
+        onConfigChange: onConfigChange,
+        mapToCapabilities: (config) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (config) => new Map([
+          ["page_title", config.page_title || defaultConfig.page_title],
+          ["page_subtitle", config.page_subtitle || defaultConfig.page_subtitle]
+        ])
+      });
+    }
+
     renderContent();
+    buildTimedList();
     bindPlayerBar();
+    const playerHooks = {
+      onPlaying() {
+        playbackUnlocked = true;
+        clearBlocked();
+      },
+      onError(url) {
+        console.error('無法載入音檔:', url);
+        toast('讀不到課文音檔，請確認網路連線');
+      }
+    };
+    player = USE_FULL ? createFullPlayer(playerHooks) : createClipPlayer(playerHooks);
+    playerReady = true;
+    startUiLoop();
+
+    if (new URLSearchParams(location.search).has('edit')) {
+      initCalibration();
+    }
   </script>
- </body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99d31a222534a9bf',t:'MTc2MjkxOTgxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
