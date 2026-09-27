@@ -799,6 +799,21 @@
       align-items: center;
     }
 
+    /* 開始測驗：另開視窗到朗讀線上測驗（嵌在 Google Sites 裡也要另開，Google 登入才能運作） */
+    .pbtn.quiz-link {
+      background: var(--yellow);
+      color: var(--black);
+      border-color: var(--yellow);
+      font-weight: bold;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .pbtn.quiz-link:hover {
+      background: #ffffff;
+      color: var(--black);
+    }
+
     .pbtn.hidden {
       display: none;
     }
@@ -1228,6 +1243,7 @@
      <option value="1.5">1.5x</option>
     </select>
     <button class="pbtn" id="btn-stop" title="停止">■</button>
+    <a class="pbtn quiz-link" id="btn-quiz" href="https://cyril-mingdao.github.io/Voice-test/YUDA-B1L3.html" target="_blank" rel="noopener" title="另開視窗進入本課的朗讀線上測驗">📝 開始測驗</a>
     <button class="pbtn" id="btn-fold" title="完全收起播放列">⌄</button>
    </div>
   </div>
