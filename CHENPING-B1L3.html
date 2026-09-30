@@ -744,6 +744,18 @@
       white-space: nowrap;
     }
 
+    .turn {
+      background: var(--spk-bg);
+      border-left: 6px solid var(--spk-bd);
+      border-radius: 12px;
+      padding: 6px 12px;
+      margin: 10px 0;
+    }
+
+    .turn .speaker {
+      background: var(--spk-bd);
+    }
+
     .player-credit a {
       color: var(--yellow);
     }
@@ -1995,10 +2007,21 @@
 
     /* ===================== 渲染 ===================== */
 
+    /* 角色色塊：[底色, 邊框與標籤色]，依角色在全課首次出場的順序套用 */
+    const SPEAKER_COLORS = [
+      ['#ffe4e6', '#be123c'], ['#dbeafe', '#1d4ed8'], ['#dcfce7', '#15803d'],
+      ['#ede9fe', '#6d28d9'], ['#ffedd5', '#c2410c'], ['#e0f2fe', '#0369a1']
+    ];
+
     function renderContent() {
       const contentArea = document.getElementById('content-area');
       contentArea.innerHTML = '';
       allSentences.length = 0;
+      const speakerOrder = [];
+      Object.values(pages).forEach(t => (t.match(/^【[^】]+】/gm) || []).forEach(m => {
+        const n = m.slice(1, -1);
+        if (!speakerOrder.includes(n)) speakerOrder.push(n);
+      }));
 
       Object.keys(pages).forEach(pageNum => {
         const section = document.createElement('div');
@@ -2023,8 +2046,25 @@
         content.className = 'content';
 
         const sentences = splitSentences(pages[pageNum]);
+        let holder = content;
+        let lastPara = -1;
         sentences.forEach((sentence, idx) => {
           const seqIndex = allSentences.length;
+
+          // 新的一段：行首有【角色】就開一個該角色顏色的色塊，這段的句子都放進去
+          if (sentence.para !== lastPara) {
+            lastPara = sentence.para;
+            holder = content;
+            const sm = sentence.text.match(/^【([^】]+)】/);
+            if (sm) {
+              const c = SPEAKER_COLORS[speakerOrder.indexOf(sm[1]) % SPEAKER_COLORS.length];
+              holder = document.createElement('div');
+              holder.className = 'turn';
+              holder.style.setProperty('--spk-bg', c[0]);
+              holder.style.setProperty('--spk-bd', c[1]);
+              content.appendChild(holder);
+            }
+          }
 
           const span = document.createElement('span');
           span.className = 'sentence';
@@ -2037,7 +2077,7 @@
             `<button class="mic-btn" id="mic-S-${seqIndex}" title="錄音跟讀練習這一句">🎤</button>` +
             highlightVocabulary(sentence.text, pageNum).replace(/^【([^】]+)】/, '<span class="speaker">$1</span>');
 
-          content.appendChild(span);
+          holder.appendChild(span);
 
           allSentences.push({ page: pageNum, idx: idx, text: sentence.text, el: span });
 
@@ -2048,12 +2088,12 @@
           const statusDiv = document.createElement('div');
           statusDiv.className = 'speak-status';
           statusDiv.id = 'status-S-' + seqIndex;
-          content.appendChild(statusDiv);
+          holder.appendChild(statusDiv);
 
           const resultDiv = document.createElement('div');
           resultDiv.className = 'speak-result';
           resultDiv.id = 'result-S-' + seqIndex;
-          content.appendChild(resultDiv);
+          holder.appendChild(resultDiv);
 
           span.querySelector('.mic-btn').addEventListener('click', function(e) {
             toggleRecording(e, seqIndex);
