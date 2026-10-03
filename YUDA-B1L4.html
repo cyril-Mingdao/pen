@@ -2603,8 +2603,8 @@
 
       const avgCost = dp[n][m] / Math.max(1, pathLen);
       // avgCost 是正規化特徵空間裡的平均步進距離；用指數衰減轉成 0~100 分，
-      // k 值（1.1）是憑經驗抓的寬鬆常數；2026-10-03 判定放寬：原始分數一律加 10 分（上限 100），之後可依實測回饋再調整。
-      const score = Math.round(Math.max(0, Math.min(100, 100 * Math.exp(-avgCost / 1.1) + 10)));
+      // k 值（1.1）是憑經驗抓的寬鬆常數；2026-10-03 判定放寬：原始分數一律加 20 分（上限 100），之後可依實測回饋再調整。
+      const score = Math.round(Math.max(0, Math.min(100, 100 * Math.exp(-avgCost / 1.1) + 20)));
       return { score, avgCost };
     }
 
