@@ -1199,6 +1199,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1524,6 +1532,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"56|食飽未":{"part":1,"ex":"阿伯，你食飽未？","id":14597},"56|電腦":{"ex":"我用電腦查資料","id":10332},"56|人工智慧":{"part":1,"ex":"人工智慧會當鬥翻譯","id":71},"56|物件":{"ex":"這間店有真濟物件。","id":4343},"56|多謝":{"ex":"多謝你共我鬥相共","id":2415},"56|關心":{"ex":"老師真關心逐个學生","id":12905},"56|啊":{"ex":"啊你欲去佗位？","id":7019},"56|會曉":{"ex":"這條歌你會曉唱--袂？","id":9626},"56|創":{"ex":"你咧創啥物？","id":8158},"56|替":{"ex":"我替你寄批","id":8475},"56|足濟":{"part":1,"ex":"厝內有覕足濟虼蚻--的","id":3391},"56|代誌":{"ex":"厝內大細項代誌攏是伊咧發落","id":1370},"56|手機仔":{"ex":"上課毋通耍手機仔","id":1161},"56|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"56|鬥揣":{"part":1,"ex":"你會當共我鬥揣鎖匙無？","id":6802},"56|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"56|無聊":{"ex":"歇熱佇厝足無聊","id":24119},"56|兼":{"ex":"伊讀冊兼做工課","id":5715},"56|笑詼":{"ex":"伊講的笑詼，有夠歹笑","id":6462},"57|原來":{"ex":"原來是你喔","id":22236},"57|蹛":{"ex":"阿明仔蹛佇學校附近","id":12616},"57|毋但":{"ex":"我看伊做的歹代誌毋但按呢","id":921},"57|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"57|管家":{"ex":"伊是這間厝的管家","id":10719},"57|厝裡":{"ex":"姑不將予伊佇厝裡歇睏","id":14598},"57|電火":{"ex":"出門愛記得禁電火","id":10297},"57|冷氣":{"ex":"熱天開冷氣較涼","id":2916},"57|摒掃":{"ex":"過年進前愛摒掃厝內","id":8453},"57|服務生":{"part":1,"ex":"餐廳的服務生真好禮","id":4230},"57|餐廳":{"ex":"這間餐廳的菜真好食","id":22290},"57|𤆬位":{"part":1,"ex":"服務生共阮𤆬位","id":13511},"57|送菜":{"part":1,"ex":"機器人會鬥送菜","id":6677},"57|有當時仔":{"ex":"彼隻狗有當時仔會出現","id":2540},"57|跳舞":{"ex":"伊足愛跳舞","id":10230},"57|弄":{"ex":"弄布袋戲尪仔","id":3129},"57|笑咍咍":{"ex":"阿公看著孫仔笑咍咍","id":6441},"57|萬能":{"ex":"錢毋是萬能的","id":9934},"58|存在":{"ex":"這个問題一直存在","id":2313},"58|目的":{"ex":"讀冊的目的是啥物？","id":1913},"58|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"58|生活":{"ex":"庄跤的生活真輕鬆","id":1923},"58|省力":{"ex":"用車載較省力","id":5317},"58|利便":{"ex":"蹛佇都市交通較利便","id":2988},"58|未來":{"ex":"未來的世界會真無仝","id":1717},"58|運將":{"part":1,"ex":"計程車運將真好禮","id":10146},"58|載":{"ex":"阿爸騎車載我去學校","id":10140},"58|四界":{"ex":"我𤆬伊出去附近四界蹓蹓咧","id":1496},"58|𨑨迌":{"ex":"你明仔載欲佮阮去𨑨迌無?","id":13522},"58|醫生":{"ex":"人無爽快愛去看醫生","id":12673},"58|手術":{"ex":"阿公拄做完手術","id":1059},"58|拆藥方":{"part":1,"ex":"提單去藥局拆藥方","id":3949},"58|誠實":{"ex":"風颱欲來，敢是誠實的？","id":10116},"58|蓋":{"ex":"我最近拄著一寡代誌，無蓋順序","id":10785},"58|𠢕":{"ex":"阿母誠𠢕佮人講價","id":13471},"58|按怎":{"ex":"到底著愛按怎做","id":5022},"58|發明":{"ex":"這是伊發明的物件","id":8717},"59|工程師":{"ex":"阿叔是電腦工程師","id":452},"59|設計":{"ex":"這間厝是伊設計的","id":7866},"59|模型":{"ex":"伊足愛做飛行機模型","id":23100},"59|利用":{"ex":"利用歇熱去學泅水","id":2978},"59|資料":{"ex":"我去圖書館揣資料","id":10095},"59|學習":{"ex":"學習台語愛有耐心","id":11628},"59|思考":{"ex":"做代誌進前愛先思考","id":4927},"59|佮":{"ex":"我欲佮伊來去看電影","id":3524},"59|解決":{"ex":"這个問題愛緊解決","id":10011},"59|問題":{"ex":"有問題就舉手問老師","id":22102},"59|綿爛":{"ex":"伊讀冊真綿爛","id":10778},"59|吸收":{"ex":"囡仔吸收智識真緊","id":22476},"59|愈":{"ex":"天氣愈來愈熱","id":9425},"59|智識":{"ex":"聽伊講話就知影伊真有智識","id":8473},"59|厲害":{"ex":"伊泅水足厲害","id":10965},"59|像":{"ex":"我欲像伊仝款認真","id":10372},"59|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"59|拚勢":{"ex":"伊讀冊真拚勢，這擺提頭名","id":4115},"59|才":{"ex":"愛認真讀冊才會進步","id":207},"59|綴":{"ex":"你莫綴前綴後","id":10747},"59|跤步":{"ex":"伊的跤步行甲真緊","id":10080}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1534,7 +1556,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1542,6 +1564,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1502,6 +1510,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"54|趖":{"ex":"伊做代誌真𠢕趖","id":10825},"54|定定":{"ex":"伊定定無佇咧","id":3837},"54|掛":{"ex":"掛手環","id":7300},"54|佇":{"ex":"阿明仔蹛佇學校附近","id":2858},"54|喙":{"ex":"我的喙破一空","id":8174},"54|剾洗":{"ex":"伊講遐的話是咧共你剾洗","id":9321},"54|較":{"ex":"伊的糖仔比我較濟","id":10138},"54|一四界":{"ex":"物件毋通掖甲一四界","id":11},"54|甲":{"ex":"我的腹肚疼甲欲死","id":1848},"54|規":{"ex":"規路攏是人","id":7844},"54|攏":{"ex":"逐家攏莫去","id":12772},"54|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"54|予":{"ex":"你予我考慮一下","id":564},"54|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"55|咱":{"ex":"咱攏來讀冊","id":4776},"55|哼":{"ex":"哼！我才無愛佮你去咧！","id":5800},"55|佮":{"ex":"我欲佮伊來去看電影","id":3524},"55|毋知":{"ex":"你問我的代誌我攏毋知","id":976},"55|無":{"ex":"無，你是欲按怎？","id":8563},"55|彼":{"ex":"阿公定定去彼間𥴊仔店交關","id":3875},"55|支":{"ex":"我買一支手機仔八千","id":795},"55|山跤":{"ex":"𪜶兜蹛佇山跤","id":482},"55|隨":{"ex":"你等一下，我隨來","id":11992},"55|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"55|个":{"ex":"阿義仔這个人傷過奸巧","id":171},"55|按怎":{"ex":"我到底著愛按怎做","id":5022},"55|揣":{"ex":"阿兄欲去臺北揣頭路","id":8409},"55|鬧熱":{"ex":"今年普渡的場面真鬧熱","id":11586},"55|毋通":{"ex":"你毋通傷晏轉來","id":1060},"55|相拍":{"ex":"𪜶兩个好朋友哪會相拍？","id":5248},"55|猶是":{"ex":"你猶是佮以前仝款緣投","id":8617},"55|莫":{"ex":"你莫烏白呸喙瀾","id":7813},"55|插":{"ex":"我的代誌免你插","id":8360},"55|代":{"ex":"可憐代","id":1308},"55|毋過":{"ex":"我共叫毋過伊攏無應我","id":1114},"55|攏":{"ex":"衫攏洗好矣","id":12772},"55|無奈何":{"ex":"無奈何，只好揣阿明鬥相共","id":8607},"55|走":{"ex":"伊走無去矣","id":3390},"56|走標":{"ex":"阿明得著一百公尺走標頭名","id":14066},"56|慢慢仔":{"ex":"有話慢慢仔講","id":10519},"56|毋驚":{"ex":"你敢毋驚去看著歹物仔","id":1209},"56|忝":{"ex":"今仔日做甲足忝的","id":3879},"56|歇睏":{"ex":"你小歇睏一下，好無","id":9664},"56|伊":{"ex":"伊是啥人","id":2047},"56|个":{"ex":"𪜶兩个人感情誠好","id":171},"56|時辰":{"ex":"伊是咧等待出手的好時辰","id":6020},"56|嘛":{"ex":"遮的嘛攏是好的","id":10384},"56|百面":{"ex":"你若參加比賽，百面贏的","id":14017},"56|紲落來":{"ex":"咱來決定紲落來欲按怎做","id":14291},"56|拍算":{"ex":"我拍算欲來去日本讀冊","id":4132},"56|睏":{"ex":"我中晝食飽就愛睏","id":8764},"56|一睏仔":{"ex":"想欲一睏仔就好額，倒了錢","id":28},"56|就按呢":{"ex":"代誌就按呢進行","id":8306},"56|沓沓仔":{"ex":"有話沓沓仔講","id":4275},"56|落眠":{"ex":"伊睏落眠矣，莫共叫","id":9933},"56|佇":{"ex":"伊定定佇半暝仔𬦰起來讀冊","id":2858},"56|遐":{"ex":"你的物件佇遐","id":10151},"56|伸勻":{"ex":"伊坐了𤺪矣，佇遐伸勻","id":2878},"56|共":{"ex":"我共你講","id":2099},"56|擛":{"ex":"徛佇路邊擛計程車","id":11653}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1512,7 +1534,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1520,6 +1542,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

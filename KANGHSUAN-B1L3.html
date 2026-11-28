@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1491,6 +1499,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"44|佮":{"ex":"我欲佮伊來去看電影","id":3524},"44|阿母":{"ex":"阿母咧灶跤煮飯","id":4524},"44|拜拜":{"ex":"初一十五阿媽攏會拜拜","id":4943},"44|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"44|食東食西":{"part":1,"ex":"伊去夜市仔食東食西","id":5570},"44|有夠":{"ex":"今仔日有夠熱","id":2521},"44|燒":{"ex":"燒的湯較好啉","id":11772},"44|滋味":{"ex":"這个湯頭的滋味袂䆀","id":8605},"44|冷":{"ex":"冷的飯毋通食","id":2874},"44|食著":{"part":1,"ex":"我食著阿媽煮的菜","id":5570},"44|心涼脾土開":{"part":1,"ex":"熱天啉冰水，心涼脾土開","id":792},"44|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"44|心花開":{"ex":"聽著好消息，伊心花開","id":13917},"44|滑溜滑溜":{"part":1,"ex":"粉圓食起來滑溜滑溜","id":29498},"44|真珠":{"ex":"伊的手指有一粒真珠","id":6400},"44|笑":{"ex":"伊看著我就笑","id":6428},"44|啊都":{"part":1,"ex":"啊都你家己講的","id":7019},"44|濫":{"ex":"素色佮有色的衫莫濫做伙洗","id":12205},"44|粉圓":{"ex":"熱天食粉圓冰真涼","id":6456},"44|仝宗":{"part":1,"ex":"這兩種果子是仝宗的","id":1305},"45|按怎":{"ex":"到底著愛按怎做","id":5022},"45|四序":{"ex":"阿娟的別莊整理甲嶄然四序","id":1473},"45|熱天":{"ex":"熱天愛加啉水","id":11212},"45|礤冰":{"ex":"熱天食礤冰上爽","id":12991},"45|寒天":{"ex":"寒天的時陣，愛穿較燒咧","id":8300},"45|摻":{"ex":"牛奶摻糖較好啉","id":10527},"45|哪會":{"ex":"哪會按呢？","id":5842},"45|古早":{"ex":"古早人攏用柴燒火","id":1465},"45|頭家":{"ex":"你是這間店的頭家毋?","id":12062},"45|貯":{"ex":"我來捀碗共你貯飯","id":9034},"45|搖摵杯":{"part":1,"ex":"伊用搖摵杯攪飲料","id":9476},"45|袂輸":{"ex":"伊看著我袂輸看著鬼咧","id":6661},"45|起童":{"ex":"伊歡喜甲袂輸起童","id":6748},"45|起泡":{"part":1,"ex":"茶搖甲起泡較好啉","id":6671},"45|啉":{"ex":"熱天啉冰茶，透心涼。","id":7018},"45|尪仔":{"ex":"阿明仔開袂少錢佇尪仔機台","id":3071},"45|欶":{"ex":"用管仔欶果汁","id":7470},"45|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"45|水雞仔":{"part":1,"ex":"田裡有足濟水雞仔","id":1192},"45|得人疼":{"ex":"這个囡仔真得人疼","id":7184},"46|彼改":{"part":1,"ex":"彼改去日本足好耍","id":3876},"46|阮":{"ex":"阮欲走矣，你咧？","id":3401},"46|查某囝":{"ex":"聽講恁查某囝欲予人送定矣","id":5098},"46|保庇":{"ex":"求神明保庇全家平安","id":4719},"46|轉去":{"ex":"明仔暗我就欲坐車轉去下港矣","id":12625},"46|說多謝":{"ex":"受人幫忙愛說多謝","id":10831},"46|才":{"ex":"愛認真讀冊才會進步","id":207},"46|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"46|請":{"ex":"今仔日我請你食飯","id":11380},"46|啉":{"ex":"熱天啉冰茶，透心涼。","id":7018},"46|定著":{"ex":"恁大漢後生較定著","id":3853},"46|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"46|拍拚":{"ex":"你愛較拍拚咧","id":4035},"46|若":{"ex":"伊歡喜甲若囡仔咧","id":5450},"46|遐":{"ex":"伊的字寫甲遐媠","id":10152},"46|寶貴":{"ex":"時間誠寶貴","id":12958},"46|古錐":{"ex":"阮兩个孫仔生做有夠古錐","id":1611},"46|嘛":{"ex":"遮的嘛攏是好的","id":10384}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1501,7 +1523,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1509,6 +1531,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

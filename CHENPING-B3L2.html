@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1501,6 +1509,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"24|細漢":{"ex":"細漢的時陣","id":7768},"24|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"24|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"24|敲電話":{"ex":"我逐暗敲電話予阿母","id":10556},"24|青盲牛":{"ex":"阿公細漢無讀冊，是青盲牛","id":4561},"24|毋捌":{"ex":"我猶毋捌接觸過這種新產品","id":1021},"24|拚勢":{"ex":"伊讀冊真拚勢，這擺提頭名","id":4115},"24|無偌久":{"ex":"你才走無偌久，伊就來矣","id":8633},"24|熟手":{"ex":"伊做這途誠熟手","id":11191},"24|會曉":{"ex":"這條歌你會曉唱--袂？","id":9626},"24|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"24|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"24|逐日":{"ex":"伊逐日攏行路去買菜","id":7913},"24|幾若":{"ex":"阮老爸昨昏掠著幾若隻鳥鼠","id":8329},"24|紲落來":{"ex":"紲落來咱就來表決","id":14291},"24|落來":{"ex":"桌頂的物件落落來矣","id":9912},"24|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"25|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"25|免講":{"part":1,"ex":"伊遐爾仔拍拚，免講一定會成功","id":2872},"25|上無":{"ex":"上無嘛愛讀一點鐘","id":13881},"25|猶毋過":{"ex":"伊直直共我招，猶毋過我無想欲去","id":8584},"25|賰的":{"ex":"賰的菜囥入去冰箱","id":11924},"25|嘛是":{"ex":"你是庄跤人，我嘛是庄跤人","id":10391},"25|毋捌":{"ex":"我猶毋捌接觸過這種新產品","id":1021},"25|要緊":{"ex":"身體健康上要緊","id":5549},"25|就按呢":{"ex":"代誌就按呢進行","id":8306},"25|特別":{"ex":"伊這个人禁忌特別濟","id":6255},"25|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"25|古錐":{"ex":"阮兩个孫仔生做有夠古錐","id":1611},"25|解說":{"ex":"老師共阮解說這首詩","id":10045},"25|魚栽":{"ex":"魚塭仔放真濟魚栽","id":8116},"25|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"25|大尾":{"part":1,"ex":"這尾魚真大尾","id":186},"26|搪著":{"ex":"伊定定來遮，我不時佇路裡搪著。","id":9538},"26|物件":{"ex":"這間店有真濟物件。","id":4343},"26|生理":{"ex":"阮叔仔欲去市內做一寡小生理","id":1943},"26|問題":{"ex":"有問題就舉手問老師","id":22102},"26|細粒子":{"ex":"伊人生做細粒子","id":7760},"26|一支":{"part":1,"ex":"路邊徛一支電火柱","id":1},"26|鉸刀":{"ex":"用鉸刀共紙鉸做兩爿","id":10866},"26|過去":{"ex":"代誌已經過去矣","id":10168},"26|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"26|已經":{"ex":"糖仔已經攏分了矣","id":22106},"26|沓沓仔":{"ex":"有話沓沓仔講","id":4275},"26|反黃":{"part":1,"ex":"櫥仔內的相片攏反黃矣","id":780},"26|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"26|猶原":{"ex":"伊猶原佇遐咧等你","id":8626},"26|永遠":{"ex":"我永遠會記得你","id":1803},"26|跟綴":{"ex":"你愛跟綴予好，毋通落勾去","id":10118},"26|身軀邊":{"ex":"阿母一直佇我的身軀邊","id":3509},"26|獨獨":{"ex":"獨獨伊知影這个祕密","id":11804},"27|阿媽":{"ex":"阮阿媽今年八十歲","id":4621},"27|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"27|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"27|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"27|佮":{"ex":"我欲佮伊來去看電影","id":3524},"27|記持":{"ex":"你記持誠䆀，隨講隨袂記得","id":1041},"27|便若":{"ex":"伊便若歇睏就去釣魚","id":14404},"27|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"27|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"27|日子":{"ex":"這段日子你辛苦矣","id":828}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1511,7 +1533,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1519,6 +1541,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

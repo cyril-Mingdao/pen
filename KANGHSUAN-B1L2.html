@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1496,6 +1504,20 @@ GO！GO！GO！`
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"30|咱":{"ex":"咱著愛較斟酌咧","id":4776},"30|跤步":{"ex":"伊的跤步誠緊","id":10080},"30|日頭":{"ex":"今仔日的日頭真猛","id":1168},"30|較":{"ex":"你愛的物件佇較內面","id":10138},"30|精神":{"ex":"伊透早五點就精神矣","id":10723},"30|喝聲":{"ex":"運動埕的喝聲真大聲","id":28440},"30|共":{"ex":"我共你講，你毋通共別人講","id":2099},"30|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"30|醒":{"ex":"伊透早六點就醒矣","id":11952},"30|津":{"ex":"伊的汗一滴一滴津落來","id":5130},"30|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"30|路裡":{"part":1,"ex":"路裡的風景袂䆀","id":10136},"30|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"30|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"30|贊聲":{"ex":"逐家做伙來共伊贊聲","id":12893},"30|袂":{"ex":"阿明仔攏袂堪得人講得","id":6632},"30|孤單":{"ex":"一个人過年真孤單","id":3849},"30|愈":{"ex":"天氣愈來愈熱","id":9425},"30|定":{"ex":"聽著你的聲，我的心就定矣","id":3810},"30|綴":{"ex":"你莫綴前綴後","id":10747},"30|行":{"ex":"錶仔定去袂行矣","id":2605},"31|鬥陣":{"ex":"咱鬥陣來去","id":6855},"31|拍拚":{"ex":"你愛較拍拚咧","id":4035},"31|大步":{"part":1,"ex":"伊大步行入去教室","id":186},"31|向前":{"ex":"咱做伙向前行","id":2191},"31|無論":{"ex":"無論按怎，我攏欲去","id":8669},"31|輸贏":{"ex":"比賽上要緊的毋是輸贏","id":11983},"31|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"31|跤跡":{"ex":"海沙埔頂有足濟跤跡","id":10114},"31|靠":{"ex":"做代誌愛靠家己","id":11529},"31|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"31|啥物":{"ex":"無人知影伊按呢做是有啥物用意","id":7101},"31|免":{"ex":"你免煩惱","id":2872},"31|驚惶":{"ex":"地動的時逐家真驚惶","id":13311},"32|天公伯仔":{"ex":"天公伯仔保庇明仔載好天","id":13910},"32|肯":{"ex":"伊肯共我鬥相共","id":4421},"32|看顧":{"ex":"阿媽咧看顧小弟","id":5363},"32|相招":{"ex":"阮相招去看電影","id":5249},"32|拚落去":{"part":1,"ex":"目標定矣，咱就拚落去","id":3966},"32|大聲":{"ex":"伊大聲喊救人","id":544},"32|喝":{"ex":"伊咧遏花，緊共喝予走","id":8175},"32|衝":{"ex":"伊一聲就衝出去","id":11348}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1506,7 +1528,7 @@ GO！GO！GO！`
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1514,6 +1536,7 @@ GO！GO！GO！`
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

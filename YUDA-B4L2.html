@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1510,6 +1518,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"26|轉來":{"ex":"公司派我出張，三工後才會轉來","id":12630},"26|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"26|軟心":{"ex":"阿公真軟心，攏會予人借錢","id":7911},"26|神":{"ex":"伊看電視看甲神去","id":6422},"26|共":{"ex":"我共你講，你毋通共別人講","id":2099},"26|目尾":{"ex":"你看彼个人一直咧使目尾","id":14589},"26|下頦":{"ex":"伊用手扞下頦咧想","id":526},"26|踮":{"ex":"毋通踮塗跤躽nuà","id":11474},"26|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"26|袂輸":{"ex":"伊看著我袂輸看著鬼咧","id":6661},"26|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"26|䖙":{"ex":"阿爸䖙佇膨椅頂看電視","id":13509},"26|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"26|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"26|罩":{"ex":"貓仔罩踮我的胸坎頂","id":9812},"26|身軀頂":{"ex":"伊的身軀頂有一隻草猴","id":18376},"27|透早":{"ex":"伊透早就出門矣","id":7928},"27|貓霧仔光":{"ex":"貓霧仔光阿公就去巡田","id":11944},"27|興":{"ex":"囡仔聽著欲出去，興tshih-tshih","id":11860},"27|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"27|眠床":{"ex":"眠床予囡仔𧿬甲歹去","id":6389},"27|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"27|吠":{"ex":"狗仔看著生份人就吠","id":2957},"27|躼躼長":{"ex":"排隊的人龍躼躼長","id":29794},"27|哈唏":{"ex":"伊睏無飽，一直哈唏","id":4801},"27|身軀":{"ex":"伊耍甲規身軀烏趖趖","id":3508},"27|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"27|躽":{"ex":"囡仔佇眠床頂躽來躽去","id":11946},"27|大聲":{"ex":"伊大聲喊救人","id":544},"27|看覓":{"ex":"這款菜你食看覓","id":5344},"27|若無":{"ex":"予我一个，若無就準拄煞","id":5480},"27|強欲":{"ex":"我聽甲強欲起性地","id":7211},"27|煏":{"ex":"竹管予火燒甲煏開。","id":9689},"28|今仔日":{"ex":"今仔日是我的生日","id":629},"28|聲嗽":{"ex":"伊講話誠歹聲嗽","id":12331},"28|敢若":{"ex":"敢若是伊，閣敢若毋是","id":8444},"28|蝹":{"ex":"貓仔蝹佇壁角睏","id":11883},"28|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"28|共":{"ex":"我共你講，你毋通共別人講","id":2099},"28|𥍉𥍉看":{"ex":"狗仔𥍉𥍉看，欲討物食","id":13530},"28|氣口":{"ex":"伊講話的氣口真大","id":6158},"28|勻勻仔":{"ex":"較細膩咧，你著愛勻勻仔行","id":606},"28|躘":{"ex":"鬧鐘一響，伊隨躘起床","id":13273},"28|頭殼頂":{"part":1,"ex":"帽仔戴佇頭殼頂","id":12070},"28|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"28|裂獅獅":{"ex":"𪜶老爸笑甲喙仔裂獅獅","id":27269},"28|耳仔覆覆":{"part":1,"ex":"狗仔耳仔覆覆來倚我","id":2633},"28|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"28|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"28|起飛":{"ex":"飛行機準時起飛","id":25197},"28|尾溜":{"ex":"死蛇活尾溜","id":3115},"28|直直幌":{"part":1,"ex":"狗仔看著主人，尾溜直直幌","id":4389},"28|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"28|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"29|阮":{"ex":"阮欲走矣，你咧？","id":3401},"29|兩个":{"part":1,"ex":"阮兜有兩个囡仔","id":3582},"29|無論":{"ex":"無論按怎，我攏欲去","id":8669},"29|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"29|𤆬":{"ex":"阿兄𤆬阮去園裡起塗窯","id":13511},"29|較":{"ex":"你愛的物件佇較內面","id":10138},"29|目睭":{"ex":"伊目睭真大蕊","id":1975},"29|雺霧":{"ex":"透早山頂罩雺霧","id":10351},"29|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"29|痚呴":{"ex":"阿公有痚呴，袂堪得寒","id":8713},"29|沓沓":{"part":1,"ex":"沓沓仔行，毋免傷緊","id":4250},"29|佳哉":{"ex":"好佳哉有你替我求情，若無，我就慘矣","id":3553},"29|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"29|流浪":{"ex":"伊細漢捌佇街仔路流浪","id":5192},"29|有緣":{"ex":"咱會當做伙讀冊，實在真有緣","id":25064},"29|佮":{"ex":"我欲佮伊來去看電影","id":3524},"29|永遠":{"ex":"我永遠會記得你","id":1803},"29|袂":{"ex":"阿明仔攏袂堪得人講得","id":6632}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1520,7 +1542,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1528,6 +1550,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

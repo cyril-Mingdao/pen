@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1538,6 +1546,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"82|愛":{"ex":"你行路愛小心。","id":9427},"82|認捌":{"ex":"去認捌臺灣的本土文化佮傳統藝術","id":14451},"82|佮":{"ex":"我欲佮伊來去看電影。","id":3524},"82|上":{"ex":"其中上特別的是大甲媽繞境","id":164},"82|阮":{"ex":"阮欲走矣，你咧？","id":3401},"82|逐家":{"ex":"逐家攏是家己人，著愛互相照顧。","id":7947},"82|會使":{"ex":"我功課若寫好就會使去看電影矣。","id":9591},"82|繞境":{"ex":"便若神明生，神轎攏會繞境驅煞。","id":13840},"82|毋但":{"ex":"我看伊做的歹代誌毋但按呢爾爾。","id":921},"82|雙跤":{"part":1,"ex":"這毋但是用雙跤綴媽祖鬥陣行爾爾","id":12655},"82|綴":{"ex":"你莫綴前綴後。","id":10747},"82|鬥陣":{"ex":"佮朋友鬥陣著愛誠懇。","id":6855},"82|行":{"ex":"錶仔定去袂行矣。","id":2605},"82|爾爾":{"ex":"我規身軀干焦十箍爾爾。","id":10653},"82|閣":{"ex":"今仔日伊閣來矣。","id":10906},"82|所在":{"ex":"這个所在真鬧熱。","id":4001},"82|嘛":{"ex":"嘛共當做是轉大人的儀式。","id":10384},"82|共":{"ex":"共當做是轉大人的儀式。","id":2099},"82|當做":{"ex":"伊古意煞予人當做戇呆。","id":9758},"82|轉大人":{"ex":"伊開始咧轉大人矣。","id":12623},"82|彼":{"ex":"起駕儀式的彼一暗","id":3876},"82|廟埕":{"ex":"下暗廟埕欲搬戲。","id":11039},"82|好親像":{"part":1,"ex":"廟埕好親像一場大型的嘉年華會","id":2272},"82|挨挨陣陣":{"ex":"信眾挨挨陣陣","id":14409},"82|甲":{"ex":"我的腹肚疼甲欲死。","id":1848},"82|袂著":{"part":1,"ex":"陣頭嘛排甲看袂著尾溜","id":6632},"82|尾溜":{"ex":"徛佇尾溜彼个，你敢捌伊？","id":3115},"82|夜市仔擔":{"part":1,"ex":"夜市仔擔的人嘛插插插","id":3773},"82|插插插":{"part":1,"ex":"夜市仔擔的人插插插","id":8360},"82|窮真":{"ex":"窮真欲對大甲步輦去到新港","id":20238},"82|步輦":{"ex":"欲對大甲步輦去到新港","id":3323},"82|𨑨迌":{"ex":"你就共當做去𨑨迌，心情放予輕鬆","id":13522},"82|買無":{"part":1,"ex":"用錢嘛買無！","id":9037},"83|佇咧":{"ex":"伊坐佇咧遐。","id":2909},"83|這逝":{"part":1,"ex":"佇咧這逝旅程","id":7899},"83|沿路":{"ex":"沿路的風景袂䆀。","id":4298},"83|足":{"ex":"伊足足講一點鐘的電話。","id":3391},"83|濟":{"ex":"伊的齣頭真濟。","id":12204},"83|分":{"ex":"分人做新婦仔。","id":584},"83|予":{"ex":"你予我考慮一下。","id":564},"83|止飢":{"ex":"點心予你止飢、分涼水予你止喙焦","id":27397},"83|涼水":{"ex":"天氣遮熱，足想欲食涼水。","id":7477},"83|止喙焦":{"ex":"分涼水予你止喙焦","id":1068},"83|閣會":{"part":1,"ex":"閣會大聲共你加油","id":10906},"83|飽滇":{"ex":"予你精神飽滇。","id":10330},"83|猶":{"ex":"猶會記得我行到彰化的民生地下道","id":8572},"83|會記得":{"ex":"欲睏愛會記得洗喙。","id":13773},"83|跤":{"ex":"我的跤是疼甲哀袂出聲","id":10059},"83|疼":{"ex":"空喙閣流血矣，足疼的。","id":6340},"83|哀":{"ex":"你莫哀啦，逐家的工課攏平濟。","id":4778},"83|袂":{"ex":"我的跤疼甲哀袂出聲","id":6632},"83|佇":{"ex":"伊這馬佇厝裡咧睏。","id":2858},"83|目屎":{"ex":"路邊目屎直直輾落來","id":1918},"83|直直":{"ex":"這條路直直攏免轉斡。","id":4389},"83|輾落來":{"part":1,"ex":"坐佇路邊目屎直直輾落來","id":12409},"83|袂輸":{"ex":"袂輸掛一條真珠袚鍊。","id":6661},"83|掛":{"ex":"衫愛用衫仔弓掛起來。","id":7300},"83|袚鍊":{"ex":"伊頷頸掛一條真大條的金袚鍊。","id":7882},"83|看著":{"part":1,"ex":"看著遮爾濟人比手勢共我支持","id":5307},"83|遮爾":{"ex":"遮爾濟人比手勢共我支持、共我","id":11507},"83|敢若":{"ex":"敢若是伊，閣敢若毋是。","id":8444},"83|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款。","id":1360},"83|勻勻仔":{"ex":"我勻勻仔徛起來","id":606},"83|徛":{"ex":"你徛佇遐創啥物？","id":7226},"83|喙齒根":{"ex":"我勻勻仔徛起來，喙齒根咬咧","id":8239},"83|大伐":{"part":1,"ex":"喙齒根咬咧，大伐向前行！","id":186},"84|阿伯":{"ex":"阿伯拄仔好坐佇涼亭仔咧食早頓","id":4539},"84|拄仔好":{"ex":"我拄仔好想欲走。","id":3991},"84|涼亭仔":{"part":1,"ex":"拄仔好坐佇涼亭仔咧食早頓","id":7488},"84|咧":{"ex":"我欲食炒飯，你咧？","id":4771},"84|食":{"ex":"這隻船食水偌深？","id":5570},"84|好玄":{"ex":"囡仔人攏真好玄。","id":14002},"84|伊":{"ex":"伊為啥物會來行大甲媽。","id":2047},"84|為啥物":{"ex":"問伊為啥物會來行大甲媽。","id":18614},"84|簡單仔":{"part":1,"ex":"伊簡單仔應講","id":12575},"84|應":{"ex":"叫規半晡攏無人應聲。","id":12138},"84|為著":{"ex":"為著某囝啦","id":27288},"84|某囝":{"ex":"趁錢飼某囝","id":5092},"84|𪜶":{"ex":"祈求𪜶健康、平安。","id":13567},"84|聽著":{"ex":"我聽著足感動，這嘛印證","id":13241},"84|攏":{"ex":"伊攏大權，我惹伊袂起。","id":12772},"84|家己":{"ex":"是毋是，罵家己。","id":5899},"84|誠濟":{"part":1,"ex":"誠濟人來參加繞境","id":10054},"84|毋是":{"ex":"參加繞境毋是為著家己內心的願望","id":990},"84|這款":{"ex":"這款疼心實在是誠偉大。","id":27297},"84|疼心":{"ex":"伊對人真有疼心。","id":13704},"84|誠":{"ex":"疼心實在是誠偉大。","id":10054},"85|跤力":{"ex":"繞境除了是跤力、體力的考驗","id":29874},"85|鹹酸苦澀":{"ex":"過程中經歷的鹹酸苦澀","id":20288},"85|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款。","id":11940},"85|成做":{"ex":"也成做是我上難忘的旅行","id":2520},"85|媠":{"ex":"毋但體驗著傳統民俗的媠","id":8285},"85|猶閣有":{"part":1,"ex":"猶閣有臺灣人的愛心佮善心。","id":8663},"85|箍":{"ex":"伊共有緣的人箍做伙","id":10682},"85|做伙":{"ex":"咱兩个做伙來去𨑨迌。","id":6947}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1548,7 +1570,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1556,6 +1578,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

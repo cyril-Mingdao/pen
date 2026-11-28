@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1516,6 +1524,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"52|濟":{"ex":"真濟人予伊騙甲戇戇踅","id":12204},"52|囝":{"ex":"伊有兩个囝","id":2124},"52|擘腹":{"ex":"爸母定定為著囝兒操心擘腹","id":28589},"52|刺鑿":{"ex":"伊講話真刺鑿，予人聽著袂爽快","id":3685},"52|導師":{"ex":"阮導師對學生真好","id":26677},"52|操煩":{"ex":"你莫為著我的代誌操煩","id":11683},"52|遐爾":{"ex":"無彩你遐爾仔愛伊","id":10228},"52|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"52|向望":{"ex":"向望你會當好好仔做人","id":2211},"52|較緊":{"part":1,"ex":"你較緊咧，欲袂赴矣","id":10138},"52|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"52|真正":{"ex":"伊真正是一个好人","id":6386},"52|飛":{"ex":"鳥仔佇天頂飛","id":5569},"52|煞":{"ex":"伊今仔來，煞欲隨轉去","id":9691},"52|顛倒":{"ex":"伊無欲來，阮顛倒較歡喜","id":12931},"52|掛心":{"ex":"你免掛心，我會照顧家己","id":7323},"52|一目𥍉仔":{"ex":"一目𥍉仔大學四年就過去矣","id":14},"52|屆":{"ex":"伊是阮學校第一屆的學生","id":3812},"52|這馬":{"ex":"這馬的人攏罕得寫批矣","id":7957},"52|已經":{"ex":"糖仔已經攏分了矣","id":22106},"52|食頭路":{"ex":"伊佇𪜶阿叔遐食頭路","id":5678},"54|狀元才":{"part":1,"ex":"伊讀冊逐擺攏考第一，真正是狀元才","id":4331},"54|頭腦":{"ex":"伊的頭腦真好","id":12074},"54|巧":{"ex":"伊足巧的","id":1639},"54|讀冊":{"ex":"咱讀冊就毋通讀對尻脊骿去","id":13231},"54|綿爛":{"ex":"伊練球真綿爛，逐工練甲暗暝","id":10778},"54|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"54|當年":{"ex":"想著當年，伊閣是一个囡仔","id":9744},"54|考牢":{"part":1,"ex":"伊考牢第一志願的學校","id":2591},"54|紲落去":{"ex":"你講紲落去，我咧聽","id":7765},"54|無蓋":{"part":1,"ex":"今仔日的天氣無蓋好","id":8563},"54|理想":{"ex":"這擺考試考了無蓋理想","id":22246},"54|轉踅":{"ex":"這个所在誠狹，真歹轉踅","id":12639},"54|工程師":{"ex":"阮阿兄是電腦工程師","id":452},"54|開發":{"ex":"這間公司咧開發新的產品","id":9186},"54|揣":{"ex":"物件愛收予好，才袂揣無","id":8409},"54|成就感":{"part":1,"ex":"家己做出來的物件，予人足有成就感","id":2528},"54|茫茫渺渺":{"ex":"伊對未來感覺茫茫渺渺","id":14230},"54|日子":{"ex":"這段日子你辛苦矣","id":828},"54|總算":{"ex":"等規半工，伊總算來矣","id":12277},"54|恢復":{"ex":"伊的身體已經恢復矣","id":4957},"54|自信":{"ex":"伊講話真有自信","id":2688},"55|大格雞":{"part":1,"ex":"大格雞慢啼，以後會有出脫","id":186},"55|本底":{"ex":"伊本底蹛佇臺北，後來才搬來臺中","id":1725},"55|發覺":{"ex":"我轉到厝才發覺鎖匙無去矣","id":8763},"55|煮食":{"ex":"阮阿母真𠢕煮食","id":8624},"55|興趣":{"ex":"你對政治敢有興趣？","id":11879},"55|出業":{"ex":"伊拄高中出業","id":1569},"55|允頭路":{"ex":"伊拄畢業就去允頭路","id":1172},"55|總舖師":{"ex":"這擺辦桌請的總舖師真有名","id":12281},"55|直直":{"ex":"雨直直落，攏無欲停","id":4389},"55|呵咾":{"ex":"你一直共我呵咾，我會歹勢","id":3718},"55|食苦":{"ex":"少年人愛肯食苦","id":5612},"55|少年家":{"ex":"彼个少年家真有禮貌","id":903},"55|踮":{"ex":"我踮遮等你","id":11474},"55|翕熱":{"ex":"最近的天氣誠翕熱","id":8924},"55|喝忝":{"part":1,"ex":"伊做穡規工攏毋捌喝忝","id":8175},"55|按算":{"ex":"你寒假按算欲去佗位𨑨迌？","id":5049},"55|燖":{"ex":"阿母定定燖補予我食","id":11774},"55|湯頭":{"ex":"這間麵店的湯頭真好啉","id":8559},"55|苦甘仔苦甘":{"part":1,"ex":"這杯茶啉著苦甘仔苦甘","id":5466},"55|夢想":{"ex":"伊的夢想是做一个老師","id":28676},"56|捅":{"ex":"伊今年三十捅歲矣","id":5989},"56|今仔":{"ex":"伊今仔才出門","id":628},"56|畢業":{"ex":"伊明年就欲畢業矣","id":22483},"56|伐":{"ex":"伊一跤就伐過水溝仔","id":2048},"56|校門":{"part":1,"ex":"阮佇校門口等你","id":6082},"56|選擇":{"ex":"你愛家己選擇欲行的路","id":11980},"56|未來":{"ex":"咱的未來愛靠家己拍拚","id":1717},"56|方向":{"ex":"我揣無方向矣","id":892},"56|免講":{"part":1,"ex":"伊遐爾仔拍拚，免講一定會成功","id":2872},"56|躊躇":{"ex":"伊躊躇真久，才決定欲去","id":13165},"56|佳哉":{"ex":"好佳哉有你替我求情，若無，我就慘矣","id":3553},"56|人生":{"ex":"人生親像一齣戲","id":87},"56|千途萬途":{"part":1,"ex":"人生有千途萬途，毋免驚揣無路","id":180},"56|恁":{"ex":"恁欲去佗位？","id":5950},"56|加":{"ex":"寄話會加，寄物會減","id":1381},"56|試":{"ex":"你試看覓就知影","id":10000},"56|踏予在":{"part":1,"ex":"𬦰山的時，跤步愛踏予在","id":11395},"56|相信":{"ex":"我相信你一定做會到","id":5253},"56|有步":{"ex":"伊遮爾巧，一定有步","id":28566},"56|光明":{"ex":"認真拍拚的人，前途一定光明","id":2066},"56|前途":{"ex":"你好好仔讀冊，以後前途無量","id":4740}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1526,7 +1548,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1534,6 +1556,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

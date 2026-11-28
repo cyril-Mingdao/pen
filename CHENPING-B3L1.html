@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1466,6 +1474,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"8|姑娘":{"ex":"伊做姑娘的時真媠","id":3788},"8|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"8|阿母":{"ex":"阿母咧灶跤煮飯","id":4524},"8|頭毛":{"ex":"伊的頭毛生成是虯的","id":12041},"8|烏金":{"ex":"伊的頭鬃烏金柔軟","id":6265},"8|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"8|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"8|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"8|少年家":{"ex":"彼个少年家真有禮貌","id":903},"8|心肝":{"ex":"你是阿母的心肝","id":934},"8|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"8|化解":{"ex":"一句好話會當化解冤仇","id":23563},"8|一度":{"part":1,"ex":"伊一度想欲放棄","id":2},"8|浪子":{"ex":"浪子回頭金不換","id":6159},"9|阮":{"ex":"阮欲走矣，你咧？","id":3401},"9|阿母":{"ex":"阿母咧灶跤煮飯","id":4524},"9|頭毛":{"ex":"伊的頭毛生成是虯的","id":12041},"9|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"9|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"9|寒天":{"ex":"寒天的時陣，愛穿較燒咧","id":8300},"9|日頭":{"ex":"今仔日的日頭真猛","id":1168},"9|大漢":{"ex":"囡仔若大漢，爸母就輕鬆矣","id":495},"9|了後":{"ex":"你出門了後，伊就醒矣","id":113},"9|已經":{"ex":"糖仔已經攏分了矣","id":22106},"9|光彩":{"ex":"天星的光彩真媠","id":25548},"9|天頂":{"ex":"天頂天公，地下母舅公","id":1062},"9|層":{"ex":"這層代誌我來處理","id":11008}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1476,7 +1498,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1484,6 +1506,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1484,6 +1492,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"72|敢":{"ex":"這敢是你的？","id":8414},"72|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"72|咱":{"ex":"咱著愛較斟酌咧","id":4776},"72|其實":{"ex":"其實伊真好心","id":3672},"72|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"72|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"72|崙":{"ex":"厝後有一个細細的崙仔","id":15708},"72|崁":{"ex":"這崁誠懸，行路愛細膩","id":5888},"72|坪":{"ex":"山頂有一片坪，種真濟茶","id":3702},"72|坑":{"ex":"坑底有一條清氣的溪仔","id":3024},"72|崎":{"ex":"落崎。","id":7175},"72|成做":{"ex":"想袂到伊會成做地方上的頭人","id":2520},"72|這个":{"ex":"這个囡仔真乖","id":27296},"72|所在":{"ex":"這个所在真鬧熱","id":4001},"72|過去":{"ex":"代誌已經過去矣","id":10168},"72|一个":{"part":1,"ex":"我有一个小妹","id":1},"72|號做":{"ex":"我袂記得伊號做啥物名","id":9983},"72|三角湧":{"ex":"三角湧是『三峽』的舊名","id":21560},"73|真濟":{"part":1,"ex":"真濟人攏無法度食飽","id":6374},"73|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"73|毋才":{"ex":"伊較土直，毋才得失人","id":830},"73|出現":{"ex":"伊雄雄出現佇門口","id":1537},"73|無仝":{"ex":"這兩个物件無仝啦！愛斟酌看","id":8586},"73|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"73|海面":{"ex":"海面有真濟船","id":6183},"73|捅":{"ex":"伊今年三十捅歲矣","id":5989},"73|號做":{"ex":"我袂記得伊號做啥物名","id":9983},"73|這个":{"ex":"這个囡仔真乖","id":27296},"73|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"73|古早":{"ex":"古早人攏用柴燒火","id":1465},"73|早前":{"ex":"早前這搭是一片田園","id":2496},"74|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"74|罔":{"ex":"我是罔講爾爾","id":4415},"74|較早":{"ex":"較早的人攏早早就睏矣","id":10179},"74|遮":{"ex":"遮欲舉行一場歌唱比賽","id":11480},"74|成做":{"ex":"想袂到伊會成做地方上的頭人","id":2520},"74|號做":{"ex":"我袂記得伊號做啥物名","id":9983},"74|艋舺":{"ex":"艋舺是『萬華』的舊名","id":21764},"74|當時":{"ex":"當時伊猶閣細漢","id":9756},"74|佮":{"ex":"我欲佮伊來去看電影","id":3524},"74|共":{"ex":"我共你講，你毋通共別人講","id":2099},"74|故鄉":{"ex":"我真數念故鄉的親情朋友","id":5041},"74|所在":{"ex":"這个所在真鬧熱","id":4001},"74|是按怎":{"ex":"你是按怎無來上課？","id":5026},"74|看覓":{"ex":"這款菜你食看覓","id":5344},"74|無的確":{"ex":"我今仔日無的確會加班","id":8615},"74|真濟":{"part":1,"ex":"真濟人攏無法度食飽","id":6374}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1494,7 +1516,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1502,6 +1524,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

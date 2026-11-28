@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1521,6 +1529,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"26|歇熱":{"ex":"後禮拜歇熱欲--來去日本","id":9675},"26|期待":{"ex":"我足期待歇熱來到","id":8496},"26|嘛是":{"ex":"你是庄跤人，我嘛是庄跤人","id":10391},"26|歡頭喜面":{"ex":"伊歡頭喜面去上課","id":13208},"26|不而過":{"ex":"伊足𠢕讀冊，不而過無愛運動","id":655},"26|有夠":{"ex":"今仔日有夠熱","id":2521},"26|磕袂著":{"ex":"伊磕袂著就受氣","id":11264},"26|強欲":{"ex":"我聽甲強欲起性地","id":7211},"26|共人":{"part":1,"ex":"袂當用樹奶共人擉","id":2099},"26|熁":{"ex":"日頭遐炎，熁甲欲昏去","id":10613},"26|冷氣":{"ex":"熱天開冷氣較涼","id":2916},"26|所在":{"ex":"這个所在真鬧熱","id":4001},"26|遮爾仔":{"ex":"這馬菜遮爾仔貴","id":11508},"26|拄好":{"ex":"我欲去揣阮阿舅，伊拄好出去矣","id":4005},"26|敲電話":{"ex":"我逐暗敲電話予阿母","id":10556},"26|來去":{"ex":"我欲來去踅街","id":3538},"26|蹛一暝":{"part":1,"ex":"阮去阿姨兜蹛一暝","id":12616},"27|拄著":{"ex":"伊近來定定去拄著麻煩","id":4111},"27|歇熱":{"ex":"後禮拜歇熱欲--來去日本","id":9675},"27|衝":{"ex":"這間店的雞排上衝","id":11347},"27|磅空":{"ex":"火車鑽入去磅空","id":11259},"27|了了":{"ex":"錢開了了矣","id":60},"27|別搭":{"ex":"遮無位，阮去別搭坐","id":3005},"27|嘛是":{"ex":"你是庄跤人，我嘛是庄跤人","id":10391},"27|賰":{"ex":"阿媽叫我共食賰的菜收入去菜櫥","id":11906},"27|一寡仔":{"ex":"猶有一寡仔物件無整理","id":32},"27|爾爾":{"ex":"我規身軀干焦十箍爾爾","id":10653},"27|選擇":{"ex":"你愛家己選擇欲行的路","id":11980},"27|猶閣":{"ex":"阮的工頭看起來猶閣真少年","id":8663},"27|較濟":{"part":1,"ex":"這間店的人客會較濟","id":10138},"27|了後":{"ex":"你出門了後，伊就醒矣","id":113},"27|會使":{"ex":"我功課若寫好就會使去耍矣","id":9591},"27|四界":{"ex":"我𤆬伊出去附近四界蹓蹓咧","id":1496},"27|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"27|魴魚":{"part":1,"ex":"海生館內底有大尾魴魚","id":16881},"27|生做":{"ex":"伊生做懸懸瘦瘦","id":1938},"27|古錐":{"ex":"阮兩个孫仔生做有夠古錐","id":1611},"27|徛鵝":{"ex":"徛鵝行路搖來搖去","id":7282},"28|上蓋":{"ex":"伊是阮這班生做上蓋媠的","id":501},"28|真正":{"ex":"伊真正是一个好人","id":6386},"28|目睭":{"ex":"伊目睭真大蕊","id":1975},"28|毋捌":{"ex":"我毋捌去過澎湖","id":1021},"28|日頭":{"ex":"今仔日的日頭真猛","id":1168},"28|落來":{"ex":"桌頂的物件落落來矣","id":9912},"28|彼个":{"ex":"彼个物件是我的","id":3890},"28|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"28|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"28|足濟":{"part":1,"ex":"厝內有覕足濟虼蚻--的","id":3391},"28|活動":{"ex":"你坐遐久，緊起來活動一下","id":5193},"28|了後":{"ex":"你出門了後，伊就醒矣","id":113},"28|解說":{"ex":"我較按怎解說伊都毋信","id":10045},"28|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"28|箍一輾":{"part":1,"ex":"阮去公園箍一輾","id":10682},"28|紲落來":{"ex":"紲落來咱就來表決","id":14291},"28|暗頓":{"ex":"暗頓食飽了後來去公園行行咧","id":9619},"28|想袂到":{"ex":"想袂到伊遮爾𠢕煮食","id":19267},"28|毋但":{"ex":"我看伊做的歹代誌毋但按呢","id":921},"28|豐沛":{"ex":"今仔日的暗頓誠豐沛","id":12629},"28|落尾":{"ex":"落尾我就去高雄讀冊","id":9903},"28|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"28|𢯾":{"ex":"兩个人𢯾做伙","id":13467},"28|棉襀被":{"ex":"寒天愛蓋棉襀被","id":8514},"28|選擇":{"ex":"你愛家己選擇欲行的路","id":11980},"28|下昏暗":{"ex":"下昏暗欲食啥物？","id":366},"28|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"28|所在":{"ex":"這个所在真鬧熱","id":4001},"28|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"28|不時":{"ex":"伊不時嘛咧讀冊","id":699},"28|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"28|身軀邊":{"ex":"阿母一直佇我的身軀邊","id":3509},"28|一下仔":{"ex":"遮爾濟工課一下仔就完成矣","id":17727},"28|隔轉工":{"ex":"阿爸愛隔轉工才會轉來","id":10347},"28|早頓":{"ex":"你有食早頓無？","id":2549},"28|猶閣":{"ex":"阮的工頭看起來猶閣真少年","id":8663},"28|通好":{"ex":"考試考煞就通好𨑨迌","id":20291},"29|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"29|蹛一暝":{"part":1,"ex":"阮去阿姨兜蹛一暝","id":12616},"29|誠實":{"ex":"風颱欲來，敢是誠實的？","id":10116},"29|一个":{"part":1,"ex":"我有一个小妹","id":1},"29|記持":{"ex":"你記持誠䆀，隨講隨袂記得","id":1041},"29|若":{"ex":"天若烏就毋敢出門","id":5450},"29|蹛":{"ex":"阿明仔蹛佇學校附近","id":12616},"29|看覓":{"ex":"這款菜你食看覓","id":5344}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1531,7 +1553,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1539,6 +1561,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

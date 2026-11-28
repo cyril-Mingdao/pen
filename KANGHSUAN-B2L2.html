@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1474,6 +1482,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"30|作":{"ex":"種作、作田、作穡、敆作、作怪","id":2866},"30|無仝款":{"part":1,"ex":"好額人的生活佮咱是無仝款的","id":8586},"30|偌":{"ex":"我買的物件攏總偌濟錢？","id":6910},"30|立春":{"ex":"立春是春天開始的第一工","id":20340},"30|猶閣":{"ex":"阮的工頭看起來猶閣真少年","id":8663},"30|淡薄仔":{"ex":"我的口座猶有淡薄仔存款","id":7566},"30|無閒":{"ex":"伊的工課真濟，足無閒的","id":8648},"30|犁田":{"ex":"較早攏是用水牛拖犁來犁田","id":7586},"30|淹水":{"ex":"𪜶兜淹水矣","id":7522},"30|秧仔":{"ex":"我看著阿公佇田裡佈秧仔","id":6432},"30|共":{"ex":"共房間摒摒咧","id":2099},"30|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"30|賰":{"ex":"伊病甲賰一屑仔氣絲仔爾爾","id":11906},"30|向望":{"ex":"向望你會當好好仔做人","id":2211},"30|疼痛":{"ex":"你就愛好好仔共伊疼痛","id":6362},"31|驚蟄":{"ex":"驚蟄烏，百日雨","id":20342},"31|彼":{"ex":"阿公定定去彼間𥴊仔店交關","id":3876},"31|霆雷公":{"ex":"落西北雨的時定定會霆雷公","id":11563},"31|較":{"ex":"這塊桌仔比彼塊較低","id":10138},"31|無定著":{"ex":"無定著彼件代誌就是伊做的","id":8608},"31|弄花":{"ex":"稻仔開花、弄花頭尾才成禮拜","id":29376},"31|毋通":{"ex":"你毋通傷晏轉來","id":1060},"31|冇去":{"part":1,"ex":"這塊柴予白蟻咬甲冇去矣","id":580},"31|立夏":{"ex":"立夏是熱人開始的第一工","id":20346},"31|沓沓仔":{"ex":"有話沓沓仔講","id":4275},"31|秋凊":{"ex":"今仔日下晡的天氣真秋凊","id":5336},"31|翕熱":{"ex":"最近的天氣誠翕熱","id":8924},"31|上":{"ex":"阿明仔上有擋頭","id":164},"31|滾絞":{"ex":"我的腹肚疼甲若像咧滾絞","id":10590},"31|烏有":{"ex":"伊的心血攏烏有去矣","id":6249},"32|夏至":{"ex":"夏至彼工的天氣真燒熱","id":20349},"32|披":{"ex":"阿母當佇後埕咧披衫","id":3940},"32|衫":{"ex":"阿弟仔生日的時吵講欲買新衫","id":5490},"32|呵咾":{"ex":"你一直共我呵咾，我會歹勢","id":3718},"32|佮":{"ex":"我欲佮伊來去看電影","id":3524},"32|喝咻":{"ex":"有人咧喝咻，毋知是啥物代誌","id":8206},"32|曝":{"ex":"今仔日的天氣袂䆀，欲來曝棉被","id":12773},"32|焦燥":{"ex":"這站仔的天氣真焦燥","id":8676},"32|粟仔":{"ex":"這坵田的粟仔較媠，留起來做粟種","id":8841},"32|輾":{"ex":"你的銀角仔輾落去矣","id":12409},"32|袂輸":{"ex":"伊看著我袂輸看著鬼咧","id":6661},"32|走相逐":{"ex":"毋通佇遮耍走相逐，蓋危險","id":3441},"32|透濫":{"ex":"這罐純，無透濫一寡有的無的","id":14300},"32|跟綴":{"ex":"你愛跟綴予好，毋通落勾去","id":10118},"32|早冬":{"ex":"臺灣稻仔收成分做早冬佮慢冬","id":2465}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1484,7 +1506,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1492,6 +1514,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

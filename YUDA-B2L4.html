@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1559,6 +1567,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"64|冊":{"ex":"「冊」有幾若種形式","id":1312},"64|幾若":{"ex":"阮老爸昨昏下晡掠著幾若隻鳥鼠。","id":8329},"64|紅嬰仔":{"ex":"有紅嬰仔咧耍的布冊","id":5434},"64|耍":{"ex":"紅嬰仔咧耍的布冊","id":5369},"64|嘛":{"ex":"嘛有現此時上時行的電子冊","id":10384},"64|現此時":{"ex":"有現此時上時行的電子冊","id":7588},"64|上":{"ex":"現此時上時行的電子冊","id":164},"64|時行":{"ex":"伊的穿插真時行。","id":6017},"64|毋過":{"ex":"毋過你敢有聽過魚仔冊？","id":1114},"64|敢有":{"ex":"世間敢有這款道理？","id":8435},"64|魚仔":{"part":1,"ex":"你敢有聽過用「魚仔」做的冊？","id":21991},"64|毋是":{"ex":"這本冊毋是用看的，是用食的。","id":990},"64|佇":{"ex":"伊這馬佇厝裡咧睏。","id":2858},"64|阮":{"ex":"阮欲走矣，你咧？","id":3401},"64|號做":{"ex":"我袂記得伊號做啥物名。","id":9983},"64|伊":{"ex":"伊嘛會使煮湯","id":2047},"64|毋但":{"ex":"我看伊做的歹代誌毋但按呢爾爾。","id":921},"64|會當":{"ex":"伊毋但會當直接食嘛會使煮湯","id":9616},"64|食":{"ex":"這隻船食水偌深？","id":5570},"64|會使":{"ex":"我功課若寫好就會使去看電影矣。","id":9591},"64|不時":{"ex":"伊不時嘛咧讀冊。","id":699},"64|看著":{"part":1,"ex":"不時都會看著伊的形影。","id":5307},"64|形影":{"ex":"都會看著伊的形影。","id":3190},"64|現流仔":{"ex":"主要的原料是現流仔的狗母魚","id":7597},"64|狗母魚":{"ex":"原料是現流仔的狗母魚","id":4340},"64|較":{"ex":"這種魚仔肉質較幼","id":10138},"64|幼":{"ex":"魚仔肉質較幼","id":1646},"64|著":{"ex":"有特別的甜味，食著嘛較𩚨","id":8981},"64|𩚨":{"ex":"食著嘛較𩚨","id":13551},"64|不而過":{"ex":"食著嘛較𩚨，不而過伊袂凍得","id":655},"64|袂":{"ex":"不而過伊袂凍得","id":6632},"64|無法度":{"ex":"真歹勢，我無法度共你鬥相共。","id":8612},"64|一改":{"part":1,"ex":"無法度一改做傷濟起來囥。","id":1},"64|傷":{"ex":"你講話傷過份。","id":9289},"64|濟":{"ex":"伊的齣頭真濟。","id":12204},"64|囥":{"ex":"物件囥佇桌頂。","id":3017},"65|頭家":{"ex":"頭家會先共狗母魚的龍骨𠞭起來","id":12062},"65|共":{"ex":"共房間摒摒咧。","id":2099},"65|𠞭":{"ex":"魚仔肉𠞭起來𤉙糜","id":13470},"65|湯匙仔":{"ex":"用湯匙仔剾魚肉","id":8552},"65|剾":{"ex":"伊真𠢕共人剾。","id":9294},"65|才閣":{"ex":"才閣共魚肉囥入去機械內底紡","id":27377},"65|內底":{"ex":"這跤皮箱內底貯啥物？","id":665},"65|紡":{"ex":"這聲代誌歹紡矣。","id":6480},"65|欲":{"ex":"欲我，早就佮伊變面矣。","id":7469},"65|予":{"ex":"你予我考慮一下。","id":564},"65|媠色":{"ex":"欲予魚冊較媠色、口感嘛較好咧","id":8302},"65|袂當":{"ex":"魚皮袂當囥入去做伙絞。","id":6656},"65|做伙":{"ex":"咱兩个做伙來去𨑨迌。","id":6947},"65|絞":{"ex":"果子提來絞汁。","id":8832},"65|拍":{"ex":"拍好的狗母魚漿較無黏性","id":3956},"65|無":{"ex":"無，你是欲按怎？","id":8563},"65|時陣":{"ex":"這个時陣就愛那撋那摻鹽。","id":6036},"65|愛":{"ex":"你行路愛小心。","id":9427},"65|那":{"ex":"這个時陣愛那撋那摻鹽","id":3397},"65|撋":{"ex":"愛那撋那摻鹽。","id":11055},"65|摻":{"ex":"我的紅茶無愛摻糖。","id":10527},"65|撒":{"ex":"撒鹽才會掜倚來做規丸","id":11058},"65|掜":{"ex":"掜倚來身軀邊。","id":7302},"65|規丸":{"part":1,"ex":"魚肉撒鹽才會掜倚來做規丸","id":7844},"65|捎":{"ex":"看著頭家規丸捎起來摔","id":5994},"65|閣":{"ex":"這个動作閣不止仔趣味。","id":10906},"65|不止仔":{"ex":"你穿這領衫閣不止仔媠。","id":623},"65|趣味":{"ex":"伊這个人真趣味。","id":11424},"65|煞":{"ex":"講嘛真奇怪，魚漿煞愈摔愈𩚨。","id":9691},"65|掠準":{"ex":"你掠準按呢就好勢矣","id":7394},"65|按呢":{"ex":"伊若真正按呢做，就傷超過矣。","id":5014},"65|好勢":{"ex":"伊睏甲誠好勢。","id":2379},"65|冊皮":{"part":1,"ex":"這只是完成做「冊皮」的材料爾爾","id":1312},"65|爾爾":{"ex":"我規身軀干焦十箍爾爾。","id":10653},"65|紲落來":{"ex":"紲落來的才是上特別的","id":14291},"65|所在":{"ex":"這个所在真鬧熱。","id":4001},"66|刀喙":{"ex":"這支刀的刀喙真利。","id":140},"66|菜砧":{"ex":"用菜砧切肉以後，愛洗清氣。","id":14349},"66|頂面":{"ex":"物件囥架仔頂面就好矣。","id":8046},"66|輕輕仔":{"part":1,"ex":"菜砧頂面輕輕仔𫝻過去閣𫝻轉來","id":10853},"66|薄縭絲":{"ex":"天氣變涼矣，你閣穿甲薄縭絲。","id":12340},"66|皺痕":{"ex":"有皺痕的魚漿皮就生出來矣。","id":11227},"66|涼勢":{"ex":"看頭家涼勢仔涼勢的形","id":7498},"66|閣來":{"part":1,"ex":"閣來就愛用魚漿皮捲起來","id":10906},"66|好食":{"ex":"好食的魚冊就按呢完成囉！","id":18210},"66|就按呢":{"ex":"代誌就按呢進行。","id":8306},"66|有影":{"ex":"有影足厚工的。","id":2555},"66|厚工":{"ex":"家己縛粽較厚工。","id":4784},"66|手路菜":{"ex":"魚冊確實是一項手路菜","id":1118},"66|咬落去":{"part":1,"ex":"伊咬落去有魚仔的鮮","id":4773},"66|古冊":{"ex":"有豬肉的芳，因為外型佮古冊仝款","id":1449},"66|仝款":{"ex":"因為外型佮古冊仝款，攏會捲起來","id":1360},"66|見擺":{"ex":"見擺咧食這項料理","id":3507},"66|家己":{"ex":"我攏會感覺家己足有氣質的。","id":5899},"67|頂一改":{"part":1,"ex":"頂一改歇睏日","id":8013},"67|歇睏日":{"ex":"歇睏日駛車載阿爸轉去臺南","id":14385},"67|駛車":{"ex":"啉酒駛車會予警察開罰單。","id":11548},"67|轉去":{"ex":"駛車載阿爸轉去臺南看看咧","id":12625},"67|想欲":{"ex":"我想欲去便所。","id":14370},"67|徛家":{"ex":"阮這間厝是欲稅人做徛家的。","id":7254},"67|彼間":{"part":1,"ex":"彼間汕頭「魚冊」佮「魚麵」。","id":3876},"67|這馬":{"ex":"這馬的人攏罕得寫批矣。","id":7957},"67|喙齒":{"ex":"阿爸這馬喙齒無啥會哺","id":8238},"67|無啥":{"part":1,"ex":"阮阿爸這馬喙齒無啥會哺","id":8563},"67|數念":{"ex":"真數念少年時的滋味。","id":11122},"67|少年時":{"part":1,"ex":"伊真數念少年時的滋味。","id":896},"67|鉸刀":{"ex":"我攑鉸刀沓沓仔共魚冊鉸予幼幼","id":10866},"67|沓沓仔":{"ex":"有話沓沓仔講。","id":4275},"67|㧣":{"ex":"㧣去伊面頭前。","id":13453},"67|目睭":{"ex":"伊目睭真大蕊。","id":1975},"67|斟酌":{"ex":"那斟酌看伊滿足的笑容","id":9528},"67|引𤆬":{"ex":"欣賞阿爸這本引𤆬我了解人生道理","id":13915}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1569,7 +1591,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1577,6 +1599,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

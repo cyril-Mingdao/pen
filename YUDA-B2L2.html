@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1466,6 +1474,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"28|彼个":{"ex":"彼个所在，","id":3890},"28|所在":{"ex":"彼个所在，　你毋捌去過","id":4001},"28|毋捌":{"ex":"你毋捌去過","id":1021},"28|捌":{"ex":"我捌聽過白賊七仔的故事。","id":5993},"28|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款。","id":1360},"28|山懸水清":{"part":1,"ex":"雖然仝款山懸水清","id":197},"28|袂":{"ex":"你看袂出來","id":6632},"28|遐":{"ex":"遐的風有淡薄仔透","id":10151},"28|淡薄仔":{"ex":"我遮閣有淡薄仔錢會當借你。","id":7566},"28|透":{"ex":"這條路透車頭。","id":7894},"28|霎霎仔":{"part":1,"ex":"雨霎霎仔落","id":17025},"28|落":{"ex":"貨欲落佇佗位？","id":9862},"28|鳥仔":{"ex":"遐有一隻鳥仔","id":8093},"28|覕":{"ex":"你敢知影伊覕佇佗位？","id":8988},"28|佇":{"ex":"伊這馬佇厝裡咧睏。","id":2858},"28|樹尾頂":{"part":1,"ex":"覕佇樹尾頂唱歌","id":11710},"29|阮":{"ex":"阮想欲替𪜶","id":3401},"29|想欲":{"ex":"我想欲去便所。","id":14370},"29|𪜶":{"ex":"𪜶兩个感情真好。","id":13567},"29|郵便士":{"part":1,"ex":"拜託郵便士","id":16194},"29|揣":{"ex":"揣你的住址","id":8409},"29|予":{"ex":"你予我考慮一下。","id":564},"29|甲":{"ex":"我的腹肚疼甲欲死。","id":1848},"29|滇滇":{"part":1,"ex":"字　寫甲滇滇","id":9683},"29|煞":{"ex":"煞崁佇風景後壁","id":9691},"29|崁":{"ex":"崁佇風景後壁","id":5888},"29|後壁":{"ex":"莫佇後壁講人的歹話。","id":4968}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1476,7 +1498,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1484,6 +1506,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

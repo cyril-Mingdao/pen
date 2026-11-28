@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1537,6 +1545,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"6|誠濟":{"part":1,"ex":"遮有誠濟好耍的物件","id":10054},"6|佮":{"ex":"老師愛你佮伊緊轉去教室","id":3524},"6|攏":{"ex":"阮兩个攏穿仝色水的鞋仔","id":12772},"6|衝擊":{"ex":"疫情對國家的衝擊真大","id":22463},"6|趨勢":{"ex":"你的報告愛照趨勢行","id":22257},"6|慢慢仔":{"ex":"我慢慢仔共車駛入去","id":10519},"6|真濟":{"part":1,"ex":"真濟人攏無法度食飽","id":6374},"6|逐家":{"ex":"歡迎逐家參加這个活動","id":7947},"6|閣":{"ex":"這粒菝仔閣猶未熟啦","id":10906},"6|不止仔":{"ex":"伊佇遮閣不止仔受歡迎","id":623},"6|懸":{"ex":"彼个選手跳足懸的","id":12963},"6|見擺":{"ex":"你見擺攏講過去","id":3507},"6|oo-tóo-bái":{"id":20477},"6|較濟":{"part":1,"ex":"這間店的人客會較濟","id":10138},"6|定定":{"ex":"伊定定嘛講白賊","id":3837},"6|拄著":{"ex":"你頭拄仔敢有拄著伊","id":4111},"6|个":{"ex":"這兩个攏欲予你的","id":171},"6|𪜶":{"ex":"𪜶兜敢有馬椅通好借","id":13567},"6|嘛是":{"ex":"伊嘛是閣無來考試","id":10391},"6|仝款":{"ex":"咱兩个食仝款的就好","id":1360},"6|按呢":{"ex":"你莫閣按呢番矣","id":5014},"6|bùn":{},"6|四常":{"ex":"這个狀況真四常","id":1530},"6|啥物":{"ex":"你欲買啥物物件","id":7101},"6|通":{"ex":"菜熥燒通好食","id":7900},"6|共":{"ex":"你共這罐啉落去","id":2099},"6|踮":{"ex":"伊踮遮欲創啥","id":11474},"6|斟酌":{"ex":"你著愛斟酌看","id":9528},"6|抑是":{"ex":"是我抑是伊愛離開","id":3236},"6|敲":{"ex":"電話欲敲幾番","id":10530},"7|工課":{"ex":"這種工課無簡單做","id":519},"7|毋過":{"ex":"彼誠臭，毋過真好食","id":1114},"7|著":{"ex":"伊吵著欲人抱","id":8981},"7|愛":{"ex":"你愛先去樓跤開門","id":9427},"7|熱人":{"ex":"熱人的果子較好食","id":11211},"7|燒唿唿":{"ex":"來一碗燒唿唿的仙草","id":14483},"7|佮":{"ex":"你佮我來去拍籃球","id":3524},"7|寒人":{"ex":"寒人的天氣賜人擋袂牢","id":8294},"7|冷sih-sih":{"part":1,"id":2874},"7|有當時仔":{"ex":"彼隻狗有當時仔會出現","id":2540},"7|物件":{"ex":"好的物件人人愛","id":4343},"7|延延":{"ex":"你毋通去延延著","id":3905},"7|閣會":{"part":1,"ex":"伊毋但會飛閣會吼","id":10906},"7|工":{"ex":"我愛去下港兩工","id":199},"7|揣":{"ex":"你到底咧揣啥","id":8409},"7|當咧":{"ex":"阿母當咧煮飯","id":9749},"7|掛":{"ex":"喙罨愛掛予好","id":7300},"7|喙罨":{"ex":"你的喙罨的花草誠媠","id":8231},"7|手囊":{"ex":"愛掛手囊才袂曝傷","id":1203},"7|目鏡":{"ex":"這支目鏡真正有貴","id":2024},"7|貯":{"ex":"共這支罐仔貯予滿","id":9034},"7|滇":{"ex":"你斟傷滇矣","id":9683},"7|按呢":{"ex":"我按呢講敢會使","id":5014},"7|規身軀":{"ex":"我規身軀攏足疼的","id":7861},"7|密喌喌":{"ex":"窗仔關甲密喌喌","id":7165},"7|傱":{"ex":"莫佇遐傱來傱去","id":9285},"7|規工":{"ex":"伊已經吼規工矣","id":14292},"7|呔":{"ex":"呔有可能會按呢咧","id":18305},"7|袂":{"ex":"我強欲袂赴矣","id":6632},"7|忝頭":{"ex":"今仔日真正有忝頭","id":3929},"8|兜":{"ex":"阮兜欲搬厝矣","id":6917},"8|阮":{"ex":"阮厝邊攏真好鬥陣","id":3401},"8|佇":{"ex":"你莫佇遐講人的閒仔話","id":2858},"8|開講":{"ex":"伊定定來揣你開講","id":9208},"8|雄雄":{"ex":"伊雄雄走出來，驚著人","id":9270},"8|放送":{"ex":"彼齣戲是逐禮拜三放送的","id":4083},"8|䆀":{"ex":"我感覺這袂䆀食","id":13516},"8|透早":{"ex":"透早誠冷，愛加疊一領","id":7928},"8|予":{"ex":"這是阿母欲予你的","id":564},"8|毋甘":{"ex":"真正毋甘彼隻狗仔","id":879},"8|遐":{"ex":"遐的攏隨在你提","id":10151},"8|會使":{"ex":"你會使食飽才轉去","id":9591},"8|莫":{"ex":"莫閣講彼種話矣","id":7813},"8|遮爾":{"ex":"遮的風景是遮爾仔媠","id":11507},"8|煞":{"ex":"伊今仔來，煞欲隨轉去","id":9691},"8|落去":{"ex":"足懸的，毋通按呢跳落去","id":9893},"8|彼":{"ex":"彼種物件毋通磕","id":3876},"8|翁仔某":{"ex":"𪜶翁仔某感情誠好","id":14599},"8|三不五時":{"ex":"你三不五時就愛來行行咧","id":242},"8|窒":{"ex":"這馬當咧窒車","id":7685},"8|莫怪":{"ex":"鑿著釘仔矣莫怪會無風","id":7826},"8|開拓":{"ex":"若欲著等咱就愛開拓眼界","id":23091},"8|利純":{"ex":"賣冰的利純誠好","id":2997},"8|好好仔":{"ex":"你著好好仔佮伊參詳","id":14590},"8|較":{"ex":"按呢敢有較好？","id":10138}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1547,7 +1569,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1555,6 +1577,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

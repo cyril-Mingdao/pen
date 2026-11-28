@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1500,6 +1508,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"42|四秀仔":{"ex":"阿明共阿兄討拄買來的四秀仔","id":1474},"42|早前":{"ex":"早前這搭是一片田園","id":2496},"42|買物":{"part":1,"ex":"阿母去菜市仔買物","id":9037},"42|食食":{"ex":"伊的食食誠無正常。","id":5613},"42|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"42|這馬":{"ex":"這馬的人攏罕得寫批矣","id":7957},"42|誠":{"ex":"阿母誠𠢕佮人講價","id":10054},"42|利便":{"ex":"蹛佇都市交通較利便","id":2988},"42|發明":{"ex":"這是伊發明的物件","id":8717},"42|共":{"ex":"我共你講，你毋通共別人講","id":2099},"42|撋":{"ex":"麵粉加水撋予勻","id":11055},"42|了後":{"ex":"你出門了後，伊就醒矣","id":113},"42|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"42|櫼":{"ex":"物件櫼入去袋仔內","id":13087},"42|入去":{"ex":"你先入去餐廳，我來去停車","id":14578},"42|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"42|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"42|紮":{"ex":"欲落雨矣，出門愛紮雨傘","id":7718},"42|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"43|頂懸":{"ex":"伊的目睭生佇頭殼頂懸","id":8082},"43|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"43|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"43|早前":{"ex":"早前這搭是一片田園","id":2496},"43|啖糝":{"ex":"提幾粒糖仔來啖糝","id":7065},"43|𨑨迌":{"ex":"你明仔載欲佮阮去𨑨迌無?","id":13522},"43|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"43|一下仔":{"ex":"遮爾濟工課一下仔就完成矣","id":17727},"43|四秀仔":{"ex":"阿明共阿兄討拄買來的四秀仔","id":1474},"44|厝裡":{"ex":"姑不將予伊佇厝裡歇睏","id":14598},"44|散赤":{"ex":"較早阮兜真散赤","id":8441},"44|按算":{"ex":"你寒假按算欲去佗位𨑨迌？","id":5049},"44|趁錢":{"ex":"趁錢養飼規家口仔","id":9095},"44|歇熱":{"ex":"後禮拜歇熱欲--來去日本","id":9675},"44|歇寒":{"ex":"阮明仔載就開始歇寒","id":9663},"44|紩":{"ex":"衫裂去，愛緊紩紩咧","id":7716},"44|手橐仔":{"ex":"寒天出門愛掛手橐仔","id":1160},"44|到今":{"ex":"到今你才知！","id":3614},"44|外地":{"ex":"伊昨昏才對外地轉來","id":25024},"44|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"44|蹛":{"ex":"阿明仔蹛佇學校附近","id":12616},"44|幾若擺":{"part":1,"ex":"伊試幾若擺攏無成功","id":8329},"44|擲掉":{"ex":"糞埽毋通烏白擲掉","id":19781},"44|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"44|心內":{"ex":"伊心內真歡喜","id":14584},"44|尾仔囝":{"ex":"伊是阮兜的尾仔囝","id":3074},"44|孤單":{"ex":"一个人過年真孤單","id":3849},"44|暝日":{"ex":"伊無分暝日咧拍拚","id":10539},"45|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"45|阮":{"ex":"阮欲走矣，你咧？","id":3401},"45|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"45|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"45|數簿":{"ex":"所費攏記佇數簿頂","id":11146},"45|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"45|儉":{"ex":"我儉腸凹肚，就是為著欲買厝","id":10959},"45|央":{"ex":"央人寫批。","id":1411},"45|入去":{"ex":"你先入去餐廳，我來去停車","id":14578},"45|大漢":{"ex":"囡仔若大漢，爸母就輕鬆矣","id":495},"45|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"45|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"45|寡":{"ex":"你去市場買寡魚轉來","id":10438},"45|共":{"ex":"我共你講，你毋通共別人講","id":2099},"45|細漢":{"ex":"細漢的時陣","id":7768},"45|四秀仔":{"ex":"阿明共阿兄討拄買來的四秀仔","id":1474},"45|故事":{"ex":"阿媽講故事予我聽","id":5012},"45|囥":{"ex":"錢愛囥予好勢，莫烏白囥","id":3017},"45|心肝底":{"part":1,"ex":"心肝底若像針咧揻","id":934},"45|想著":{"part":1,"ex":"想著考試我就煩惱","id":9421}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1510,7 +1532,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1518,6 +1540,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

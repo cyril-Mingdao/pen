@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1461,6 +1469,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"88|大灶":{"ex":"𪜶兜三頓煮食攏用大灶","id":13890},"88|燃":{"ex":"阮阿媽咧燃青草仔茶","id":11769},"88|鰇魚":{"ex":"鰇魚烘無偌久就會蔫","id":13048},"88|精肉":{"ex":"阮兜的人攏較愛食精肉","id":10706},"88|同齊":{"ex":"我佮阿姊同齊去踅街","id":2244},"88|鼎":{"ex":"阮兜是阮阿爸咧扞鼎灶","id":10354},"89|菜脯":{"ex":"你去煎一盤菜脯卵請人客","id":8958},"89|卵":{"ex":"鴨卵密密都有縫","id":2953},"89|鹹菜":{"ex":"眠床頂亂甲袂輸咧漚鹹菜咧","id":13068},"89|瓜仔瓤":{"part":1,"ex":"虱目魚煮瓜仔瓤真好食","id":1873},"89|炕":{"ex":"伊上愛食炕肉飯","id":4320},"89|扁擔":{"ex":"提扁擔來擔遮的果子去賣","id":4969},"89|擔":{"ex":"戇猴擔石頭","id":11649},"89|碗公":{"ex":"去提一塊碗公來貯菜頭湯","id":9782},"89|貯":{"ex":"我來捀碗共你貯飯","id":9034},"89|啉":{"ex":"暗時欲睏進前茶湯莫啉傷濟","id":7018},"90|布袋":{"ex":"飼鳥鼠咬布袋","id":1766},"90|摔桶":{"ex":"較早拍粟仔愛用摔桶","id":10515},"90|內底":{"ex":"這跤皮箱內底貯啥物？","id":665},"90|芳":{"ex":"我的房內全是花的芳味","id":4427},"90|規":{"ex":"規路攏是人","id":7844},"90|空空空":{"part":1,"ex":"我的橐袋仔空空空","id":4379}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1471,7 +1493,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1479,6 +1501,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

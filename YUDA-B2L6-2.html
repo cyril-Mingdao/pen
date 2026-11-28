@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1491,6 +1499,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"102|猶未":{"ex":"你寄的批我猶未收著。","id":8596},"102|猶":{"ex":"這台車猶會使騎。","id":8572},"102|含霜":{"part":1,"ex":"露水猶含霜你就落床","id":2958},"102|落床":{"part":1,"ex":"天猶未光　露水猶含霜你就落床","id":9862},"102|撆䘼":{"part":1,"ex":"輕步撆䘼　三兩手攢好早頓","id":11053},"102|三兩手":{"part":1,"ex":"三兩手攢好早頓","id":162},"102|攢":{"ex":"物件我攏攢好矣。","id":13193},"102|攏":{"ex":"想攏無想　有好料全部款款予阮","id":12772},"102|無":{"ex":"無，你是欲按怎？","id":8563},"102|好料":{"part":1,"ex":"有好料全部款款予阮","id":2272},"102|款":{"ex":"敢若會落雨的款。","id":8519},"102|少年":{"ex":"少年為囝　食老為戇孫","id":896},"102|囝":{"ex":"𪜶兩个囝攏咧讀大學矣。","id":2124},"102|食老":{"ex":"食老為戇孫","id":5589},"102|戇":{"ex":"你莫戇矣！","id":13412},"102|漿":{"ex":"無你漿的被無你𤉙半工的糜","id":11156},"102|被":{"ex":"眠床頂舒一領被。","id":7843},"102|糜":{"ex":"無你𤉙半工的糜","id":12244},"102|阿媽":{"ex":"才知有阿媽","id":4621},"102|遐":{"ex":"日子才遐好過","id":10152},"102|敢有":{"ex":"戇阿媽　你敢有想阮這粒金含糖","id":8435},"102|阮":{"ex":"阮欲走矣，你咧？","id":3401},"102|莫":{"ex":"莫行傷遠你若跤痠著歇睏　毋通忍","id":7813},"102|行":{"ex":"錶仔定去袂行矣。","id":2605},"102|若":{"ex":"早若知我就毋來矣。","id":5450},"102|著":{"ex":"人哪會遮濟著！","id":8981},"102|歇睏":{"ex":"你小歇睏一下，好無？","id":9664},"102|毋通":{"ex":"你毋通傷晏轉來。","id":1060},"102|鼻著":{"part":1,"ex":"若鼻著含笑花蕊的芳味","id":10938},"102|花蕊":{"ex":"戇阿媽　若鼻著含笑花蕊的芳味","id":4471},"102|芳味":{"ex":"我的房內專是花的芳味。","id":4440},"102|袂記":{"part":1,"ex":"毋通袂記佇天邊彼面有我咧想你","id":6632},"102|佇":{"ex":"伊這馬佇厝裡咧睏。","id":2858},"102|彼":{"ex":"袂記佇天邊彼面有我咧想你","id":3876},"103|𤉙":{"ex":"豬跤𤉙爛爛，真好食。","id":13532},"103|金含糖":{"part":1,"ex":"你敢有想阮這粒金含糖","id":4540},"103|跤痠":{"part":1,"ex":"莫行傷遠你若跤痠著歇睏","id":10059},"103|偝巾":{"ex":"阿媽的偝巾輕重無論","id":6926},"103|一角":{"part":1,"ex":"一角一分　步步為序細拍算","id":1},"103|一分":{"part":1,"ex":"輕重無論　一角一分","id":1},"103|序細":{"ex":"步步為序細拍算","id":3181},"103|拍算":{"ex":"你以後有啥物拍算？","id":4132},"103|傷":{"ex":"你講話傷過份。","id":9289},"103|面":{"ex":"天邊彼面有我咧想你","id":5562}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1501,7 +1523,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1509,6 +1531,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

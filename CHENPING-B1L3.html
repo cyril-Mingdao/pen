@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1467,6 +1475,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"40|个":{"ex":"揣無彼兩个人","id":171},"40|揣":{"ex":"一人囥，眾人揣","id":8409},"40|頭路":{"ex":"這馬的頭路真僫揣","id":12076},"40|拄":{"ex":"阮佇門口相拄","id":3948},"40|擋":{"ex":"你莫擋佇門跤口","id":11645},"40|聲音":{"ex":"伊講話的聲音真好聽","id":12315},"40|強欲":{"ex":"我聽甲強欲起性地","id":7211},"40|斟酌":{"ex":"你斟酌一下，應該聽會著","id":9528},"40|敢若":{"ex":"敢若是伊，閣敢若毋是","id":8444},"40|艱苦":{"ex":"我心肝內的艱苦啥人知？","id":12312},"40|肢":{"ex":"昨昏比賽了後感覺四肢無力","id":4419},"40|咇咇掣":{"ex":"伊驚甲咇咇掣","id":3713},"40|鑿":{"ex":"我的手予針鑿著","id":13413},"40|當咧":{"ex":"我當咧無閒，你莫共我吵","id":9749},"40|目睭":{"ex":"伊目睭真大蕊","id":1975},"40|金":{"ex":"目睭愛擘予伊金","id":4490},"40|勻勻仔":{"ex":"較細膩咧，你著愛勻勻仔行","id":606},"40|面頭前":{"ex":"物件已經囥佇你的面頭前矣","id":5677},"41|遮爾":{"ex":"恁阿母遮爾惜你","id":11507},"41|淡薄仔":{"ex":"我遮閣有淡薄仔錢會當借你","id":7566},"41|毋甘":{"ex":"我會真毋甘","id":879},"41|拔":{"ex":"拔插頭","id":3962},"41|徛":{"ex":"你徛佇遐創啥物？","id":7226},"41|頕":{"ex":"你有看著伊共你頕頭無？","id":10914},"42|緊":{"ex":"伊走了真緊","id":10751},"42|無偌久":{"ex":"你才走無偌久，伊就來矣","id":8633},"42|煞":{"ex":"氣象報告講會好天煞咧落雨","id":9691},"42|提":{"ex":"無錢，做你共我提","id":8359},"42|共":{"ex":"共房間摒摒咧","id":2099},"42|入去":{"ex":"你先入去餐廳，我來去停車","id":14578},"42|尾仔":{"ex":"伊頭仔講欲去，尾仔煞反悔","id":3072},"42|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"42|跛":{"ex":"伊行路跛咧跛咧","id":9103},"42|落去":{"ex":"對彼爿落去","id":9893},"42|尾溜":{"ex":"死蛇活尾溜","id":3115},"42|霧嗄嗄":{"ex":"我聽甲霧嗄嗄","id":12916},"42|隻":{"ex":"一隻貓","id":6796},"42|彼":{"ex":"彼間厝","id":3876},"42|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"42|了後":{"ex":"你出門了後，伊就醒矣","id":113}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1477,7 +1499,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1485,6 +1507,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1511,6 +1519,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"38|火金蛄":{"ex":"熱天暗暝仔看著火金蛄","id":1247},"38|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"38|足":{"ex":"海邊的湧激足懸","id":3391},"38|阮":{"ex":"阮欲走矣，你咧？","id":3401},"38|規家伙仔":{"ex":"阮規家伙仔定去海邊仔𨑨迌","id":14293},"38|一个":{"part":1,"ex":"我有一个小妹","id":1},"38|號做":{"ex":"我袂記得伊號做啥物名","id":9983},"38|走揣":{"ex":"伊一直咧走揣當年失散去的查某囝。","id":3470},"38|活動":{"ex":"你坐遐久，緊起來活動一下","id":5193},"38|心內":{"ex":"伊心內真歡喜","id":14584},"38|當":{"ex":"四月油桐花當開","id":9733},"38|這陣":{"ex":"你這陣有啥物拍算？","id":7956},"38|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"38|會使":{"ex":"我功課若寫好就會使去耍矣","id":9591},"38|閃爍":{"ex":"閃爍的天星","id":6899},"38|樹林":{"ex":"雄雄有一陣猴山仔對樹林內傱出來","id":11713},"38|無仝款":{"part":1,"ex":"好額人的生活佮咱是無仝款的","id":8586},"38|一空掠雙隻":{"part":1,"ex":"做義工閣交朋友，一空掠雙隻","id":1},"38|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"39|阮":{"ex":"阮欲走矣，你咧？","id":3401},"39|食飽":{"ex":"腹肚枵無才調做工課，愛食飽才有氣力","id":14597},"39|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"39|一下":{"ex":"氣一下袂講話","id":4},"39|沿路":{"ex":"沿路的風景真媠","id":4298},"39|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"39|敢若":{"ex":"敢若是伊，閣敢若毋是","id":8444},"39|毋甘":{"ex":"這領衫傷媠，我毋甘穿","id":879},"39|共":{"ex":"我共你講，你毋通共別人講","id":2099},"39|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"39|袂輸":{"ex":"伊看著我袂輸看著鬼咧","id":6661},"39|跳舞":{"ex":"伊足愛跳舞","id":10230},"39|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"39|實在":{"ex":"這件代誌是實在的","id":10455},"39|有夠":{"ex":"今仔日有夠熱","id":2521},"39|心適":{"ex":"今仔日你去𨑨迌，有心適無？","id":1152},"40|天欲暗":{"part":1,"ex":"天欲暗矣，緊轉來","id":783},"40|冗早":{"ex":"考試欲到矣，愛冗早準備","id":651},"40|來去":{"ex":"咱來去公園𨑨迌","id":3538},"40|樹林":{"ex":"雄雄有一陣猴山仔對樹林內傱出來","id":11713},"40|下昏暗":{"ex":"下昏暗欲食啥物？","id":366},"40|火金蛄":{"ex":"熱天暗暝仔看著火金蛄","id":1247},"40|環境":{"ex":"學語言愛有環境","id":12239},"40|損蕩":{"ex":"毋通按呢損蕩古蹟","id":9551},"40|揣無":{"part":1,"ex":"我揣無我的鉛筆","id":8409},"40|尾仔":{"ex":"伊頭仔講欲去，尾仔煞反悔","id":3072},"40|拍拚":{"ex":"你愛較拍拚咧","id":4035},"40|活動":{"ex":"你坐遐久，緊起來活動一下","id":5193},"40|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"40|無仝":{"ex":"這兩个物件無仝啦！愛斟酌看","id":8586},"40|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"40|暗暝":{"ex":"無月光的暗暝","id":9620},"41|墘":{"ex":"囡仔毋通去溪仔墘𨑨迌","id":10413},"41|四箍輾轉":{"ex":"厝的四箍輾轉攏是田","id":1592},"41|火金蛄":{"ex":"熱天暗暝仔看著火金蛄","id":1247},"41|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"41|跳舞":{"ex":"伊足愛跳舞","id":10230},"41|憢疑":{"ex":"你毋免憢疑，我講的攏是真的","id":11086},"41|燁燁爍":{"part":1,"ex":"天星佇天頂燁燁爍","id":12795},"41|敢是":{"ex":"伊敢是恁老師？","id":14320},"41|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"41|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"41|千萬":{"ex":"你千萬愛細膩","id":470},"41|目睭":{"ex":"伊目睭真大蕊","id":1975},"41|予人":{"part":1,"ex":"伊認真讀冊，予人呵咾","id":564},"41|想袂到":{"ex":"想袂到伊會來揣我","id":19267},"41|掣一趒":{"ex":"雷公一下陳，予我掣一趒","id":13737},"41|感覺":{"ex":"我感覺這个辦法袂䆀","id":9471},"41|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"41|又閣":{"ex":"伊又閣袂記得紮冊","id":147},"41|颺颺飛":{"ex":"風一下吹，樹葉仔颺颺飛","id":12757},"41|哪會":{"ex":"哪會按呢？","id":5842}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1521,7 +1543,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1529,6 +1551,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

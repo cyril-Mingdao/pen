@@ -1199,6 +1199,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1549,6 +1557,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"56|蹛":{"ex":"阿明仔蹛佇學校附近","id":12616},"56|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"56|烏水溝":{"ex":"古早人過烏水溝足危險","id":27473},"56|身軀":{"ex":"伊耍甲規身軀烏趖趖","id":3508},"56|纏身":{"ex":"伊予歹運纏身","id":13119},"56|花巴哩貓":{"ex":"伊的簿仔畫甲花巴哩貓","id":4472},"56|尖尖":{"part":1,"ex":"鉛筆削甲尖尖","id":2283},"56|尾溜":{"ex":"死蛇活尾溜","id":3115},"56|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"56|浮":{"ex":"魚仔浮出水面","id":6154},"56|發":{"ex":"樹仔發新芽矣","id":8695},"56|支":{"ex":"我買一支手機仔八千","id":795},"56|鬚":{"ex":"阿公留長長的喙鬚","id":13247},"56|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"56|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"56|細膩":{"ex":"你做代誌愛較細膩咧","id":7772},"56|若":{"ex":"天若烏就毋敢出門","id":5450},"56|磕著":{"ex":"伊無細膩磕著桌角","id":11265},"56|隨":{"ex":"你等一下，我隨來","id":11992},"56|中毒":{"ex":"食著歹物會中毒","id":678},"56|吐":{"ex":"蛇仔會吐舌","id":2119},"56|臭臊":{"ex":"魚仔的臭臊味真重","id":6619},"56|毒霧":{"part":1,"ex":"妖怪會吐毒霧害人","id":5121},"56|化做":{"part":1,"ex":"冰角化做水","id":772},"56|幻境":{"part":1,"ex":"伊若親像行入幻境","id":14655},"56|人類":{"ex":"人類愛保護地球","id":22245},"56|魂魄":{"ex":"伊驚甲魂魄攏飛去","id":10935},"56|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"56|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"56|失神":{"ex":"伊看甲失神去","id":1748},"56|落海":{"part":1,"ex":"伊無細膩落海","id":9862},"56|成做":{"ex":"想袂到伊會成做地方上的頭人","id":2520},"56|嘛":{"ex":"遮的嘛攏是好的","id":10384},"56|借":{"ex":"我共你借一支筆","id":5710},"56|牽引":{"ex":"音樂牽引我的心","id":26434},"56|惡夢":{"ex":"昨暗我做一个惡夢","id":25253},"56|聽好":{"ex":"你聽好先轉去歇睏","id":14550},"56|將":{"ex":"伊將冊囥佇桌頂","id":7139},"56|拆食落腹":{"ex":"伊想欲共人拆食落腹","id":4063},"56|見若":{"ex":"伊見若食牛奶就落屎","id":3443},"56|記持":{"ex":"你記持誠䆀，隨講隨袂記得","id":1041},"57|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"57|出現":{"ex":"伊雄雄出現佇門口","id":1537},"57|規身軀":{"ex":"工課做規工，規身軀痛疼","id":7861},"57|紅帕帕":{"ex":"伊的面紅帕帕","id":18656},"57|頂半身":{"ex":"伊頂半身無穿衫","id":8032},"57|猴":{"ex":"山頂有真濟猴","id":8571},"57|尻脊骿":{"ex":"醫生欲檢查你的尻脊骿","id":1752},"57|揹":{"ex":"伊揹一袋米欲去換一隻雞","id":8412},"57|肉翼仔":{"part":1,"ex":"密婆有肉翼仔","id":2595},"57|鱗":{"ex":"魚鱗愛先刮清氣","id":13324},"57|短":{"ex":"伊的頭毛鉸甲短短","id":8765},"57|下半身":{"ex":"伊的下半身攏澹去","id":29430},"57|蝦":{"ex":"阿爸去溪仔掠蝦","id":11329},"57|石距":{"ex":"石距有八支跤","id":27249},"57|便":{"ex":"伊見著我便笑","id":4668},"57|洘流":{"ex":"洘流的時去海坪掠螺","id":5144},"57|歇":{"ex":"鳥仔歇佇樹仔頂","id":9633},"57|揜貼":{"ex":"這个所在誠揜貼","id":13602},"57|海坪":{"ex":"囡仔佇海坪耍沙","id":13702},"57|行船":{"ex":"阿公少年時咧行船","id":2727},"57|出海":{"ex":"討海人透早就出海","id":25510},"57|若":{"ex":"天若烏就毋敢出門","id":5450},"57|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"57|災厄":{"ex":"希望逐家攏無災厄","id":3351},"57|風颱":{"ex":"風颱欲來矣","id":5658},"57|連鞭":{"ex":"你小等一下，連鞭就好矣","id":7995},"57|綴":{"ex":"你莫綴前綴後","id":10747},"57|咧":{"ex":"伊咧讀冊","id":4770},"57|若無":{"ex":"你若無來，我就先走","id":5480},"57|想欲":{"ex":"我想欲去日本","id":14370},"57|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"57|歹運":{"ex":"伊最近足歹運","id":1113},"57|綴牢牢":{"part":1,"ex":"小弟綴牢牢毋放","id":10747},"57|千萬":{"ex":"你千萬愛細膩","id":470},"57|毋通":{"ex":"你毋通傷晏轉來","id":1060},"57|共":{"ex":"我共你講，你毋通共別人講","id":2099},"57|傷害":{"ex":"毋通傷害動物","id":9326},"57|請":{"ex":"我請你食飯","id":11380},"57|莫":{"ex":"你莫烏白呸喙瀾！","id":7813},"57|相害":{"part":1,"ex":"做人莫相害","id":5223},"58|捷捷":{"ex":"伊捷捷來阮兜","id":7373},"58|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"58|海面":{"ex":"海面有真濟船","id":6183},"58|船桅":{"part":1,"ex":"船桅頂懸掛一支旗","id":7784},"58|飛來飛去":{"part":1,"ex":"胡蠅佇桌頂飛來飛去","id":5568},"58|生成":{"ex":"伊生成真緣投","id":1890},"58|歹看":{"ex":"這領衫真歹看","id":999},"58|幽火":{"part":1,"ex":"暗暝的墓仔埔有幽火","id":15229},"58|相伴":{"ex":"兩个人相伴去讀冊","id":20329},"58|百面":{"ex":"你若參加比賽，百面贏的","id":14017},"58|落大雨":{"part":1,"ex":"外口咧落大雨","id":9862},"58|別項":{"ex":"我毋愛食別項","id":3004},"58|共":{"ex":"我共你講，你毋通共別人講","id":2099},"58|船艙":{"ex":"船艙內貯滿魚仔","id":7806},"58|灌":{"ex":"雨水灌入厝內","id":13090},"58|滇滇滇":{"part":1,"ex":"水桶貯甲滇滇滇","id":9683},"58|落尾":{"ex":"落尾我就去高雄讀冊","id":9903},"58|反船":{"ex":"風湧傷大會反船","id":1058},"58|駐駐死":{"part":1,"ex":"毋捌泅水，險險駐駐死","id":11537},"58|想欲":{"ex":"我想欲去日本","id":14370},"58|將":{"ex":"伊將冊囥佇桌頂","id":7139},"58|趕":{"ex":"共雞仔趕入去籠仔","id":10824},"58|船員":{"ex":"船員攏真辛苦","id":7797},"58|褪腹裼":{"ex":"熱天阿伯攏褪腹裼","id":11894},"58|頭毛":{"ex":"伊的頭毛生成是虯的","id":12041},"58|亂操操":{"ex":"伊的房間亂操操","id":9343},"58|棕蓑":{"ex":"古早人穿棕蓑做穡","id":8510},"58|戴":{"ex":"出門愛戴帽仔","id":12140},"58|瓜笠仔":{"ex":"阿公戴瓜笠仔去田裡","id":9984},"58|攑":{"ex":"這箱欲愛的攑手","id":13085},"58|𬦰":{"ex":"阿義去𬦰山煞失蹤欲兩禮拜","id":13595},"58|𧮙":{"ex":"伊一受氣就𧮙人","id":13538},"58|詈":{"ex":"毋通烏白詈人","id":9030},"58|嚇走":{"part":1,"ex":"伊大聲共狗嚇走","id":12124}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1559,7 +1581,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1567,6 +1589,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

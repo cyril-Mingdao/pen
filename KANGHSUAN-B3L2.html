@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1496,6 +1504,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"30|風颱":{"ex":"風颱欲來矣","id":5658},"30|對":{"ex":"伊行對車頭去","id":10442},"30|隔工":{"ex":"伊隔工就好矣","id":14422},"30|一下":{"ex":"伊一下看就知影","id":4},"30|害矣":{"part":1,"ex":"害矣！我袂記得紮鎖匙","id":5878},"30|幾若":{"ex":"阮老爸昨昏掠著幾若隻鳥鼠","id":8329},"30|欉":{"ex":"阮阿媽兜種誠濟菁仔欉","id":13195},"30|茄苳":{"ex":"廟口有一欉大茄苳","id":5471},"30|同齊":{"ex":"我佮阿姊同齊去踅街","id":2244},"30|薅":{"ex":"阿公咧園裡薅草","id":12301},"30|運動埕":{"ex":"阮佇運動埕拍球","id":10208},"30|一領一領":{"part":1,"ex":"衫一領一領曝佇外口","id":1},"30|敢若":{"ex":"敢若是伊，閣敢若毋是","id":8444},"30|予人":{"part":1,"ex":"伊認真讀冊，予人呵咾","id":564},"30|擲掉":{"ex":"糞埽毋通烏白擲掉","id":19781},"30|佳哉":{"ex":"好佳哉有你替我求情，若無，我就慘矣","id":3553},"30|𤆬":{"ex":"阿兄𤆬阮去園裡起塗窯","id":13511},"30|規陣":{"ex":"恁規陣人徛佇遐，咧創啥？","id":7870},"30|鬥":{"ex":"我共你鬥洗碗","id":6802},"30|上無":{"ex":"上無嘛愛讀一點鐘","id":13881},"30|跤路":{"ex":"雨傷大，煞無跤路通行","id":29875},"30|頭前":{"ex":"伊徛佇我頭前","id":12058},"30|空地仔":{"part":1,"ex":"囡仔佇空地仔𨑨迌","id":4384},"30|不止仔":{"ex":"伊佇遮閣不止仔受歡迎","id":623},"30|袂輸":{"ex":"伊看著我袂輸看著鬼咧","id":6661},"30|捘":{"ex":"共面巾捘予焦","id":5999},"30|鐵鉼":{"ex":"厝頂是鐵鉼起的","id":14544},"30|佗位":{"ex":"恁兜蹛佇佗位？","id":2894},"30|𬦰":{"ex":"阿義去𬦰山煞失蹤欲兩禮拜","id":13595},"30|厝蓋":{"ex":"風颱共厝蓋掀去","id":28415},"30|煞":{"ex":"我煞有講彼句話？","id":9691},"30|掀":{"ex":"共鼎蓋掀開看覓","id":7293},"30|了了":{"ex":"錢開了了矣","id":60},"31|當咧":{"ex":"我當咧無閒，你莫共我吵","id":9749},"31|操煩":{"ex":"你莫為著我的代誌操煩","id":11683},"31|邊仔":{"ex":"你莫佇遮，徛較邊仔咧","id":12876},"31|一陣":{"part":1,"ex":"公園有一陣囡仔咧跙流籠","id":1},"31|提":{"ex":"無錢，做你共我提","id":8359},"31|拭":{"ex":"會曉偷食，袂曉拭喙","id":4907},"31|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"31|歡頭喜面":{"ex":"伊歡頭喜面去上課","id":13208},"32|一片":{"ex":"窗仔外是一片海","id":22852},"32|著乎":{"part":1,"ex":"著乎！我哪會袂記得","id":8981},"32|干焦":{"ex":"干焦賰遮的菜爾爾，你欲無？","id":448},"32|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"32|厝頂":{"ex":"貓仔𬦰起去厝頂","id":5837},"32|煞":{"ex":"我煞有講彼句話？","id":9691},"32|這陣":{"ex":"這陣囡仔真活潑","id":7956},"32|媠":{"ex":"彼个查某囡仔真媠","id":8285},"32|姑娘仔":{"part":1,"ex":"彼个姑娘仔真有禮貌","id":3788},"32|天真":{"ex":"囡仔的笑容真天真","id":24196},"32|佮":{"ex":"我欲佮伊來去看電影","id":3524},"32|樂觀":{"ex":"伊做人誠樂觀","id":11148},"32|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"32|足":{"ex":"海邊的湧激足懸","id":3391},"32|感動":{"ex":"這齣電影予我真感動","id":9451},"32|厝蓋":{"ex":"風颱共厝蓋掀去","id":28415},"32|凡勢":{"ex":"天遐爾仔烏，等咧凡勢會落雨","id":460},"32|天公伯仔":{"ex":"天公伯仔保庇明仔載好天","id":13910},"32|想欲":{"ex":"我想欲去日本𨑨迌","id":14370},"32|𪜶":{"ex":"𪜶兩个感情真好","id":13567}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1506,7 +1528,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1514,6 +1536,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

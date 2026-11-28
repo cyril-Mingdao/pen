@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1510,6 +1518,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"6|呔會":{"ex":"呔會發生這種代誌？","id":14041},"6|著":{"ex":"我聽著狗仔咧吠。","id":8981},"6|恁":{"ex":"恁兩个感情真好。","id":5950},"6|佇":{"ex":"阿母佇菜市仔買菜。","id":2858},"6|車頭":{"ex":"咱約佇車頭相等。","id":3505},"6|遐":{"ex":"你佇遐創啥物?","id":10151},"6|毋是":{"ex":"金錢毋是萬能的。","id":990},"6|危險":{"ex":"囡仔人佇車路耍真危險。","id":2253},"6|歹勢":{"ex":"誠歹勢，予你等遮久。","id":1093},"6|會失禮":{"ex":"是你毋著，愛去共人會失禮。","id":13772},"6|頇顢":{"ex":"伊真頇顢講話。","id":9282},"7|透早":{"ex":"阿爸一透早就出門上班。","id":7928},"7|食":{"ex":"食雞排就愛佮珍珠奶仔茶。","id":5570},"7|跤":{"ex":"伊跤骨摔斷去。","id":10059},"7|按呢":{"ex":"這字按呢寫。","id":5014},"7|傷":{"ex":"你按呢做傷超過矣。","id":9289},"7|腥臊":{"ex":"阿母暗頓煮甲真腥臊？","id":9967},"7|相借問":{"ex":"人客來愛相借問，才有禮貌。","id":5262},"7|親像":{"ex":"人生親像走馬燈。","id":11940},"7|啉":{"ex":"熱天啉冰茶，透心涼。","id":7018},"7|𠢕早":{"ex":"逐家𠢕早。","id":13473},"8|轉來":{"ex":"公司派我出張，三工後才會轉來","id":12630},"8|濟":{"ex":"公園有真濟人咧運動。","id":12204},"8|好料":{"part":1,"ex":"生日的時，朋友請我食好料。","id":2272},"8|目油":{"ex":"手機仔看傷久會流目油。","id":1910},"8|敢是":{"ex":"伊敢是恁老師？","id":14320},"8|仝款":{"ex":"這兩台車的色水仝款。","id":1360},"8|甲":{"ex":"台語講甲真輾轉。","id":1848},"9|𠢕":{"ex":"恁囝真𠢕畫圖。","id":13471},"9|滾耍笑":{"ex":"阿明真愛佮人滾耍笑。","id":13800},"9|趣味":{"ex":"這本尪仔冊真趣味。","id":11424}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1520,7 +1542,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1528,6 +1550,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

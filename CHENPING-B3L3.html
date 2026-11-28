@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1508,6 +1516,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"42|阮":{"ex":"阮欲走矣，你咧？","id":3401},"42|厝邊":{"ex":"阮的厝邊攏誠好鬥陣","id":5850},"42|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"42|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"42|佮":{"ex":"我欲佮伊來去看電影","id":3524},"42|無仝款":{"part":1,"ex":"好額人的生活佮咱是無仝款的","id":8586},"42|生活":{"ex":"庄跤的生活真輕鬆","id":1923},"42|真濟":{"part":1,"ex":"真濟人攏無法度食飽","id":6374},"42|已經":{"ex":"糖仔已經攏分了矣","id":22106},"42|網路":{"ex":"今仔日的網路蓋慢","id":22150},"42|慣勢":{"ex":"慣勢就好","id":10518},"42|手機仔":{"ex":"上課毋通耍手機仔","id":1161},"42|資料":{"ex":"我去圖書館揣資料","id":10095},"42|三不五時":{"ex":"你三不五時就愛來行行咧","id":242},"42|厝邊兜":{"ex":"厝邊兜愛相照顧","id":13697},"42|囡仔":{"ex":"伊的囡仔真古錐","id":2142},"42|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"42|輸贏":{"ex":"比賽上要緊的毋是輸贏","id":11983},"42|少年家":{"ex":"彼个少年家真有禮貌","id":903},"42|電甲金鑠鑠":{"part":1,"ex":"伊佮人比賽，予人電甲金鑠鑠","id":14116},"42|毋但":{"ex":"我看伊做的歹代誌毋但按呢","id":921},"42|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"42|四序":{"ex":"阿娟的別莊整理甲嶄然四序","id":1473},"42|猛掠":{"ex":"伊做代誌真猛掠","id":13729},"42|少年":{"ex":"伊看起來誠少年","id":896},"44|接接":{"ex":"彼个客戶就予你去接接","id":7374},"44|熟似":{"ex":"𪜶兩个熟似真久矣","id":11194},"44|當咧":{"ex":"我當咧無閒，你莫共我吵","id":9749},"44|苦毒":{"ex":"毋通苦毒動物","id":5469},"44|拄開始":{"ex":"拄開始學台語真困難","id":20216},"44|好佳哉":{"ex":"好佳哉有你佇咧","id":2334},"44|按怎":{"ex":"到底著愛按怎做","id":5022},"44|搝":{"ex":"伊搝我去看電影","id":9479},"44|入來":{"ex":"毋通予伊入來咱公司上班","id":14579},"44|分享":{"ex":"較分張咧，共糖仔分享予人","id":22489},"44|一下仔":{"ex":"遮爾濟工課一下仔就完成矣","id":17727},"44|好勢":{"ex":"伊睏甲誠好勢","id":2379},"44|目睭":{"ex":"伊目睭真大蕊","id":1975},"44|好玄":{"ex":"囡仔對啥物攏真好玄","id":14002},"44|啥物":{"ex":"無人知影伊按呢做是有啥物用意","id":7101},"44|無仝":{"ex":"這兩个物件無仝啦！愛斟酌看","id":8586},"44|遐爾":{"ex":"無彩你遐爾仔愛伊","id":10228},"44|生活":{"ex":"庄跤的生活真輕鬆","id":1923},"45|毋管":{"ex":"毋管是啥人共你問，你攏袂使講","id":1132},"45|古早":{"ex":"古早人攏用柴燒火","id":1465},"45|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"45|為著":{"ex":"為著欲考牢，伊足骨力讀冊的","id":27288},"45|人類":{"ex":"人類愛保護地球","id":22245},"45|利便":{"ex":"蹛佇都市交通較利便","id":2988},"45|拚勢":{"ex":"伊讀冊真拚勢，這擺提頭名","id":4115},"45|走揣":{"ex":"伊一直咧走揣當年失散去的查某囝。","id":3470},"45|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"45|好好仔":{"ex":"你著好好仔歇睏","id":14590},"45|學習":{"ex":"學習台語愛有耐心","id":11628},"45|生活":{"ex":"庄跤的生活真輕鬆","id":1923},"45|毋是":{"ex":"這毋是我的","id":990},"45|無彩":{"ex":"差一點仔就著獎，有夠無彩","id":8638},"45|手機仔":{"ex":"上課毋通耍手機仔","id":1161},"45|無偌久":{"ex":"你才走無偌久，伊就來矣","id":8633},"45|芳貢貢":{"ex":"彼盆花予規間厝攏芳貢貢","id":27423},"45|焦麵":{"part":1,"ex":"我欲食一碗焦麵","id":8565},"45|食好鬥相報":{"part":1,"ex":"好物件愛食好鬥相報","id":5570},"45|開破":{"ex":"這道理較深，你就勻勻仔共伊開破。","id":9180},"45|頕頭":{"ex":"你有看著伊共你頕頭無？","id":10936},"45|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"45|遮爾":{"ex":"咱社區的公園整理甲遮爾媠","id":11507},"45|發明":{"ex":"這是伊發明的物件","id":8717},"45|時行":{"ex":"這馬練工夫真時行","id":6017}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1518,7 +1540,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1526,6 +1548,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

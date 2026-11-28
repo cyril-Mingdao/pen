@@ -1199,6 +1199,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1477,6 +1485,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"23|細漢":{"ex":"細漢的時陣","id":7768},"23|註定":{"ex":"這是命中註定的代誌","id":9063},"23|討海":{"ex":"阿公一世人攏咧討海","id":6737},"23|通人知":{"ex":"伊的歌聲通人知","id":13732},"23|拄":{"ex":"出門拄著落大雨","id":3948},"23|戰湧":{"part":1,"ex":"漁船出海拄風戰湧","id":11640},"23|艱苦代":{"part":1,"ex":"討海是一項艱苦代","id":12312},"23|上":{"ex":"無紮齒抿仔，上少嘛著漉喙","id":164},"23|驚":{"ex":"我啥物攏毋驚","id":13278},"23|報頭":{"ex":"海面有報頭，莫出海","id":8280},"23|徛":{"ex":"你徛佇遐創啥物？","id":7226},"23|袂在":{"part":1,"ex":"船搖甲人徛袂在","id":6632},"23|眩船":{"ex":"坐船進前先食眩船藥","id":6406},"23|閣較":{"ex":"今仔日比昨昏閣較寒","id":10910},"23|害":{"ex":"這擺害矣，袂赴矣","id":5878},"23|一工":{"part":1,"ex":"一工食三頓","id":1},"23|吐":{"ex":"伊眩車吐規路","id":2119},"23|幾若擺":{"part":1,"ex":"伊試幾若擺攏無成功","id":8329},"23|為著":{"ex":"為著欲考牢，伊足骨力讀冊的","id":27288},"23|罔":{"ex":"我是罔講爾爾","id":4415},"23|忍耐":{"ex":"做代誌愛會曉忍耐","id":3171},"23|出海":{"ex":"透早漁船就出海矣","id":25510},"23|望天":{"part":1,"ex":"做穡人望天落雨","id":7435},"23|鬥":{"ex":"我共你鬥洗碗","id":6802},"23|安排":{"ex":"這擺的旅行是伊安排的","id":2362},"23|魚群":{"ex":"海底有一大陣魚群","id":26466},"23|緊":{"ex":"大俗賣，逐家緊來看。","id":10751},"23|倚":{"ex":"逐家攏集倚過來","id":5709},"24|透抽":{"ex":"透抽煠煠咧就真好食","id":13731},"24|一網":{"part":1,"ex":"一網掠著真濟魚","id":1},"24|十外":{"part":1,"ex":"伊十外歲就出外食頭路","id":54},"24|篩":{"ex":"魚仔貯規篩","id":11825},"24|紅魽":{"ex":"紅魽做生魚片真好食","id":5431},"24|嘉鱲":{"ex":"嘉鱲魚煮湯真甜","id":10407},"24|釣":{"ex":"阿爸去海邊釣魚","id":8004},"24|規載":{"part":1,"ex":"今仔日漁船掠規載","id":7844},"24|掠":{"ex":"阮阿公足𠢕掠魚欸","id":7303},"24|阮":{"ex":"阮欲走矣，你咧？","id":3401},"24|期待":{"ex":"我足期待歇熱來到","id":8496},"24|入港":{"ex":"漁船下晡入港","id":17750},"24|某":{"ex":"伊的某真𠢕煮食","id":5067},"24|笑咍咍":{"ex":"阿公看著孫仔笑咍咍","id":6441},"24|歇睏":{"ex":"你小歇睏一下，好無","id":9664},"24|招招來":{"part":1,"ex":"共朋友招招來食飯","id":3967},"24|大尾":{"part":1,"ex":"這尾魚真大尾","id":186},"24|刣":{"ex":"你去共彼粒王梨刣刣咧","id":2946},"24|一魚三食":{"part":1,"ex":"這尾紅魽一魚三食","id":1},"24|酒菜":{"ex":"阿爸買寡酒菜","id":18889},"24|規桌":{"part":1,"ex":"阿母煮規桌的菜","id":7844},"24|豐沛":{"ex":"今仔日的暗頓誠豐沛","id":12629},"24|啉":{"ex":"熱天啉冰茶，透心涼。","id":7018},"24|哼":{"ex":"伊一面做工課一面哼歌","id":5799},"24|逍遙":{"ex":"退休了後過甲真逍遙","id":7986},"24|自在":{"ex":"佇庄跤生活真自在","id":2650},"24|其實":{"ex":"其實伊真好心","id":3672},"24|免":{"ex":"你免煩惱","id":2872},"24|滿載":{"part":1,"ex":"漁船滿載轉來","id":10568}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1487,7 +1509,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1495,6 +1517,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1514,6 +1522,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"52|又閣":{"ex":"伊又閣袂記得紮冊","id":147},"52|規家伙仔":{"ex":"阮規家伙仔定去海邊仔𨑨迌","id":14293},"52|佮":{"ex":"我欲佮伊來去看電影","id":3524},"52|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"52|駁岸頂":{"part":1,"ex":"阮佇駁岸頂看海","id":10927},"52|共":{"ex":"我共你講，你毋通共別人講","id":2099},"52|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"52|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"52|弄":{"ex":"弄布袋戲尪仔","id":3129},"52|樂暢":{"ex":"放假出去𨑨迌真樂暢","id":11137},"52|車":{"ex":"阿媽用裁縫車車衫","id":3394},"52|布袋":{"ex":"飼鳥鼠咬布袋","id":1766},"52|糞埽":{"ex":"全班歇睏日去海邊仔抾糞埽","id":12265},"52|捌":{"ex":"我捌去過金山𨑨迌","id":5993},"52|咱":{"ex":"咱著愛較斟酌咧","id":4776},"52|袂使":{"ex":"你袂使佮伊出去𨑨迌","id":6643},"52|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"52|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"52|滇":{"ex":"你斟傷滇矣","id":9683},"52|倒轉":{"ex":"伊已經倒轉去下港矣","id":5784},"53|海翁":{"ex":"海翁是上大的海洋動物","id":6189},"53|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"53|邊仔":{"ex":"你莫佇遮，徛較邊仔咧","id":12876},"53|逐家":{"ex":"逐家攏是家己人，著愛互相照顧","id":7947},"53|共":{"ex":"我共你講，你毋通共別人講","id":2099},"53|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"53|腹肚":{"ex":"你無代無誌哪會腹肚疼？","id":9907},"53|破":{"ex":"共西瓜破做兩爿","id":6378},"53|內面":{"ex":"裘仔內面愛閣加穿一領","id":691},"53|足濟":{"part":1,"ex":"厝內有覕足濟虼蚻--的","id":3391},"53|糞埽袋仔":{"part":1,"ex":"糞埽袋仔縛予好才提出去","id":12265},"53|已經":{"ex":"糖仔已經攏分了矣","id":22106},"53|有身":{"ex":"阿姊有身矣，愛較細膩","id":2485},"53|一睏仔":{"ex":"想欲一睏仔就好額，倒了錢","id":28},"53|這陣":{"ex":"你這陣有啥物拍算？","id":7956},"53|又閣":{"ex":"伊又閣袂記得紮冊","id":147},"53|車":{"ex":"阿媽用裁縫車車衫","id":3394},"53|幾若":{"ex":"阮老爸昨昏掠著幾若隻鳥鼠","id":8329},"53|布袋":{"ex":"飼鳥鼠咬布袋","id":1766},"53|著愛":{"ex":"你著愛較會曉想咧","id":14607},"53|活動":{"ex":"你坐遐久，緊起來活動一下","id":5193},"54|是按怎":{"ex":"你是按怎無來上課？","id":5026},"54|干焦":{"ex":"干焦賰遮的菜爾爾，你欲無？","id":448},"54|著愛":{"ex":"你著愛較會曉想咧","id":14607},"54|食食":{"ex":"伊的食食誠無正常。","id":5613},"54|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"54|擲掉":{"ex":"糞埽毋通烏白擲掉","id":19781},"54|糞埽":{"ex":"全班歇睏日去海邊仔抾糞埽","id":12265},"54|感覺":{"ex":"我感覺這个辦法袂䆀","id":9471},"54|費氣費觸":{"ex":"這款代誌真費氣費觸","id":9077},"54|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"54|海翁":{"ex":"海翁是上大的海洋動物","id":6189},"54|決心":{"ex":"伊決心欲認真讀冊","id":3290},"54|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"54|佮":{"ex":"我欲佮伊來去看電影","id":3524},"54|逐擺":{"ex":"伊逐擺攏欲佮人相諍","id":7994},"54|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"54|布袋":{"ex":"飼鳥鼠咬布袋","id":1766},"54|囥":{"ex":"錢愛囥予好勢，莫烏白囥","id":3017},"54|入去":{"ex":"你先入去餐廳，我來去停車","id":14578},"54|內面":{"ex":"裘仔內面愛閣加穿一領","id":691},"54|共":{"ex":"我共你講，你毋通共別人講","id":2099},"54|擲㧒捔":{"ex":"歹去的物件提去擲㧒捔","id":12488},"54|果子":{"ex":"你去買一寡果子轉來供神","id":4196},"54|埋":{"ex":"共菜葉仔埋佇塗裡","id":5856},"54|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"54|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"54|媠噹噹":{"ex":"伊妝甲媠噹噹，大概是欲去約會","id":8320},"54|厝邊兜":{"ex":"厝邊兜愛相照顧","id":13697},"54|足濟":{"part":1,"ex":"厝內有覕足濟虼蚻--的","id":3391},"54|呵咾":{"ex":"你一直共我呵咾，我會歹勢","id":3718},"54|阮":{"ex":"阮欲走矣，你咧？","id":3401},"54|若":{"ex":"天若烏就毋敢出門","id":5450},"54|無去":{"ex":"我的錢攏總拍無去矣","id":8589}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1524,7 +1546,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1532,6 +1554,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

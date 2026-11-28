@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1470,6 +1478,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"22|个":{"ex":"伊規个人攏愣去","id":171},"22|遐":{"ex":"你的物件佇遐","id":10151},"22|烏秫米":{"part":1,"ex":"聽講烏秫米蓋營養","id":6227},"22|逐":{"ex":"逐个人攏有，免搶","id":7895},"22|攏":{"ex":"攏是伊佇遐使弄","id":12772},"22|對":{"ex":"彼隻狗對佗位來的","id":10442},"22|予":{"ex":"你毋通予伊騙去","id":564},"22|𪜶":{"ex":"𪜶是我上好的朋友","id":13567},"22|嘛是":{"ex":"這站代誌看起來嘛是歹舞","id":10391},"22|無濟":{"part":1,"ex":"褲袋仔的錢賰無濟","id":8563},"22|傳統":{"ex":"彼是阮兜的傳統","id":22146},"22|佮":{"ex":"你敢欲佮我去𨑨迌","id":3524},"23|品":{"ex":"若欲耍就愛先品予好","id":4779},"23|著愛":{"ex":"你著愛共房間摒摒咧","id":14607},"23|兜":{"ex":"阮欲來去阿媽兜","id":6917},"23|無錢工":{"part":1,"ex":"我無愛做彼種無錢工","id":8563},"23|毋但":{"ex":"這毋但是害著伊一人爾","id":921},"23|袂使得":{"ex":"欲耍就袂使得變面","id":6644},"23|愛人仔":{"ex":"伊已經有愛人仔囉","id":9431},"23|偝":{"ex":"彼个人偝一个囡仔","id":6915},"23|無品":{"ex":"烏白擲糞埽的人誠無品","id":14332},"23|真濟":{"part":1,"ex":"真濟人攏愛食檨仔","id":6374},"23|袂少":{"part":1,"ex":"檨仔有袂少的品種","id":6632},"23|條直":{"ex":"伊真正有夠條直","id":7485},"23|鬥陣":{"ex":"伊的人誠好鬥陣","id":6855},"23|佇":{"ex":"你徛佇遐創啥","id":2858},"23|踮":{"ex":"你乖乖踮厝就好","id":11474},"23|和諧":{"ex":"班級的和諧愛靠逐家","id":23011},"23|相伨":{"ex":"有你來相伨誠好","id":14150},"23|環境":{"ex":"這馬環境無仝矣","id":12239}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1480,7 +1502,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1488,6 +1510,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

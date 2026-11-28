@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1518,6 +1526,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"34|个":{"ex":"𪜶兩个人生甲足仝的","id":171},"34|細粒子":{"ex":"伊人生做細粒子","id":7760},"34|日頭":{"ex":"今仔日的日頭真猛","id":1168},"34|曝":{"ex":"今仔日天氣袂䆀欲來曝棉被","id":12773},"34|甲":{"ex":"我的腹肚疼甲欲死","id":1848},"34|烏金":{"ex":"伊的頭鬃烏金柔軟","id":6265},"34|面仔":{"part":1,"ex":"伊的面仔真圓","id":5562},"34|古錐":{"ex":"伊生做真古錐","id":1611},"34|酒窟仔":{"ex":"彼个明星有兩个酒窟仔","id":6866},"34|共":{"ex":"我來去共老師投","id":2099},"34|紹介":{"ex":"麻煩你共我紹介予恁頭家","id":7732},"34|內底":{"ex":"這跤皮箱內底貯啥物？","id":665},"34|佮":{"ex":"我欲佮伊來去看電影","id":3524},"34|予":{"ex":"我予你一个面子","id":564},"34|會曉":{"ex":"這條歌你會曉唱袂？","id":9626},"34|湠":{"ex":"這種草真𠢕湠","id":8547},"34|好笑神":{"ex":"阿英仔真好笑神","id":2352},"34|查某囡仔":{"ex":"有幾个查某囡仔徛佇遐","id":5099},"34|揹":{"ex":"伊揹一袋米欲去換一隻雞","id":8412},"34|跤":{"ex":"阮翁送我一跤手指","id":10059},"34|kha-báng":{"id":20419},"34|歹人":{"ex":"我的錢予歹人剝去矣","id":820},"34|陷阱":{"ex":"彼隻山豬跋落去陷阱內面","id":24309},"34|抾":{"ex":"我昨昏佇路裡抾著錢","id":3945},"34|紮":{"ex":"欲落雨矣，出門愛紮雨傘","id":7718},"34|糞埽":{"ex":"全班歇睏日去海邊仔抾糞埽","id":12265},"34|工課":{"ex":"我的工課足濟的","id":519},"35|落眠":{"ex":"伊睏落眠矣，莫共叫","id":9933},"35|精神":{"ex":"伊精神矣","id":10723},"35|靴管":{"ex":"現代的靴管攏做甲真奅","id":13792},"35|oo-tóo-bái":{"id":20477},"35|恬靜":{"ex":"看著老師來，同學隨恬靜","id":4970},"35|揣":{"ex":"奇怪！哪會攏揣無","id":8409},"35|無路":{"ex":"恁閣行過去就無路矣","id":8654},"35|搜救隊":{"part":1,"ex":"有災害需要搜救隊出任務","id":26542},"35|𤆬路人":{"part":1,"ex":"這條山路需要有𤆬路人引領","id":13512},"35|搭":{"ex":"𪜶兜佇佗一搭","id":9491},"35|路草":{"ex":"路草無熟，毋通𤆬人𬦰山","id":14418},"35|外口":{"ex":"伊拄才對外口轉來","id":1424},"35|煞":{"ex":"氣象報告講會好天煞咧落雨","id":9691},"36|𤆬頭":{"ex":"你𤆬頭，我綴你後壁行","id":13514},"36|珠":{"ex":"和尚提念珠咧唸經","id":6333},"36|拍":{"ex":"仙人拍鼓有時錯","id":3956},"36|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"36|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"36|毋通":{"ex":"你毋通傷晏轉來","id":1060},"36|袂記得":{"ex":"我袂記得幾點欲開會","id":6652},"36|總是":{"ex":"總是愛想辦法解決這件代誌","id":12259},"36|聽候":{"ex":"聽候較寒的時陣才提出來穿","id":13239},"36|天光":{"ex":"天光矣，你好起來讀冊矣","id":887},"36|無閒":{"ex":"毋知咧無閒啥物","id":8648},"36|拄才":{"ex":"拄才我明明有聽著人咧講話","id":3975},"36|傳":{"ex":"有人來傳話，講下晡欲消毒","id":9286},"36|預測":{"ex":"氣象報告預測明仔載好天","id":22376},"36|啥物":{"ex":"啥物人佇遐咧唱歌？","id":7101},"36|失路":{"part":1,"ex":"阿明佇彼粒山頭失路去","id":1635},"36|粒積":{"ex":"三代粒積，一代窮空","id":7770},"36|隔轉工":{"ex":"阿爸愛隔轉工才會轉來","id":10347},"36|拄":{"ex":"伊拄走無偌久","id":3948},"36|拍殕光":{"ex":"天拄拍殕光，伊就去作穡矣","id":27599},"36|著":{"ex":"著你矣，你今仔日欲食啥","id":8981},"36|代誌":{"ex":"厝內的代誌攏是伊咧發落","id":1370},"36|網路":{"ex":"今仔日的網路蓋慢","id":22150},"36|特有":{"ex":"薁蕘是台灣特有的植物","id":24278},"36|報導":{"ex":"新聞當咧報導災情","id":22108},"36|欲":{"ex":"你欲佮阮做伙去食飯無？","id":7469},"36|逐家":{"ex":"逐家攏是家己人","id":7947},"36|號做":{"ex":"我袂記得伊號做啥物名","id":9983}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1528,7 +1550,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1536,6 +1558,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

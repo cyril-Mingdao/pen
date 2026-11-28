@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1475,6 +1483,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"100|伊":{"ex":"春雨伊綿綿","id":2047},"100|紅瓦厝":{"part":1,"ex":"紅瓦厝內陣陣中藥芳","id":5365},"100|中藥芳":{"part":1,"ex":"陣陣中藥芳","id":25448},"100|徛":{"ex":"你徛佇遐創啥物？","id":7226},"100|踮":{"ex":"你這馬踮佗位？","id":11474},"100|藥房":{"ex":"徛踮藥房口","id":12849},"100|雨棚跤":{"part":1,"ex":"徛踮藥房口　雨棚跤","id":20204},"100|阮":{"ex":"是阮每日思念的身影","id":3401},"100|甲":{"ex":"為阮拚甲皺","id":1848},"100|皺":{"ex":"青春少年面　為阮拚甲皺","id":11209},"100|毋捌":{"ex":"毋捌將伊家己","id":1021},"100|家己":{"ex":"毋捌將伊家己　囥咧心肝頭","id":5899},"100|囥":{"ex":"物件囥佇桌頂。","id":3017},"100|心肝頭":{"ex":"囥咧心肝頭","id":942},"100|大細":{"ex":"大細顧牢牢　驚咱病疼","id":435},"100|顧牢牢":{"part":1,"ex":"大細顧牢牢","id":13169},"100|驚":{"ex":"我啥物攏毋驚。","id":13278},"100|咱":{"ex":"咱公司最近生理真好。","id":4776},"100|病疼":{"ex":"驚咱病疼　驚咱枵","id":6356},"100|枵":{"ex":"我腹肚枵矣。","id":5062},"100|操煩":{"ex":"操煩佮艱苦","id":11683},"100|佮":{"ex":"操煩佮艱苦　囥佇家後","id":3524},"100|佇":{"ex":"伊這馬佇厝裡咧睏。","id":2858},"100|家後":{"ex":"伊就是我的家後。","id":5921},"101|著時":{"ex":"伊的穿插真著時。","id":9009},"101|含笑":{"ex":"著時的含笑當清芳","id":26800},"101|清芳":{"ex":"公園內的花蕊真清芳。","id":7538},"101|插":{"ex":"我的代誌免你插。","id":8360},"101|烏頭鬃":{"part":1,"ex":"不時插佇伊的烏頭鬃","id":6227},"101|袂":{"ex":"春天伊一來袂畏寒","id":6632},"101|畏寒":{"ex":"聽著遮的鬼仔古，我直直起畏寒。","id":5275},"101|溫軟":{"part":1,"ex":"一个溫軟的名","id":16291},"101|若":{"ex":"紅瓦厝內若有中藥芳","id":5450},"101|賰":{"ex":"只賰阮孤單的身影","id":11906}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1485,7 +1507,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1493,6 +1515,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

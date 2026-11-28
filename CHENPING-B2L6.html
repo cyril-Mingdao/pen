@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1465,6 +1473,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"88|中央":{"ex":"中央山脈真懸","id":13607},"88|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"88|攬絚絚":{"part":1,"ex":"囡仔共阿母攬絚絚","id":13328},"88|拍開":{"ex":"窗仔門共拍開，按呢較通風","id":18469},"88|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"88|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"88|咱":{"ex":"咱著愛較斟酌咧","id":4776},"88|雺霧":{"ex":"透早山頂罩雺霧","id":10351},"88|罩":{"ex":"烏雲罩規个天","id":9812},"88|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"88|毋願":{"ex":"伊毋願共你鬥相共","id":1199},"88|心內":{"ex":"伊心內真歡喜","id":14584},"88|鬱卒":{"ex":"考無好，伊規工真鬱卒","id":13433},"88|操煩":{"ex":"你莫為著我的代誌操煩","id":11683},"88|佮":{"ex":"我欲佮伊來去看電影","id":3524},"89|毋是":{"ex":"這毋是我的","id":990},"89|眠夢":{"ex":"伊昨暝眠夢去日月潭","id":6415},"89|阮":{"ex":"阮欲走矣，你咧？","id":3401},"89|自在":{"ex":"佇庄跤生活真自在","id":2650},"89|予人":{"part":1,"ex":"伊認真讀冊，予人呵咾","id":564}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1475,7 +1497,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1483,6 +1505,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

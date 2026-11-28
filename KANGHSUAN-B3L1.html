@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1484,6 +1492,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"12|蹛":{"ex":"阿明仔蹛佇學校附近","id":12616},"12|代誌":{"ex":"厝內大細項代誌攏是伊咧發落","id":1370},"12|𬦰":{"ex":"阿義去𬦰山煞失蹤欲兩禮拜","id":13595},"12|踅":{"ex":"咱下昏來去踅夜市","id":10852},"12|泅":{"ex":"伊誠𠢕泅水","id":4258},"12|興頣頣":{"part":1,"ex":"講著𨑨迌伊就興頣頣","id":11860},"12|尾仔":{"ex":"伊頭仔講欲去，尾仔煞反悔","id":3072},"12|勇健":{"ex":"阿公的身體猶閣真勇健","id":4737},"12|倚":{"ex":"時間倚中晝矣","id":5709},"12|拄光":{"part":1,"ex":"天拄光阿公就起來運動","id":3948},"12|歡頭喜面":{"ex":"伊歡頭喜面去上課","id":13208},"12|催落去":{"part":1,"ex":"逐家大聲喝催落去","id":9284},"12|紲落來":{"ex":"紲落來咱就來表決","id":14291},"12|水墘":{"part":1,"ex":"囡仔毋通佇水墘𨑨迌","id":21825},"13|冬節":{"ex":"冬節愛食圓仔","id":20361},"13|烰":{"ex":"冬節咱來烰圓仔","id":7514},"13|靠勢":{"ex":"伊靠勢家己𠢕就無認真","id":11561},"13|練":{"ex":"伊逐工練泅水","id":11281},"13|規冬":{"part":1,"ex":"伊規冬攏咧拍拚","id":7844},"13|一聲":{"part":1,"ex":"伊一聲就走甲無看見","id":1},"13|雄雄":{"ex":"伊雄雄走出來，驚著人","id":9270},"13|想著":{"part":1,"ex":"想著考試我就煩惱","id":9421},"13|跤底":{"ex":"行傷久跤底會疼","id":10085},"13|遐爾":{"ex":"無彩你遐爾仔愛伊","id":10228},"13|一時":{"ex":"我一時想袂起來","id":22957},"13|煞":{"ex":"我煞有講彼句話？","id":9691},"13|掰無路":{"part":1,"ex":"伊佇水裡驚甲掰無路","id":8350},"13|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"13|袂振袂動":{"part":1,"ex":"伊驚甲袂振袂動","id":6632},"13|身軀":{"ex":"伊耍甲規身軀烏趖趖","id":3508},"13|規氣":{"ex":"傷晏矣，規氣蹛遮","id":7868},"13|扶":{"ex":"伊扶阿公行路","id":3149},"13|浮枋":{"part":1,"ex":"學泅水會使用浮枋","id":6154},"13|沓沓仔":{"ex":"有話沓沓仔講","id":4275},"13|四箍輾轉":{"ex":"厝的四箍輾轉攏是田","id":1592},"14|內面":{"ex":"裘仔內面愛閣加穿一領","id":691},"14|上":{"ex":"無紮齒抿仔，上少嘛著漉喙","id":164},"14|查某囡仔":{"ex":"有幾个查某囡仔徛佇遐","id":5099},"14|毋願":{"ex":"伊毋願共你鬥相共","id":1199},"14|各樣":{"ex":"你今仔日看起來各樣各樣呢","id":2246},"14|跤手":{"ex":"伊做代誌跤手誠猛","id":10064},"14|勻聊仔":{"ex":"勻聊仔行，莫傷緊","id":29578},"14|捒":{"ex":"你莫共人捒倒","id":5997},"14|進前":{"ex":"欲出門進前，愛會記得紮錢","id":9117},"14|才調":{"ex":"伊真有才調，一擺就考過矣","id":520},"14|有頭有尾":{"ex":"做代誌愛有頭有尾","id":2572},"14|糾筋":{"ex":"伊跤糾筋疼甲哀","id":4463},"14|牚腿":{"ex":"𬦰山了，伊牚腿兩三工","id":8662},"14|倚靠":{"ex":"伊倚靠家己的力量","id":5770},"14|煞尾":{"ex":"煞尾伊猶是贏矣","id":9700},"14|提著":{"part":1,"ex":"伊這擺比賽提著頭名","id":8359},"14|泅有過":{"part":1,"ex":"伊真正泅有過矣","id":4258}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1494,7 +1516,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1502,6 +1524,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

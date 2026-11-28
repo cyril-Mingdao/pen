@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1495,6 +1503,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"58|毋捌":{"ex":"我猶毋捌接觸過這種新產品","id":1021},"58|物件":{"ex":"這間店有真濟物件。","id":4343},"58|若":{"ex":"伊歡喜甲若囡仔咧","id":5450},"58|草地人":{"ex":"阮是草地人，較古意","id":6556},"58|沓沓仔":{"ex":"有話沓沓仔講","id":4275},"58|一點仔":{"ex":"加一點仔糖較好食","id":35},"58|這陣":{"ex":"你這陣有啥物拍算？","id":7956},"58|穿插":{"ex":"伊的穿插誠雅氣","id":5345},"58|啥款":{"ex":"你的新厝是啥款？","id":7114},"58|現此時":{"ex":"現此時物價誠懸","id":7588},"58|時行":{"ex":"這馬練工夫真時行","id":6017},"58|揀":{"ex":"去菜市仔揀菜","id":8351},"58|納錢":{"ex":"買物件愛先納錢","id":14227},"58|鑢卡":{"ex":"這間店會當鑢卡","id":14556},"58|一个":{"part":1,"ex":"我有一个小妹","id":1},"58|掛":{"ex":"掛手環","id":7300},"58|喙罨":{"ex":"你的喙罨的花草誠媠","id":8231},"58|戇戇":{"ex":"伊戇戇徛佇遐","id":13430},"58|囥":{"ex":"錢愛囥予好勢，莫烏白囥","id":3017},"59|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"59|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"59|有時":{"ex":"伊有時歡喜，有時受氣","id":14592},"59|對":{"ex":"伊逐兩個月就對發票","id":10442},"59|一遍":{"part":1,"ex":"這本冊我看一遍矣","id":1},"59|無聊":{"ex":"歇熱佇厝足無聊","id":24119},"59|趣味":{"ex":"這本尪仔冊真趣味。","id":11424},"59|收著":{"part":1,"ex":"我收著你寄的批矣","id":2434},"59|電子批":{"ex":"老師寄電子批予阮","id":14423},"59|中":{"ex":"伊買彩券中頭獎","id":559},"59|箍":{"ex":"我身軀干焦賰兩箍爾爾","id":10682},"59|隔":{"ex":"隔一工伊才閣來","id":10279},"59|真久":{"part":1,"ex":"我真久無看著伊矣","id":6374},"59|揣":{"ex":"物件愛收予好，才袂揣無","id":8409},"59|寄金簿仔":{"ex":"薪水攏入寄金簿仔","id":7158},"59|入":{"ex":"錢已經入去戶頭矣","id":47},"59|看會著":{"part":1,"ex":"佇山頂看會著海","id":5307},"59|摸":{"ex":"伊摸狗仔的頭","id":10524},"59|實在":{"ex":"這件代誌是實在的","id":10455},"60|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"60|予人":{"part":1,"ex":"伊認真讀冊，予人呵咾","id":564},"60|一逝":{"part":1,"ex":"我去一逝便利商店","id":1},"60|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"60|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"60|偌":{"ex":"不時講家己偌𠢕拄偌𠢕","id":6910},"60|兩个":{"part":1,"ex":"阮兜有兩个囡仔","id":3582},"60|少年":{"ex":"伊看起來誠少年","id":896},"60|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"60|慣勢":{"ex":"慣勢就好","id":10518},"60|這个":{"ex":"這个囡仔真乖","id":27296},"60|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"60|看會出":{"part":1,"ex":"我看會出你咧歡喜","id":5307},"60|差別":{"ex":"這兩款有啥物差別？","id":22704},"60|猶是":{"ex":"你猶是佮以前仝款緣投","id":8617},"60|拍算":{"ex":"我拍算欲來去日本讀冊","id":4132},"60|心內":{"ex":"伊心內真歡喜","id":14584},"60|敢":{"ex":"這敢是你的？","id":8414},"60|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"60|合意思":{"part":1,"ex":"這个名誠合意思","id":3565},"60|囡仔古":{"ex":"阿媽講囡仔古予阮聽","id":29392}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1505,7 +1527,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1513,6 +1535,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

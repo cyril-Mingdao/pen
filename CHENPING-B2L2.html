@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1463,6 +1471,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"22|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"22|佗":{"ex":"你欲提佗一个？","id":2862},"22|勸善":{"ex":"彼的團體是以勸善為目的","id":12956},"22|著":{"ex":"你著知道理","id":8981},"22|緊":{"ex":"你緊來啦，強欲袂赴矣","id":10751},"22|扮仙":{"ex":"佇傳統戲劇正戲前攏有扮仙","id":3158},"22|圓圓圓":{"part":1,"ex":"共代誌攏做予圓圓圓","id":9390},"22|大趁錢":{"ex":"向望今年咱逐家攏大趁錢","id":14570},"22|大葩尾":{"ex":"廟埕彼齣戲有影是大葩尾","id":29859},"22|庇佑":{"ex":"求神明庇佑咱全家平安","id":3162},"22|賰":{"ex":"聽講伊賰袂少錢","id":11906},"22|家伙":{"ex":"𪜶兜的家伙攏予伊敗了了矣","id":5911},"22|抾":{"ex":"昨昏伊佇遮抾著一千箍","id":3945},"22|無閒𩑾𩑾":{"ex":"接著訂單，逐家攏無閒𩑾𩑾","id":27268},"22|較早":{"ex":"較早的人攏早早就睏矣","id":10179},"22|庄頭":{"ex":"這个庄頭的人攏真好客","id":2413},"22|規年迵天":{"ex":"伊規年迵天攏佇國外","id":7858},"22|小生":{"ex":"彼个小生真緣投","id":294},"22|胸坎":{"ex":"我的胸坎實實，人真無爽快","id":6497},"22|小旦":{"ex":"伊是這个歌仔戲班的小旦","id":290},"22|目尾":{"ex":"你看彼个人一直咧使目尾","id":14589},"22|三花":{"part":1,"ex":"戲劇內的三花誠好笑","id":162},"22|講笑詼":{"ex":"無，你是佇咧講笑詼是毋？","id":12390},"22|刣":{"ex":"你去共彼粒王梨刣刣咧","id":2946},"22|毋願":{"ex":"伊毋願共你鬥相共","id":1199},"22|家己":{"ex":"伊家己拍拚趁錢替𪜶翁還數","id":5899},"22|媠":{"ex":"愛媠是人的天性","id":8285},"22|跤":{"ex":"一隻牛予人縛佇樹跤","id":10059},"24|仝款":{"ex":"這兩个皮包看著仝款仔仝款","id":1360},"24|傳承":{"ex":"前輩牽教，經驗才會當傳承","id":24887},"24|精神":{"ex":"伊的精神無啥好","id":10723},"24|猶原":{"ex":"伊猶原佇遐咧等你","id":8626},"24|工夫":{"ex":"伊的工夫袂䆀","id":263},"24|著愛":{"ex":"你著愛較會曉想咧","id":14607},"24|心神":{"ex":"伊袂插你，你莫枉費心神矣","id":1036},"24|噗仔聲":{"ex":"噗仔聲共伊催落去！","id":14454},"24|傳統":{"ex":"布袋戲是台灣的傳統文化","id":22146},"24|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"24|生湠":{"ex":"鳥鼠真𠢕生湠","id":1960}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1473,7 +1495,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1481,6 +1503,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

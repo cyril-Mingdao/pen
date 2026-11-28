@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1530,6 +1538,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"48|啥物":{"ex":"啥物人佇遐咧唱歌？","id":7101},"48|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"48|行":{"ex":"我逐工攏用行的去學校","id":2605},"48|斯當年":{"part":1,"ex":"斯當年你應當愛聽我的話","id":16016},"48|四界":{"ex":"毋通四界拋拋走","id":1496},"48|攏":{"ex":"逐家攏莫去","id":12772},"48|荒埔":{"ex":"遮十年情猶是一片荒埔","id":6651},"48|佮":{"ex":"我欲佮伊來去看電影","id":3524},"48|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"48|行踏":{"ex":"𪜶真罕得來咱遮行踏","id":2792},"48|拄來":{"part":1,"ex":"伊拄來咱兜做客","id":3948},"48|冬":{"ex":"我進前佇台北蹛五冬","id":1376},"48|扯勻":{"part":1,"ex":"這幾袋扯勻有幾粒","id":3144},"48|干焦":{"ex":"干焦賰遮爾，你欲無？","id":448},"48|怙":{"ex":"你怙行的欲行甲底時？","id":3882},"48|步輦":{"ex":"我欲步輦來去公園𨑨迌","id":3323},"48|見若":{"ex":"伊見若食牛奶就落屎","id":3443},"48|挽":{"ex":"你蛀牙矣，愛去挽喙齒","id":5985},"48|猶未":{"ex":"你寄的批我猶未收著","id":8596},"48|利便":{"ex":"蹛佇都市交通較利便","id":2988},"48|這馬":{"ex":"這馬的人攏罕得寫批矣","id":7957},"48|引𤆬":{"ex":"若有人引𤆬，較緊學上手","id":13915},"48|跤跡":{"ex":"海沙埔頂有足濟跤跡","id":10114},"49|三角湧":{"ex":"三角湧是『三峽』的舊名","id":21560},"49|險仔":{"ex":"伊拄才險仔去予車挵著","id":27381},"49|撼":{"ex":"攑槌仔共伊撼落去","id":11641},"49|艋舺":{"ex":"艋舺是『萬華』的舊名","id":21764},"49|攑":{"ex":"這箱欲愛的攑手","id":13085},"49|共":{"ex":"我共你講，你袂使共別人講","id":2099},"49|刣":{"ex":"伊無細膩去予刀仔刣著","id":2946},"49|好佳哉":{"ex":"好佳哉有你佇咧","id":2334},"49|就按呢":{"ex":"代誌就按呢進行","id":8306},"49|越頭":{"ex":"我越頭才看著伊徛佇後壁","id":9097},"49|做伊旋":{"part":1,"ex":"伊看目色毋著就做伊旋矣","id":6913},"49|拆㧒捔":{"part":1,"ex":"彼間違建予政府拆㧒埆矣","id":3949},"49|幾若擺":{"part":1,"ex":"伊試幾若擺攏無成功","id":8329},"49|出草":{"part":1,"ex":"出草是原住民較早的用語","id":1378},"49|疼心":{"ex":"伊對人真有疼心","id":13704},"49|落尾":{"ex":"落尾我就去高雄讀冊","id":9903},"50|媠":{"ex":"彼个查某囡仔真媠","id":8285},"50|毋但":{"ex":"伊做的歹代誌毋但按呢","id":921},"50|領洗禮":{"part":1,"ex":"領洗禮是宗教專有的行為","id":10915},"50|埋":{"ex":"後山塚仔埔埋袂少無名屍","id":5856},"50|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"50|攏總":{"ex":"遮的物件我攏總共你買","id":12790},"50|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"50|遮":{"ex":"遮暗時真鬧熱","id":11480},"50|款":{"ex":"囡仔的𨑨迌物百百款","id":8519},"50|博愛":{"ex":"捷運頂懸有設博愛座","id":8226},"50|誠":{"ex":"這擔菜架仔賣了誠貴","id":10054},"51|疼":{"ex":"我細漢佮阿媽蹛，伊足疼我的","id":6340},"51|所在":{"ex":"這个所在真鬧熱","id":4001},"51|上":{"ex":"伊是我上好的朋友","id":164},"51|形影":{"ex":"田--裡有阿公作穡的形影","id":3190},"51|咱":{"ex":"咱公司最近生理真好","id":4776},"51|囝孫":{"ex":"阿英真好命，囝孫攏足有孝","id":2200},"51|跟綴":{"ex":"囡仔人較𠢕纏，老母行到佗位，伊就跟綴到佗位","id":10118},"51|跤步":{"ex":"跤步踏差啥人無？","id":10080},"51|鬥陣":{"ex":"咱鬥陣來去","id":6855},"51|數念":{"ex":"我真數念伊","id":11122}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1540,7 +1562,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1548,6 +1570,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

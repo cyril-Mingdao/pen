@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1458,6 +1466,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"8|葩":{"ex":"客廳點一葩電火","id":9975},"8|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"8|丈":{"ex":"這條索仔有一丈長","id":161},"8|若":{"ex":"天若烏就毋敢出門","id":5450},"8|化":{"ex":"風真透，蠟燭予風吹化去","id":771},"8|天光":{"ex":"天光矣，你好起來讀冊矣","id":887},"8|日頭":{"ex":"今仔日的日頭真猛","id":1168},"8|若無":{"ex":"予我一个，若無就準拄煞","id":5480},"8|理想":{"ex":"這擺考試考了無蓋理想","id":22246},"8|賰":{"ex":"阿媽叫我共食賰的菜收入去菜櫥","id":11906},"8|宛然":{"ex":"宛然失光明。","id":3852},"9|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"9|相揣":{"ex":"阮約佇車頭相揣","id":14151},"9|毋免":{"ex":"代誌做好矣，你毋免來矣","id":922},"9|世路":{"part":1,"ex":"世路歹行，愛有耐心","id":1292},"9|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"9|人生":{"ex":"人生親像一齣戲","id":87},"9|逐位":{"part":1,"ex":"春天到，逐位攏有花","id":7895},"9|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1468,7 +1490,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1476,6 +1498,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

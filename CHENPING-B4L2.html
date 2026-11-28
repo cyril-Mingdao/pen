@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1519,6 +1527,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"20|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"20|遮的":{"ex":"遮的我攏欲提去","id":11493},"20|已經":{"ex":"糖仔已經攏分了矣","id":22106},"20|遮":{"ex":"遮欲舉行一場歌唱比賽","id":11480},"20|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"20|較早":{"ex":"較早的人攏早早就睏矣","id":10179},"20|捌":{"ex":"這个人你敢捌伊？","id":5993},"20|定定":{"ex":"阿美定定佮我講私奇話","id":3837},"20|目睭":{"ex":"伊目睭真大蕊","id":1975},"20|展":{"ex":"伊目睭展甲真大蕊","id":5884},"20|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"20|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"20|親堂":{"ex":"過年阮去拜訪親堂","id":11932},"20|咱":{"ex":"咱著愛較斟酌咧","id":4776},"20|盹龜":{"ex":"上課毋通盹龜","id":5296},"20|袂":{"ex":"阿明仔攏袂堪得人講得","id":6632},"21|當做":{"ex":"你共遮當做家己的厝","id":9758},"21|看著":{"part":1,"ex":"看著日頭落山就好來轉矣","id":5307},"21|讀冊":{"ex":"咱讀冊就毋通讀對尻脊骿去","id":13231},"21|食苦":{"ex":"少年人愛肯食苦","id":5612},"21|𨑨迌":{"ex":"你明仔載欲佮阮去𨑨迌無?","id":13522},"21|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"21|看覓":{"ex":"這款菜你食看覓","id":5344},"21|頇顢":{"ex":"伊真頇顢講話。","id":9282},"21|參":{"ex":"你欲參伊去𨑨迌無","id":7011},"21|輸贏":{"ex":"比賽上要緊的毋是輸贏","id":11983},"21|若是":{"ex":"你若是無爽快，就去歇睏","id":5468},"21|按呢":{"ex":"伊若真正按呢做，就傷超過矣","id":5014},"21|踏話頭":{"ex":"伊講話進前先踏話頭","id":11459},"21|應該":{"ex":"伊應該欲到矣","id":12174},"21|毋是":{"ex":"這毋是我的","id":990},"22|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"22|人生":{"ex":"人生親像一齣戲","id":87},"22|特別":{"ex":"伊這个人禁忌特別濟","id":6255},"22|紹介":{"ex":"麻煩你共我紹介予恁頭家","id":7732},"22|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"22|逐家":{"ex":"逐家攏是家己人，著愛互相照顧","id":7947},"22|一个":{"part":1,"ex":"我有一个小妹","id":1},"22|伊":{"ex":"若講甲伊知，喙鬚會拍結","id":2047},"22|家己":{"ex":"欲成功愛靠家己認真拍拚","id":5899},"22|忝忝":{"part":1,"ex":"這擺比賽輸甲忝忝","id":3879},"22|閣較":{"ex":"今仔日比昨昏閣較熱","id":10910},"22|日子":{"ex":"這段日子你辛苦矣","id":828},"22|相信":{"ex":"我相信你一定做會到","id":5253},"22|骨力":{"ex":"伊做代誌真骨力","id":6805},"22|毋驚":{"ex":"你敢毋驚去看著歹物仔","id":1209},"22|艱苦":{"ex":"我心肝內的艱苦啥人知？","id":12312},"22|一時":{"ex":"我一時想袂起來","id":22957},"22|毋免":{"ex":"代誌做好矣，你毋免來矣","id":922},"22|怨嘆":{"ex":"莫怨嘆，閣拍拚就好","id":4963},"22|膽寒":{"ex":"看著彼隻大狗，伊煞膽寒","id":28873},"22|總是":{"ex":"總是愛想辦法解決這件代誌","id":12259},"22|拍拚":{"ex":"你愛較拍拚咧","id":4035},"22|這馬":{"ex":"這馬的人攏罕得寫批矣","id":7957},"22|內底":{"ex":"我的鞋仔內底敢若有石頭仔，感覺砧砧","id":665},"22|跤目":{"ex":"伊行路去扭著跤目","id":10073},"22|故事":{"ex":"阿媽講故事予我聽","id":5012},"22|一步一跤印":{"part":1,"ex":"做代誌愛一步一跤印","id":1},"22|已經":{"ex":"糖仔已經攏分了矣","id":22106},"23|欲":{"ex":"定定都睏到欲上課矣才欲起來","id":7469},"23|抑是":{"ex":"你欲啉咖啡抑是欲啉茶？","id":3236},"23|沿路":{"ex":"沿路的風景真媠","id":4298},"23|人生":{"ex":"人生親像一齣戲","id":87},"23|按怎":{"ex":"到底著愛按怎做","id":5022},"23|啥物":{"ex":"無人知影伊按呢做是有啥物用意","id":7101}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1529,7 +1551,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1537,6 +1559,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

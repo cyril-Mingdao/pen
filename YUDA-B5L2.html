@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1526,6 +1534,20 @@ tshìn tshìn tshah
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"24|故鄉":{"ex":"我真數念故鄉的親情朋友","id":5041},"24|一滴":{"part":1,"ex":"一滴水都無賰","id":1},"24|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"24|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"24|北管":{"ex":"廟口咧拍北管","id":1588},"24|八音":{"part":1,"ex":"鬧熱的八音聲真好聽","id":48},"24|不時":{"ex":"伊不時嘛咧讀冊","id":699},"24|雨幔":{"ex":"落雨天出門愛穿雨幔","id":4631},"24|靴管":{"ex":"現代的靴管攏做甲真奅","id":13792},"24|霆水螺":{"ex":"船欲出港，霆水螺","id":11542},"25|故鄉":{"ex":"我真數念故鄉的親情朋友","id":5041},"25|澹":{"ex":"雨傘無紮，衫攏澹去","id":11738},"25|霎霎仔雨":{"ex":"外口咧落霎霎仔雨","id":14497},"25|摔大雨":{"part":1,"ex":"下晡煞摔大雨","id":10500},"25|電火":{"ex":"出門愛記得禁電火","id":10297},"25|崁仔頂":{"part":1,"ex":"崁仔頂半暝就咧賣魚","id":5888},"25|透抽":{"ex":"透抽煠煠咧就真好食","id":13731},"25|軟絲仔":{"ex":"軟絲仔炒芹菜真好食","id":7968},"25|紅目鰱":{"ex":"紅目鰱煎予赤真好食","id":5392},"25|佇":{"ex":"伊這馬佇厝裡咧睏","id":2858},"25|鬧熱":{"ex":"今年普渡的場面真鬧熱","id":11586},"26|海湧":{"ex":"風颱天的海湧若痟狗咧","id":6201},"26|拍開":{"ex":"窗仔門共拍開，按呢較通風","id":18469},"26|逐家":{"ex":"逐家攏是家己人，著愛互相照顧","id":7947},"26|入來":{"ex":"毋通予伊入來咱公司上班","id":14579},"26|佮":{"ex":"我欲佮伊來去看電影","id":3524},"26|貯":{"ex":"我來捀碗共你貯飯","id":9034},"26|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"26|布袋":{"ex":"飼鳥鼠咬布袋","id":1766},"26|港埠":{"part":1,"ex":"港埠停足濟漁船","id":8544},"26|行船":{"ex":"阿公少年時咧行船","id":2727},"26|共":{"ex":"我共你講，你毋通共別人講","id":2099},"26|歸心":{"part":1,"ex":"欲過年矣，出外人歸心誠急","id":12507},"26|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"27|相招":{"ex":"阮相招去看電影","id":5249},"27|咱":{"ex":"咱著愛較斟酌咧","id":4776},"27|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"27|鬧熱":{"ex":"今年普渡的場面真鬧熱","id":11586},"27|相拄":{"ex":"佇路裡佮人相拄，攏會相借問","id":5247}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1536,7 +1558,7 @@ tshìn tshìn tshah
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1544,6 +1566,7 @@ tshìn tshìn tshah
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

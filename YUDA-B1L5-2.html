@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1471,6 +1479,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"80|糖甘蜜甜":{"ex":"有影是糖甘蜜甜的滋味","id":11841},"80|無":{"ex":"咱無啥物話好講--矣","id":8563},"80|阮":{"ex":"阮兜有袂少樹奶束仔","id":3401},"80|彼个":{"ex":"彼个人就是阮翁啦","id":3890},"80|閣":{"ex":"伊閣欲去佗位遊覽--矣？","id":10906},"80|彼年":{"part":1,"ex":"伊彼年著大病，蹛病院","id":3876},"80|歇熱":{"ex":"後禮拜歇熱欲--來去日本","id":9675},"80|狗蟻":{"ex":"桌頂全全狗蟻","id":4367},"80|佇":{"ex":"我會共藏佇心肝內","id":2858},"80|馬西馬西":{"ex":"伊酒啉甲馬西馬西","id":6821},"80|心肝底":{"part":1,"ex":"心肝底若像針咧揻","id":934},"81|今":{"ex":"今已經暗矣，好歇睏矣","id":572},"81|外":{"ex":"伊看起來五十外歲","id":1410},"81|冬":{"ex":"伊碩士讀四冬才出業","id":1376},"81|矣":{"ex":"我無想欲去--矣","id":3336},"81|嘛":{"ex":"你嘛較差不多咧","id":10384},"81|煞":{"ex":"氣象講好天，煞咧落雨","id":9691},"81|到今":{"ex":"到今你才知","id":3614},"81|目油":{"ex":"我是笑甲流目油","id":1910}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1481,7 +1503,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1489,6 +1511,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

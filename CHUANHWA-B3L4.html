@@ -1174,6 +1174,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1491,6 +1499,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"72|注文":{"ex":"這項物件做袂赴通賣，你若欲愛著注文","id":4334},"72|米芳":{"ex":"阮規家伙仔攏足愛食磅米芳的","id":2685},"72|走":{"ex":"伊走無去矣","id":3390},"72|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款","id":11940},"72|桌頂拈柑":{"part":1,"ex":"彼層代誌對伊來講袂輸桌頂拈柑咧","id":6133},"72|毋管":{"ex":"毋管是啥人共你問，你攏袂使講","id":1132},"72|攏":{"ex":"逐家攏莫去","id":12772},"73|磅":{"ex":"炭空挖塗炭，著愛先用磅子磅","id":11239},"73|敢":{"ex":"這敢是你的？","id":8414},"73|䢢拄䢢":{"ex":"有代誌想欲佮你參詳，䢢拄䢢去拄著你","id":13564},"73|拄":{"ex":"伊拄走無偌久爾爾","id":3948},"73|爾爾":{"ex":"我規身軀干焦十箍爾爾","id":10653},"73|這馬":{"ex":"這馬的人攏罕得寫批矣","id":7957},"73|恁":{"ex":"恁欲去佗位？","id":5950},"73|生理":{"ex":"阮叔仔咧做一寡小生理","id":1943},"73|加":{"ex":"寄話會加，寄物會減","id":1381},"74|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款","id":1360},"74|乎":{"ex":"你今仔日欲出去𨑨迌乎？","id":1298},"74|記持":{"ex":"你記持誠䆀，隨講隨袂記得","id":1041},"74|老主顧":{"part":1,"ex":"阿明是彼間店的老主顧","id":2589},"74|會記得":{"ex":"你講過的話，敢閣會記得？","id":13773},"75|燒燙燙":{"ex":"火鍋湯燒燙燙，若欲啉著愛細膩","id":27546},"75|芳貢貢":{"ex":"阮兜門口有種一欉月來香，天一下暗就規厝間芳貢貢","id":27423},"75|知影":{"ex":"你敢知影伊叫做啥物名？","id":4408},"75|這陣":{"ex":"你這陣有啥物拍算？","id":7956},"75|下晡":{"ex":"下晡我欲招阿美仔去𨑨迌","id":432},"76|捾":{"ex":"一大捾的荔枝","id":7292},"76|喝":{"ex":"伊咧遏花，緊共喝予走","id":8175},"76|上":{"ex":"上好是像你講的按呢","id":164},"77|燒唿唿":{"ex":"包仔拄炊好的，猶燒唿唿","id":14483},"77|欲":{"ex":"欲落雨矣，咱緊來轉","id":7469},"77|下港":{"ex":"伊對下港起來臺北食頭路","id":445},"77|予":{"ex":"我予你一个面子，這件代誌就準拄煞","id":564},"77|阮":{"ex":"阮欲走矣，你咧？","id":3401},"77|分張":{"ex":"這个囡仔誠分張","id":709},"78|這聲":{"ex":"這聲伊走袂去矣","id":7992},"78|袂赴市":{"ex":"天欲暗矣，無較緊咧，就袂赴市矣","id":13710}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1501,7 +1523,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1509,6 +1531,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1507,6 +1515,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"54|心內":{"ex":"伊心內真歡喜","id":14584},"54|一个":{"part":1,"ex":"我有一个小妹","id":1},"54|所在":{"ex":"這个所在真鬧熱","id":4001},"54|一片":{"ex":"窗仔外是一片海","id":22852},"54|大海":{"ex":"伊徛佇海邊看大海","id":23552},"54|水田":{"ex":"春天的水田若鏡","id":880},"54|海波浪":{"part":1,"ex":"聽海波浪的聲","id":29315},"54|水雞":{"ex":"暗時田裡有水雞咧叫","id":1192},"54|田嬰":{"ex":"田嬰佇田裡飛來飛去","id":2017},"54|想欲":{"ex":"我想欲去日本𨑨迌","id":14370},"54|歇睏":{"ex":"你小歇睏一下，好無","id":9664},"54|倒轉來":{"ex":"你啥物時陣欲倒轉來？","id":19738},"54|自由自在":{"part":1,"ex":"鳥仔佇天頂自由自在","id":2648},"54|無煩無惱":{"part":1,"ex":"囡仔時代無煩無惱","id":8563},"54|若是":{"ex":"你若是無爽快，就去歇睏","id":5468},"54|跋倒":{"ex":"行路愛細膩，莫跋倒","id":9121},"54|矣":{"ex":"我食飽矣","id":3336},"54|共":{"ex":"我共你講，你毋通共別人講","id":2099},"54|當做":{"ex":"你共遮當做家己的厝","id":9758},"54|𨑨迌":{"ex":"你明仔載欲佮阮去𨑨迌無?","id":13522},"55|拌拌咧":{"part":1,"ex":"衫仔褲拌拌咧","id":3955},"55|無啥代":{"part":1,"ex":"免煩惱，無啥代","id":8563},"55|免":{"ex":"你免煩惱","id":2872},"55|起毛䆀":{"ex":"伊考䆀，規工起毛䆀","id":6691},"55|毋免":{"ex":"代誌做好矣，你毋免來矣","id":922},"55|怨嘆":{"ex":"莫怨嘆，閣拍拚就好","id":4963},"55|閣":{"ex":"厝主閣喝欲起厝稅矣","id":10906},"55|徛起來":{"part":1,"ex":"跋倒愛家己徛起來","id":7257},"55|佮":{"ex":"我欲佮伊來去看電影","id":3524},"55|逐":{"ex":"狗仔咧逐貓仔","id":7895},"55|走傱":{"ex":"伊為著生活四界走傱","id":3477},"55|覕相揣":{"ex":"囡仔佇公園覕相揣","id":9007},"55|按呢生":{"ex":"你按呢生做毋著","id":13686},"55|猶閣":{"ex":"阮的工頭看起來猶閣真少年","id":8663},"55|無法度":{"ex":"歹勢，我無法度共你鬥相共","id":8612},"55|放棄":{"ex":"毋通遐緊就放棄","id":4090},"55|目屎":{"ex":"今這聲真正是欲哭無目屎矣","id":1918},"55|拭拭咧":{"part":1,"ex":"桌仔拭拭咧","id":4907},"55|頭殼":{"ex":"伊的頭殼真圓。","id":12070},"55|撫撫咧":{"part":1,"ex":"阿母共伊的頭撫撫咧","id":11101},"56|自由自在":{"part":1,"ex":"鳥仔佇天頂自由自在","id":2648},"56|無煩無惱":{"part":1,"ex":"囡仔時代無煩無惱","id":8563},"56|若是":{"ex":"你若是無爽快，就去歇睏","id":5468},"56|跋倒":{"ex":"行路愛細膩，莫跋倒","id":9121},"56|共":{"ex":"我共你講，你毋通共別人講","id":2099},"56|當做":{"ex":"你共遮當做家己的厝","id":9758},"56|𨑨迌":{"ex":"你明仔載欲佮阮去𨑨迌無?","id":13522},"56|咱":{"ex":"咱著愛較斟酌咧","id":4776},"56|褪赤跤":{"ex":"囡仔褪赤跤佇沙埔走","id":11888},"56|唱":{"ex":"伊誠𠢕唱歌","id":7014},"56|囡仔歌":{"ex":"阿媽教阮唸囡仔歌","id":2152},"56|像":{"ex":"我欲像伊仝款認真","id":10372},"56|細漢":{"ex":"細漢的時陣","id":7768},"56|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"56|啥物":{"ex":"無人知影伊按呢做是有啥物用意","id":7101},"56|攏":{"ex":"阿明共退休金攏提去炒股票","id":12772},"56|毋驚":{"ex":"你敢毋驚去看著歹物仔","id":1209}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1517,7 +1539,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1525,6 +1547,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

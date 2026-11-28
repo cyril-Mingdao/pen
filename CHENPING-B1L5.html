@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1475,6 +1483,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"74|逐擺":{"ex":"伊逐擺攏欲佮人相諍","id":7994},"74|若到":{"part":1,"ex":"若到熱天時，定定會有風颱","id":5450},"74|歇睏":{"ex":"你小歇睏一下，好無","id":9664},"74|阿媽":{"ex":"阮阿媽今年八十歲","id":4621},"74|抑":{"ex":"伊是知抑毋知？","id":3203},"74|招":{"ex":"明仔載我欲招伊去𨑨迌","id":3967},"74|阮":{"ex":"阮欲走矣，你咧？","id":3401},"74|鬥陣":{"ex":"咱鬥陣來去","id":6855},"74|踅":{"ex":"咱下昏來去踅夜市","id":10852},"75|爿":{"ex":"彼間厝的四爿攏是山","id":1214},"75|擔頭":{"ex":"擔頭兩爿著囥予四伨","id":11696},"75|生理":{"ex":"阿發仔生理做甲削削叫","id":1943},"75|頭家":{"ex":"頭家娘找我四百五十箍","id":12062},"75|開喙":{"ex":"伊開喙五萬箍，我嫌傷貴","id":9184},"75|喝":{"ex":"我喝甲嚨喉強欲梢聲矣","id":8175},"75|人客":{"ex":"咱愛好好仔招待人客","id":112},"75|啥物":{"ex":"啥物人佇遐咧唱歌？","id":7101},"75|加減":{"ex":"你愛加減食一寡","id":1553},"75|交關":{"ex":"阿公定定去彼間𥴊仔店交關","id":2097},"76|佮":{"ex":"我欲佮伊來去看電影","id":3524},"76|果子":{"ex":"你去買一寡果子轉來供神","id":4196},"76|蟳":{"ex":"紅蟳米糕是辦桌菜","id":12596},"76|滋味":{"ex":"這个湯頭的滋味袂䆀","id":8605},"76|貨色":{"ex":"這間𥴊仔店的貨色誠齊全","id":7930},"76|鮮沢":{"ex":"魚港賣的魚較鮮沢","id":12446},"76|隨意":{"ex":"請逐家隨意，毋通拘禮","id":12018},"76|五金":{"ex":"母仔吩咐我去五金行買螺絲","id":673},"76|雜細":{"ex":"搖玲瑯鼓，賣雜細","id":12704},"76|物件":{"ex":"你手提的是啥物物件？","id":4343},"76|佮意":{"ex":"我佮意的人就是你","id":3565},"76|捾":{"ex":"我手尾力無夠，捾袂起來","id":7292},"76|款":{"ex":"款厝內是規家伙仔的工課","id":8519}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1485,7 +1507,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1493,6 +1515,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

@@ -1174,6 +1174,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1475,6 +1483,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"52|下早仔":{"ex":"下早仔的生理真好，我早早就收擔矣","id":310},"52|早":{"ex":"阿明自透早無閒到暗","id":2435},"52|空間":{"ex":"房間的空間無夠大","id":4398},"52|偌":{"ex":"不時講家己偌𠢕拄偌𠢕","id":6910},"52|闊":{"ex":"額頭開闊的人看起來較開朗","id":12430},"52|空間仔":{"part":1,"ex":"阮兜三樓閣有一間空間仔","id":19866},"52|自輪車":{"part":1,"ex":"老一輩的人共鐵馬叫做自輪車","id":2598},"52|西爿":{"ex":"日頭向西爿落山","id":2836},"52|西瓜":{"ex":"伊定定嘛西瓜倚大爿","id":2839},"52|煞":{"ex":"我煞有講彼句話？","id":9691},"52|軋":{"ex":"伊駛車去軋著人","id":4486},"52|著":{"ex":"阿明開店做生理有趁著一點仔錢","id":8981},"52|落風":{"ex":"毋知佗一个夭壽人共我的車輪落風","id":9930},"52|跙一倒":{"ex":"伊無細膩去跙一倒","id":9105},"52|落":{"ex":"伊這擺的考試落幾若名","id":9862},"52|落來":{"ex":"桌頂的物件落落來矣","id":9912},"52|甲":{"ex":"阿母氣甲袂講話，干焦直直捶心肝","id":1848},"52|賰":{"ex":"阿媽叫我共食賰的菜收入去菜櫥","id":11906},"53|佳哉":{"ex":"好佳哉有你替我求情，若無，我就慘矣","id":3553},"53|無代誌":{"part":1,"ex":"閒閒無代誌，罔行嘛好","id":8563},"53|夯":{"ex":"夯石碾會當練手骨的筋肉佮手門的力頭","id":1634},"53|閣":{"ex":"阿雄仔頭殼好閣𠢕變竅","id":10906},"53|捾":{"ex":"我手尾力無夠，捾袂起來","id":7292},"53|步輦":{"ex":"我欲步輦來去公園𨑨迌","id":3323},"53|轉去":{"ex":"明仔暗我就欲坐車轉去下港矣","id":12625},"53|傷重":{"ex":"門傷重，愛瞪力才捒會開","id":9322},"53|員工":{"ex":"伊是新來的員工","id":22167},"53|員山":{"part":1,"ex":"伊講伊較早蹛佇員山","id":5791},"53|大方":{"ex":"伊今仔日的穿插真大方","id":256},"53|予":{"ex":"阿母留一張字條仔予我","id":564},"53|食油":{"part":1,"ex":"阿明仔新牽的oo-tóo-bái食油誠省","id":5570},"53|袂":{"ex":"阿明仔攏袂堪得人講得","id":6632},"53|大好人":{"part":1,"ex":"阿樹伯仔是庄裡的大好人","id":186},"54|咱人":{"ex":"阿媽生日是咱人當時？","id":14129},"54|雨水":{"ex":"若到節氣「雨水」，天氣就開始轉燒烙矣","id":4515},"54|天穿日":{"part":1,"ex":"客人仔共節氣「雨水」的號做天穿日","id":783},"54|有影":{"ex":"有影俗物就無好貨","id":2555},"54|烏":{"ex":"阿勇真無膽，天若烏就毋敢出門","id":6227},"54|規身軀":{"ex":"工課做規工，規身軀痛疼","id":7861},"54|沃":{"ex":"我無紮雨傘，規身軀攏沃澹去","id":3281},"54|澹糊糊":{"ex":"你是按怎共厝內拂甲澹糊糊","id":11764},"54|田":{"ex":"庄頭彼的田小姐欲嫁人矣","id":14725},"54|田水":{"part":1,"ex":"阮阿公逐工透早攏會去巡田水","id":1845},"54|葉":{"ex":"隔壁彼的葉的做人無老實","id":16380},"54|樹葉":{"ex":"日鬚迵過樹葉仔縫掖佇塗跤","id":25915},"54|馬":{"ex":"馬先生是老芋仔","id":21954},"54|鐵馬":{"ex":"今仔日哪會騎鐵馬來學校？","id":13148},"54|林":{"ex":"林阿舍是地方的頭人","id":21888},"54|樹林":{"ex":"雄雄有一陣猴山仔對樹林內傱出來","id":11713},"54|挽":{"ex":"風颱連樹根規个挽起來","id":5985},"54|草菇":{"ex":"彼片草埔生誠濟草菇，毋知有毒無？","id":6591},"54|蓋":{"ex":"我最近拄著一寡代誌，無蓋順序","id":10785},"54|潦草":{"ex":"伊做代誌傷潦草，定定予頭家唸","id":11198},"54|毋知":{"ex":"阿明誠陰鴆，我定定攏毋知伊咧想啥","id":976},"54|啥物":{"ex":"無人知影伊按呢做是有啥物用意","id":7101},"55|攑頭":{"ex":"攑頭三尺有神明","id":13110},"55|水沖":{"ex":"出日的時，佇水沖邊仔有可能會看著虹","id":13613},"55|親像":{"ex":"𪜶兩个冤家了後就親像生份人仝款","id":11940},"55|山水":{"ex":"阮兜有掛一幅山水圖","id":24010},"55|這":{"ex":"這是啥物物件？","id":7899}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1485,7 +1507,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1493,6 +1515,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

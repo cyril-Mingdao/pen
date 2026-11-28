@@ -1215,6 +1215,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1472,6 +1480,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"76|情批":{"part":1,"ex":"你敢捌收過情批?","id":7230},"76|阿媽":{"ex":"這禮拜恁敢欲轉去阿媽兜","id":4621},"76|毋捌":{"ex":"我毋捌彼个人","id":1021},"76|伊":{"ex":"伊生做真古錐","id":2047},"76|真濟":{"part":1,"ex":"有真濟人攏愛飼貓仔的","id":6374},"76|代誌":{"ex":"到底是啥物代誌予伊遮驚惶","id":1370},"76|閃電":{"ex":"爍爁比閃電較有台語氣","id":23487},"76|鎖匙":{"ex":"你去街仔揣看有拍鎖匙的無?","id":12701},"76|拍開":{"ex":"窗仔門共拍開，按呢較通風","id":18469},"76|予":{"ex":"這粒柑仔欲予siáng?","id":564},"76|拆開":{"ex":"𪜶爸仔囝拆開欲十年矣","id":4114},"76|欲":{"ex":"天敢若欲落雨矣呢","id":7469},"76|上":{"ex":"上好是像你講的按呢","id":164},"76|毋甘心":{"part":1,"ex":"伊連一屑仔物都毋甘心予人","id":879},"76|吼":{"ex":"恬恬！毋通吼！","id":2968},"76|規暝":{"part":1,"ex":"伊昨暗規暝攏無睏","id":7844},"78|山盟海誓":{"ex":"莫佇遐講山盟海誓，我毋信","id":468},"78|攏":{"ex":"遐--的攏一百箍","id":12772},"78|青盲":{"ex":"青盲雞啄著蟲","id":4560},"78|共":{"ex":"我共你講，你袂使共別人講","id":2099},"78|啥物":{"ex":"這內底是包啥物餡","id":7101}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1482,7 +1504,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1490,6 +1512,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

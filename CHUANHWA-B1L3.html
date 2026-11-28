@@ -1199,6 +1199,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1495,6 +1503,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"39|芫荽":{"ex":"你敢愛食芫荽?","id":4461},"39|皮蛋":{"ex":"皮蛋豆腐真好食","id":1951},"39|豬血粿":{"ex":"夜市仔的豬血粿真好食","id":13824},"39|幾項":{"part":1,"ex":"我去市仔買幾項物件","id":8324},"39|物件":{"ex":"這間店有真濟物件。","id":4343},"39|鬥做伙":{"ex":"共這幾項菜鬥做伙煮","id":6857},"39|有夠":{"ex":"今仔日有夠熱","id":2521},"39|唌人":{"ex":"炸雞芳甲足唌人","id":7023},"39|毋過":{"ex":"𪜶兜雖然散赤，毋過真幸福","id":1114},"39|想欲":{"ex":"我想欲去日本𨑨迌","id":14370},"39|試":{"ex":"你敢欲試看覓？","id":10000},"39|本來":{"ex":"伊本來毋愛食菜","id":1719},"39|驚":{"ex":"我啥物攏毋驚","id":13278},"39|好喙":{"ex":"這个囡仔真好喙，逐家愛","id":2369},"39|準講":{"ex":"準講落雨，我嘛欲去","id":20142},"39|佮意":{"ex":"我佮意的人就是你","id":3565},"39|嘛":{"ex":"遮的嘛攏是好的","id":10384},"39|袂當":{"ex":"咱已經袂當準時入場矣","id":6656},"39|𪜶":{"ex":"𪜶兩个感情真好","id":13567},"39|哪有":{"part":1,"ex":"哪有遮爾簡單的代誌","id":5795},"39|啥":{"ex":"這是啥物件？","id":7068},"39|做伙":{"ex":"咱兩个做伙來去𨑨迌","id":6947},"39|啦":{"ex":"好啦，我知矣啦","id":7069},"39|兩个":{"part":1,"ex":"阮兜有兩个囡仔","id":3582},"39|敢會":{"part":1,"ex":"明仔載敢會落雨？","id":8414},"39|扴味":{"ex":"鹹的佮甜的鬥做伙會扴味","id":3166},"39|共":{"ex":"我共你講，你毋通共別人講","id":2099},"39|食材":{"ex":"這間店的食材真新鮮","id":24267},"39|敆":{"ex":"伊共兩本簿仔敆做伙","id":6002},"39|醬":{"ex":"水餃愛搵醬才好食","id":12651},"39|若毋是":{"part":1,"ex":"若毋是你，我早就輸矣","id":5450},"39|應該":{"ex":"伊應該欲到矣","id":12174},"39|袂䆀":{"ex":"這間店裝潢了袂䆀","id":6634},"40|感覺":{"ex":"我感覺這个辦法袂䆀","id":9471},"40|羶":{"ex":"羊肉有一个羶","id":12815},"40|鬥陣":{"ex":"咱鬥陣來去","id":6855},"40|會當":{"ex":"你第一个要求我會當答應你","id":9616},"40|佮":{"ex":"我欲佮伊來去看電影","id":3524},"40|豬血":{"ex":"豬血湯摻韭菜真芳","id":11413},"40|塗豆麩":{"ex":"潤餅愛糝塗豆麩","id":13766},"40|夜市仔":{"part":1,"ex":"暗時來去夜市仔","id":3773},"40|咧":{"ex":"伊咧讀冊","id":4770},"40|賣":{"ex":"伊佇市仔賣菜","id":11390},"40|糝":{"ex":"麵頂懸糝寡胡椒","id":12245},"40|定著":{"ex":"伊定著會來","id":3853},"40|烘肉醬":{"part":1,"ex":"中秋節烘肉愛用烘肉醬","id":6251},"40|所有":{"ex":"所有的人攏到矣","id":4010},"40|肉羶":{"part":1,"ex":"羊肉的肉羶較重","id":2595},"40|遮":{"ex":"遮欲舉行一場歌唱比賽","id":11480},"41|招":{"ex":"明仔載我欲招伊去𨑨迌","id":3967},"41|干焦":{"ex":"干焦賰遮的菜爾爾，你欲無？","id":448},"41|阮":{"ex":"阮欲走矣，你咧？","id":3401},"41|一喙":{"part":1,"ex":"伊一喙就食了矣","id":1},"41|咬落去":{"part":1,"ex":"一喙咬落去，汁攏流出來","id":4773},"41|有影":{"ex":"你講的話敢有影？","id":2555},"41|烘":{"ex":"中秋節逐家烘肉","id":6228},"41|逐家":{"ex":"逐家攏是家己人，著愛互相照顧","id":7947},"41|好好仔":{"ex":"你著好好仔歇睏","id":14590},"41|鹹卵仁":{"part":1,"ex":"月餅內底有鹹卵仁","id":13057},"41|芳氣":{"part":1,"ex":"灶跤傳來飯的芳氣","id":4427},"41|本底":{"ex":"我本底欲去，後來無閒","id":1725},"41|煩惱":{"ex":"醫生講伊無要緊，你毋免煩惱","id":9727},"41|傷":{"ex":"你按呢做傷超過矣。","id":9289},"41|飫":{"ex":"肥肉食傷濟會飫","id":9221},"41|薄餅":{"part":1,"ex":"這塊薄餅脆脆","id":12300},"41|脆脆":{"part":1,"ex":"炸雞的皮脆脆","id":6529},"41|𩚨𩚨":{"part":1,"ex":"粉圓食起來𩚨𩚨","id":13551},"41|搭峇":{"part":1,"ex":"紅酒配牛排真搭峇","id":9491}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1505,7 +1527,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1513,6 +1535,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 

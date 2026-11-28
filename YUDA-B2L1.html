@@ -1198,6 +1198,14 @@
         bottom: 145px;
       }
     }
+    /* PEN-VOCAB-CSS:BEGIN */
+    .tooltip-header a.dict-link { color: var(--black); text-decoration: underline; text-decoration-thickness: 3px;
+      text-underline-offset: 4px; cursor: pointer; }
+    .tooltip-header a.dict-link:hover { background: var(--black); color: var(--yellow); border-radius: 8px; text-decoration: none; }
+    .tooltip-header a.dict-link .dict-go { font-size: .45em; vertical-align: middle; margin-left: .3em; font-weight: bold;
+      border: 2px solid currentColor; border-radius: 6px; padding: 0 .3em; white-space: nowrap; }
+    .tooltip-content .vocab-ex { font-family: tauhu-oo, sans-serif; }
+    /* PEN-VOCAB-CSS:END */
   </style>
   <style>@view-transition { navigation: auto; }</style>
   <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
@@ -1558,6 +1566,20 @@
       return result;
     }
 
+    /* PEN-VOCAB-EXTRA:BEGIN 字卡辭典連結＋學思達講義例句（tools/pen_upgrade.py 產生，勿手改） */
+    const VOCAB_EXTRA = {"8|記持":{"ex":"自我有記持開始","id":1041},"8|早頓":{"ex":"阮兜的早頓就是阿爸一國","id":2549},"8|逐工":{"ex":"逐工透早阿母就共早頓攢好勢","id":14301},"8|透早":{"ex":"伊透早就出門矣。","id":7928},"8|攢":{"ex":"物件我攏攢好矣。","id":13193},"8|好勢":{"ex":"伊睏甲誠好勢。","id":2379},"8|有時陣":{"ex":"伊有時陣會來阮兜𨑨迌。","id":2509},"8|俗麭":{"ex":"有時陣是俗麭配牛奶","id":14125},"8|若無":{"ex":"若無就是饅頭、包仔配豆奶。","id":5480},"8|豆奶":{"ex":"伊逐工透早攏愛食包仔配豆奶。","id":3416},"8|早起":{"ex":"伊逐工早起攏會去公園運動。","id":2517},"8|邊仔":{"ex":"阿爸攏佇邊仔咧看報紙。","id":12876},"8|哪會":{"ex":"問阿爸哪會無欲做伙食？","id":5842},"8|無欲":{"part":1,"ex":"我就問阿爸哪會無欲做伙食？","id":8563},"8|做伙":{"ex":"咱兩个做伙來去𨑨迌。","id":6947},"8|想袂到":{"ex":"想袂到阿爸遐早就食飽矣","id":19267},"8|遐":{"ex":"你的物件佇遐。","id":10152},"8|啥物":{"ex":"啥物人佇遐咧唱歌？","id":7101},"8|好料的":{"ex":"伊是食啥物好料的攏毋予阮知咧？","id":27639},"8|阿媽":{"ex":"捌聽阿媽講起","id":4621},"8|細漢":{"ex":"阿爸細漢的時，厝裡囡仔大陣","id":7768},"8|厝裡":{"ex":"厝裡囡仔大陣","id":14598},"8|囡仔":{"ex":"伊的囡仔真古錐。","id":2142},"8|大陣":{"ex":"這陣人誠大陣。","id":424},"8|彼陣":{"ex":"厝裡囡仔大陣，彼陣閣蹛佇庄跤","id":3917},"8|蹛":{"ex":"彼陣閣蹛佇庄跤","id":12616},"8|庄跤":{"ex":"我細漢的時陣蹛佇庄跤。","id":2391},"8|著愛":{"ex":"阿媽足早著愛去作穡","id":14607},"8|作穡":{"ex":"伊食到六十外歲猶閣咧作穡。","id":2940},"8|坩":{"ex":"早起攏煮一大坩糜","id":3701},"8|糜":{"ex":"攏煮一大坩糜","id":12244},"8|𪜶":{"ex":"𪜶兩个感情真好。","id":13567},"8|精神":{"ex":"等阿爸𪜶兄弟仔精神","id":10723},"8|了後":{"ex":"你出門了後，伊就醒矣。","id":113},"8|一寡仔":{"ex":"猶有一寡仔物件無整理。","id":32},"8|菜脯":{"ex":"配一寡仔菜脯、蔭瓜仔","id":8958},"8|蔭瓜仔":{"ex":"一寡仔菜脯、蔭瓜仔","id":13820},"9|凊彩":{"ex":"凊彩扒扒咧就去讀冊矣。","id":5755},"9|扒":{"ex":"尻脊骿癢，手扒袂著。","id":1648},"9|讀冊":{"ex":"咱讀冊就毋通讀對尻脊骿去。","id":13231},"9|閣":{"ex":"阿媽閣講，阿爸細漢的時足歹喙斗","id":10906},"9|歹喙斗":{"ex":"阿爸細漢的時足歹喙斗","id":1067},"9|佇":{"ex":"佇庄跤食糜配醬菜的日子","id":2858},"9|食":{"ex":"這隻船食水偌深？","id":5570},"9|醬菜":{"ex":"醬菜毋好食傷濟。","id":12710},"9|攏":{"ex":"逐工攏嘛面憂面結","id":12772},"9|嘛":{"ex":"遮的嘛攏是好的。","id":10384},"9|面憂面結":{"ex":"逐工攏嘛面憂面結，啥物都無愛食","id":5663},"9|無愛":{"ex":"啥物都無愛食","id":8650},"9|毋才":{"ex":"毋才會生做黃酸黃酸。","id":830},"9|生做":{"ex":"彼个查某囡仔生做真古錐。","id":1938},"9|黃酸黃酸":{"part":1,"ex":"生做黃酸黃酸。","id":9278},"9|佮":{"ex":"我欲佮伊來去看電影。","id":3524},"9|無閒":{"ex":"毋知咧無閒啥物。","id":8648},"9|咧":{"ex":"我欲食炒飯，你咧？","id":4771},"9|做生理":{"ex":"阿公佮阿媽無閒咧做生理","id":6946},"9|家己":{"ex":"是毋是，罵家己。","id":5899},"9|提":{"ex":"無錢，做你共我提。","id":8359},"9|銀角仔":{"ex":"家己提銀角仔去菜市仔買","id":10880},"9|菜市仔":{"ex":"叫阿爸家己提銀角仔去菜市仔買","id":8939},"9|伊":{"ex":"伊煞親像囡仔咧轉骨仝款","id":2047},"9|煞":{"ex":"我煞有講彼句話？","id":9691},"9|親像":{"ex":"𪜶兩个好甲親像兄弟仔仝款。","id":11940},"9|轉骨":{"ex":"恁囝這馬當咧轉骨。","id":12633},"9|仝款":{"ex":"這兩个皮包仔看著仝款仔仝款。","id":1360},"9|開脾":{"ex":"伊轉骨仝款，開脾矣！","id":9187},"9|今仔日":{"ex":"今仔日食蚵仔麵線，明仔載肉羹麵","id":629},"9|明仔載":{"ex":"明仔載肉羹麵","id":4208},"9|就按呢":{"ex":"代誌就按呢進行。","id":8306},"9|阮":{"ex":"阮欲走矣，你咧？","id":3401},"9|沓沓仔":{"ex":"有話沓沓仔講。","id":4275},"9|僫":{"ex":"伊是毋是會同意猶真僫講。","id":10375},"10|拄":{"ex":"阮佇門口相拄。","id":3948},"10|時陣":{"ex":"你啥物時陣欲轉來？","id":6036},"10|毋知":{"ex":"毋知阿爸愛食彼款重口味的早頓","id":976},"10|愛":{"ex":"我無愛無老實的人。","id":9427},"10|彼款":{"ex":"阿爸愛食彼款重口味的早頓","id":3919},"10|有當時仔":{"ex":"有當時仔阿爸會𤆬伊去菜市仔","id":2540},"10|𤆬":{"ex":"伊共人𤆬囡仔。","id":13511},"10|數念":{"ex":"食數念誠久的好滋味","id":11122},"10|誠":{"ex":"伊去菜市仔食數念誠久的好滋味","id":10054},"10|會當":{"ex":"阿母嘛會當接受。","id":9616},"10|不時":{"ex":"伊不時嘛咧讀冊。","id":699},"10|為著":{"ex":"不時為著欲食佗一款早頓咧冤家。","id":27288},"10|欲":{"ex":"欲我，早就佮伊變面矣。","id":7469},"10|佗":{"ex":"你欲提佗一个？","id":2862},"10|冤家":{"ex":"這兩个若見面就冤家。","id":5747},"10|原底":{"ex":"原底阿爸會勉強共阿母攢的早頓","id":5825},"10|攢":{"ex":"物件我攏攢好矣。","id":13193},"10|毋過":{"ex":"毋過阿母感受著翁婿的心情","id":1114},"10|敢若":{"ex":"敢若是伊，閣敢若毋是。","id":8444},"10|翁婿":{"ex":"感受著翁婿淡薄仔稀微的心情","id":6517},"10|淡薄仔":{"ex":"我遮閣有淡薄仔錢會當借你。","id":7566},"10|稀微":{"ex":"翁婿淡薄仔稀微的心情","id":8803},"10|佮意":{"ex":"我佮意的人就是你。","id":3565},"10|規工":{"ex":"規工攏袂輕鬆呢！","id":14292},"11|食食":{"ex":"伊的食食誠無正常。","id":5613},"11|冤家量債":{"ex":"若為著無仝款的食食咧冤家量債","id":5748},"11|拍歹":{"ex":"拍歹翁某的感情","id":3981},"11|翁某":{"ex":"𪜶翁某攏誠才情。","id":6504},"11|彼":{"ex":"彼就毋值矣。","id":3875},"11|毋值":{"ex":"拍歹翁某的感情，彼就毋值矣。","id":1009},"11|這馬":{"ex":"這馬阮兜的早頓","id":7957},"11|各人":{"ex":"各人的物件愛顧予伊好。","id":2129},"11|逐家":{"ex":"逐家攏誠歡喜","id":7947},"11|歡喜":{"ex":"伊毋知咧歡喜啥物？","id":13206},"11|偷偷仔":{"ex":"偷偷仔問我佮小弟有想欲食無。","id":14601},"11|想欲":{"ex":"我想欲去便所。","id":14370},"11|定定":{"ex":"伊定定無佇咧。","id":3837},"11|換食":{"ex":"有時陣換食換食，嘛袂䆀呢！","id":29343},"11|袂䆀":{"ex":"伊做人袂䆀。","id":6634}};
+    function vocabExtra(word, page) { return VOCAB_EXTRA[page + '|' + word] || {}; }
+    function dictLink(word, page) {
+      const x = vocabExtra(word, page);
+      const url = x.id ? 'https://sutian.moe.edu.tw/zh-hant/su/' + x.id + '/'
+        : 'https://sutian.moe.edu.tw/zh-hant/tshiau/?lui=tai_su&tsha=' + encodeURIComponent(word);
+      return '<a class="dict-link" href="' + url + '" target="_blank" rel="noopener" title="' + (x.part ? '辭典未收「' + word + '」整詞，連到詞內的詞條' : '到教育部臺灣台語常用詞辭典查「' + word + '」') + '" onclick="event.stopPropagation()">' + word + '<span class="dict-go">辭典↗</span></a>';
+    }
+    function exRow(word, page) {
+      const x = vocabExtra(word, page);
+      return x.ex ? '<div><span class="tooltip-label">例句：</span><span class="vocab-ex">' + escapeHtml(x.ex) + '</span></div>' : '';
+    }
+    /* PEN-VOCAB-EXTRA:END */
     function showTooltip(event, word, roman, chinese, page, order) {
       const existingTooltip = document.querySelector('.tooltip');
       if (existingTooltip) {
@@ -1568,7 +1590,7 @@
       tooltip.className = 'tooltip';
       tooltip.innerHTML = `
         <div class="tooltip-header">
-          <span>${word}</span>
+          ${dictLink(word, page)}
           <button class="tooltip-close">✕</button>
         </div>
         <div class="tooltip-content">
@@ -1576,6 +1598,7 @@
           <div><span class="tooltip-label">頁數：</span>第 ${page} 頁</div>
           <div><span class="tooltip-label">羅馬拼音：</span>${roman} <span class="speaker-icon">🔊</span></div>
           <div><span class="tooltip-label">華語：</span>${chinese}</div>
+          ${exRow(word, page)}
         </div>
       `;
 
